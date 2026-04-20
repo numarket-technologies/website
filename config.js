@@ -7,7 +7,7 @@
 const NUMARKET_CONFIG = {
 
   /* ── CONTACT INFO ─────────────────────────────────────── */
-  email:    "hello@numarket.io",
+  email:    "hello@numarket.us",
   phone:    "(404) 555-0192",
 
   /* ── LOCATION (shown on Contact page) ───────────────────
