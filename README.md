@@ -160,7 +160,7 @@ The logo combines lowercase italic *nu* in DM Serif Display (navy), a diagonal s
 
 ## Contact
 
-**Email:** hello@numarket.io
+**Email:** hello@numarket.us
 **Phone:** (404) 555-0192
 **Location:** Atlanta, Georgia — serving clients nationally
 **Hours:** Monday–Friday, 8am–6pm ET
