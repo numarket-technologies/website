@@ -590,7 +590,7 @@ function submitForm() {
       body: JSON.stringify(fields)
     }).then(r => {
       if (r.ok) { wrap.style.display='none'; success.style.display='flex'; document.getElementById('form-header').style.display='none'; }
-      else { btn.textContent='Send Request →'; btn.disabled=false; errDiv.textContent='Submission failed — please email us at ' + (C.email||'hello@numarket.io'); errDiv.style.display='block'; }
+      else { btn.textContent='Send Request →'; btn.disabled=false; errDiv.textContent='Submission failed — please email us at ' + (C.email||'hello@numarket.us'); errDiv.style.display='block'; }
     }).catch(() => { btn.textContent='Send Request →'; btn.disabled=false; errDiv.textContent='Network error — please email us directly.'; errDiv.style.display='block'; });
   } else {
     wrap.style.display='none'; success.style.display='flex'; document.getElementById('form-header').style.display='none';
