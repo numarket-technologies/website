@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>numarket — Trust the Data.</title>
+  <meta name="description" content="numarket is a data analytics and project intelligence company. Live dashboards, plain-language analysis, built by data scientists.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <!-- Site config — edit this file to update contact info, location, analytics -->
+  <script src="config.js"></script>
+  <!-- Data layer — all dashboard data lives here -->
+  <script src="data.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo-mark" onclick="showPage('home')">
+      <span class="logo-nu">nu</span>
+      <span class="logo-slash"><svg viewBox="0 0 14 20" fill="none"><line x1="2" y1="18" x2="12" y2="2" stroke="#57CC99" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="2" r="1.5" fill="#57CC99"/></svg></span>
+      <span class="logo-market">market</span>
+    </div>
+    <ul class="nav-links">
+      <li><button onclick="showPage('home')" id="nav-home" class="active">Home</button></li>
+      <li><button onclick="showPage('services')" id="nav-services">Services</button></li>
+      <li><button onclick="showPage('dashboards')" id="nav-dashboards">Dashboards</button></li>
+      <li><button onclick="showPage('work')" id="nav-work">Work</button></li>
+      <li><button onclick="showPage('contact')" id="nav-contact">Contact</button></li>
+      <li><button onclick="showPage('start')" id="nav-start" class="nav-cta">Start a Project</button></li>
+    </ul>
+    <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <button onclick="navTo('home')">Home</button>
+  <button onclick="navTo('services')">Services</button>
+  <button onclick="navTo('dashboards')">Dashboards</button>
+  <button onclick="navTo('work')">Work</button>
+  <button onclick="navTo('contact')">Contact</button>
+  <button onclick="navTo('start')" class="mobile-menu-cta">Start a Project</button>
+</div>
+
+<!-- ═══════════ HOME ═══════════ -->
+<div class="page active" id="page-home">
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div>
+        <div class="section-tag fade-up">Trust the Data</div>
+        <h1 class="fade-up delay-1">Your data already<br>knows <em>what to do next.</em></h1>
+        <p class="lead fade-up delay-2">numarket connects, cleans, and visualizes your operational data — delivering live dashboards and plain-language analysis so leadership can act, not guess.</p>
+        <div class="hero-actions fade-up delay-3">
+          <button class="btn-primary" onclick="showPage('start')">Start a Project →</button>
+          <button class="btn-secondary" onclick="showPage('dashboards')">See Live Demos</button>
+        </div>
+        <div class="hero-stats fade-up delay-4">
+          <div>
+            <div class="hero-stat-num">2<span>×</span></div>
+            <div class="hero-stat-label">faster than legacy PMO firms</div>
+          </div>
+          <div>
+            <div class="hero-stat-num"><span class="count-up" data-prefix="$" data-target="2.5" data-suffix="k">$2.5k</span></div>
+            <div class="hero-stat-label">starting investment for a first engagement</div>
+          </div>
+          <div>
+            <div class="hero-stat-num"><span class="count-up" data-target="8" data-suffix="+">8+</span></div>
+            <div class="hero-stat-label">industries served</div>
+          </div>
+        </div>
+      </div>
+      <!-- Mini dashboard preview -->
+      <div class="hero-dashboard-preview fade-up delay-2">
+        <div class="hdp-header">
+          <div>
+            <div class="hdp-title">Operations Dashboard</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:2px">Regional Operations Center</div>
+          </div>
+          <div class="hdp-live">Live</div>
+        </div>
+        <div class="hdp-kpis">
+          <div class="hdp-kpi">
+            <div class="hdp-kpi-label">OEE Score</div>
+            <div class="hdp-kpi-val">74.2%</div>
+            <div class="hdp-kpi-chg">↑ +3.1 pts this month</div>
+          </div>
+          <div class="hdp-kpi">
+            <div class="hdp-kpi-label">On-Time Delivery</div>
+            <div class="hdp-kpi-val">97.1%</div>
+            <div class="hdp-kpi-chg">↑ Near target</div>
+          </div>
+          <div class="hdp-kpi">
+            <div class="hdp-kpi-label">Units Today</div>
+            <div class="hdp-kpi-val">4,820</div>
+            <div class="hdp-kpi-chg">↑ 102% of plan</div>
+          </div>
+          <div class="hdp-kpi">
+            <div class="hdp-kpi-label">First Pass Yield</div>
+            <div class="hdp-kpi-val">96.4%</div>
+            <div style="font-size:9px;color:#C0392B;margin-top:2px">↓ 1.1 pts below target</div>
+          </div>
+        </div>
+        <div class="hdp-chart-area">
+          <div style="font-size:10px;font-weight:600;color:var(--navy);margin-bottom:10px">Facility Performance</div>
+          <div class="hdp-bar-row">
+            <span class="hdp-bar-label">Plant A</span>
+            <div class="hdp-bar-track"><div class="hdp-bar-fill" style="width:78%;background:#57CC99"></div></div>
+            <span class="hdp-bar-val">78%</span>
+          </div>
+          <div class="hdp-bar-row">
+            <span class="hdp-bar-label">Plant B</span>
+            <div class="hdp-bar-track"><div class="hdp-bar-fill" style="width:71%;background:#38A3A5"></div></div>
+            <span class="hdp-bar-val">71%</span>
+          </div>
+          <div class="hdp-bar-row">
+            <span class="hdp-bar-label">Plant C</span>
+            <div class="hdp-bar-track"><div class="hdp-bar-fill" style="width:76%;background:#80ED99"></div></div>
+            <span class="hdp-bar-val">76%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="trusted">
+    <div class="trusted-inner-wrap">
+      <span class="trusted-label-fixed">Built for</span>
+      <div class="ticker-outer">
+        <div class="ticker-track" id="ticker-track">
+          <span class="ticker-item">Utilities &amp; Energy</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Construction</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Healthcare</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Finance &amp; Insurance</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Operations &amp; Manufacturing</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Capital Project Management</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">HR &amp; Workforce</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Telecommunications</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Real Estate &amp; Property</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Government &amp; Public Sector</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Technology</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Retail &amp; Distribution</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Professional Services</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Logistics &amp; Supply Chain</span>
+          <span class="ticker-sep">·</span>
+          <!-- duplicate for seamless loop -->
+          <span class="ticker-item">Utilities &amp; Energy</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Construction</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Healthcare</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Finance &amp; Insurance</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Operations &amp; Manufacturing</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Capital Project Management</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">HR &amp; Workforce</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Telecommunications</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Real Estate &amp; Property</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Government &amp; Public Sector</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Technology</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Retail &amp; Distribution</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Professional Services</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Logistics &amp; Supply Chain</span>
+          <span class="ticker-sep">·</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="problem">
+    <div class="container">
+      <div>
+        <div class="section-tag">The Problem</div>
+        <h2>Most companies are<br>flying blind.</h2>
+        <p class="lead" style="margin-top:16px">The data that could transform your decisions exists right now — in spreadsheets, HR systems, project tools, and financial software. It's disconnected, stale, and invisible to the people who need it most.</p>
+      </div>
+      <div class="problem-cards">
+        <div class="problem-card">
+          <div class="problem-icon-block">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 17.5h7M17.5 14v7"/></svg>
+          </div>
+          <div>
+            <h4>Data Silos</h4>
+            <p>Critical metrics live in six different tools, none of which talk to each other. Reporting takes days instead of seconds.</p>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon-block">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          </div>
+          <div>
+            <h4>Stale Reporting</h4>
+            <p>By the time leadership sees the numbers, the moment to act has already passed. Decisions get made on last quarter's reality.</p>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon-block">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <div>
+            <h4>Legacy PMO Cost</h4>
+            <p>Traditional firms charge 3× more, take twice as long, and deliver a static PDF instead of a live, queryable system.</p>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon-block">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          </div>
+          <div>
+            <h4>Numbers Without Meaning</h4>
+            <p>Even when dashboards exist, they show data without explanation. Leadership needs to know what it means and what to do next.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how-works">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">How It Works</div>
+        <h2>From raw data to live insight<br>in days — not months.</h2>
+        <p class="lead" style="margin-top:16px">A structured four-step process that turns your existing data into a decision-making asset that updates automatically.</p>
+      </div>
+      <div class="steps reveal-stagger">
+        <div class="step"><div class="step-num">01</div><h4>Discovery</h4><p>We audit your data sources, understand your decisions, and map what's available to what leadership actually needs to see.</p></div>
+        <div class="step"><div class="step-num">02</div><h4>Connect &amp; Clean</h4><p>We connect to your systems, clean and structure the data, and establish reliable pipelines that refresh automatically.</p></div>
+        <div class="step"><div class="step-num">03</div><h4>Build &amp; Deploy</h4><p>Live dashboards go up in days. Every metric has a tooltip. Every view is filtered for the person using it.</p></div>
+        <div class="step"><div class="step-num">04</div><h4>Ongoing Analysis</h4><p>We stay on as your intelligence partner — explaining what changed, why, and what action the data recommends.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="services-preview">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:48px">
+        <div class="section-tag">Service Tiers</div>
+        <h2>Choose your level of data intelligence.</h2>
+      </div>
+      <div class="tier-cards reveal-stagger">
+        <div class="tier-card">
+          <div class="tier-label">Entry</div>
+          <h3>Insight</h3>
+          <div class="tier-price">From $2,500 / project · Retainers from $1,500/mo</div>
+          <p>For companies ready to see their data clearly for the first time. One domain, one dashboard, one analyst.</p>
+          <ul class="tier-features">
+            <li>One data domain connected</li>
+            <li>Live dashboard (up to 8 KPIs)</li>
+            <li>Monthly analysis memo</li>
+            <li>Quarterly strategy review</li>
+          </ul>
+          <button class="btn-secondary" onclick="showPage('contact')" style="width:100%;justify-content:center">Start a Project</button>
+        </div>
+        <div class="tier-card featured">
+          <div class="tier-label">Mid-Market</div>
+          <h3>Operate</h3>
+          <div class="tier-price" style="color:var(--lgreen)">$3,500–$12,000 / project · Retainers from $3,500/mo</div>
+          <p>For companies running projects and operations that need cross-functional visibility and ongoing support.</p>
+          <ul class="tier-features">
+            <li>Up to 4 data domains</li>
+            <li>Multi-dashboard suite</li>
+            <li>Weekly analysis reports</li>
+            <li>Dedicated data scientist</li>
+            <li>Slack / Teams integration</li>
+          </ul>
+          <button class="btn-green" onclick="showPage('contact')" style="width:100%;justify-content:center">Start a Project</button>
+        </div>
+        <div class="tier-card">
+          <div class="tier-label">Enterprise</div>
+          <h3>Command</h3>
+          <div class="tier-price">Custom engagements · Retainers from $10,000/mo</div>
+          <p>For organizations that need a full-scale intelligence infrastructure and a partner embedded in the operation.</p>
+          <ul class="tier-features">
+            <li>Unlimited data domains</li>
+            <li>Custom dashboard suite</li>
+            <li>Daily briefings to leadership</li>
+            <li>Dedicated data scientist</li>
+            <li>Executive reporting suite</li>
+          </ul>
+          <button class="btn-secondary" onclick="showPage('contact')" style="width:100%;justify-content:center">Start a Project</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="industries">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Industries</div>
+        <h2 style="text-align:center">We work where the data is messy.</h2>
+        <p class="lead" style="margin:16px auto 0;text-align:center">Any company running projects, managing teams, or making decisions without real-time visibility is our client.</p>
+      </div>
+      <div class="industry-grid reveal-stagger" style="margin-top:48px">
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+          <h4>Utilities</h4><p>Asset performance, outage tracking, crew productivity</p>
+        </div>
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="15" rx="1"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div>
+          <h4>Construction</h4><p>Project cost, schedule, subcontractor performance</p>
+        </div>
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+          <h4>Healthcare</h4><p>Staffing ratios, patient flow, compliance tracking</p>
+        </div>
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+          <h4>Finance</h4><p>Portfolio visibility, risk metrics, forecasting</p>
+        </div>
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+          <h4>Human Resources</h4><p>Headcount, attrition, hiring pipeline analytics</p>
+        </div>
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg></div>
+          <h4>Operations</h4><p>Throughput, quality, supply chain visibility</p>
+        </div>
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <h4>Capital Projects</h4><p>Multi-project cost, schedule, and risk dashboards</p>
+        </div>
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><path d="M2 20h.01M7 20v-4"/><path d="M12 20V10"/><path d="M17 20V4"/><path d="M22 20v-8"/></svg></div>
+          <h4>Telecommunications</h4><p>Network performance, outage response, SLA tracking</p>
+        </div>
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          <h4>Real Estate</h4><p>Portfolio analytics, occupancy, asset management</p>
+        </div>
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <h4>Government</h4><p>Program dashboards, compliance tracking, reporting</p>
+        </div>
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+          <h4>Technology</h4><p>Product metrics, engineering velocity, GTM analytics</p>
+        </div>
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div>
+          <h4>Retail &amp; Distribution</h4><p>Inventory analytics, margin tracking, demand forecasting</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-cta">
+    <div class="container">
+      <div class="section-tag" style="justify-content:center;color:var(--lgreen)">Get Started</div>
+      <h2 style="color:var(--white)">See what your data<br>is already telling you.</h2>
+      <p style="color:rgba(255,255,255,0.65);font-size:1.05rem;margin:20px auto 40px;max-width:500px">Every engagement starts with a discovery call and a custom proposal showing three options. No commitment required.</p>
+      <div class="home-cta-btns">
+        <button class="btn-green" onclick="showPage('start')">Start a Project →</button>
+        <button class="btn-secondary-dark" onclick="showPage('dashboards')">Explore Dashboard Demos</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ═══════════ SERVICES ═══════════ -->
+<div class="page" id="page-services">
+  <section class="services-hero">
+    <div class="container">
+      <div class="section-tag">Services</div>
+      <h1>Data intelligence,<br>delivered as a service.</h1>
+      <p>We are not a staffing firm. We are not a technology vendor. We are a data intelligence partner. The product is clarity — a dedicated analyst who understands your business deeply, moves fast, and delivers insight that drives real decisions. Not a report that sits in a folder.</p>
+    </div>
+  </section>
+  <section class="services-what">
+    <div class="container">
+      <div>
+        <div class="section-tag">What We Do</div>
+        <h2>From raw data to<br>live intelligence.</h2>
+        <p>Most companies already have the data that could transform their decisions. It sits in spreadsheets, project systems, HR tools, and financial software — disconnected, stale, and invisible to leadership.</p>
+        <p>numarket connects to those data sources, cleans and structures the data, builds live dashboards that update automatically, and delivers ongoing analysis that explains what the numbers mean and what to do about it.</p>
+        <div style="margin-top:32px"><button class="btn-primary" onclick="showPage('start')">Start with a Discovery Call →</button></div>
+      </div>
+      <div class="services-list">
+        <div class="service-item">
+          <div class="service-ico"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></div>
+          <div><h4>Data Connection &amp; Pipeline</h4><p>We connect to your existing tools — spreadsheets, databases, ERPs, project systems — and build clean, reliable data pipelines.</p></div>
+        </div>
+        <div class="service-item">
+          <div class="service-ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
+          <div><h4>Live Dashboard Development</h4><p>Custom dashboards that update automatically, built for the person using them — not as a one-size-fits-all tool.</p></div>
+        </div>
+        <div class="service-item">
+          <div class="service-ico"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+          <div><h4>Plain-Language Analysis</h4><p>Regular memos and briefings that explain what the numbers mean and what action they call for — written for decision-makers, not analysts.</p></div>
+        </div>
+        <div class="service-item">
+          <div class="service-ico"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+          <div><h4>Embedded Intelligence Partner</h4><p>For Command-tier clients, a dedicated data scientist embedded in your operation who functions as a strategic intelligence resource.</p></div>
+        </div>
+        <div class="service-item">
+          <div class="service-ico"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+          <div><h4>Ad-Hoc Analysis</h4><p>One-off analytical projects, model builds, or data audits — scoped and priced for fast turnaround. Ideal for specific questions that can't wait for the next planning cycle.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="tiers-full">
+    <div class="container">
+      <div class="tier-row">
+        <div>
+          <div class="tier-row-label">Entry Tier</div>
+          <h2>Insight</h2>
+          <div class="tier-row-price">From $2,500 / project · Retainers from $1,500/mo</div>
+          <p>For companies ready to see their data clearly for the first time. One domain, one dashboard, one analyst.</p>
+          <button class="btn-primary" onclick="showPage('start')">Start a Project</button>
+        </div>
+        <div class="tier-deliverables">
+          <div class="tier-del"><h5>Data Audit</h5><p>We identify what data you have, where it lives, and what it can answer.</p></div>
+          <div class="tier-del"><h5>One Domain Dashboard</h5><p>A single live dashboard covering up to 8 KPIs in your most critical area.</p></div>
+          <div class="tier-del"><h5>Monthly Analysis Memo</h5><p>Plain-language monthly summary of what the data shows and what to watch.</p></div>
+          <div class="tier-del"><h5>Quarterly Strategy Review</h5><p>A 60-minute review connecting data trends to business strategy.</p></div>
+        </div>
+      </div>
+      <div class="tier-row">
+        <div>
+          <div class="tier-row-label">Mid-Market Tier</div>
+          <h2>Operate</h2>
+          <div class="tier-row-price">$3,500–$12,000 / project · Retainers from $3,500/mo</div>
+          <p>For companies running projects, teams, and operations that need cross-functional visibility. A dedicated data scientist manages your intelligence infrastructure.</p>
+          <button class="btn-primary" onclick="showPage('start')">Start a Project</button>
+        </div>
+        <div class="tier-deliverables">
+          <div class="tier-del"><h5>Multi-Domain Coverage</h5><p>Up to 4 connected data domains — operations, finance, HR, and projects in a unified view.</p></div>
+          <div class="tier-del"><h5>Dashboard Suite</h5><p>Multiple dashboards built for different roles — executive, manager, and operations views.</p></div>
+          <div class="tier-del"><h5>Weekly Analysis Reports</h5><p>Weekly briefings on what changed, why, and what the data recommends.</p></div>
+          <div class="tier-del"><h5>Dedicated Data Scientist</h5><p>A single point of contact who knows your data and your business deeply.</p></div>
+          <div class="tier-del"><h5>Slack / Teams Integration</h5><p>Alerts and summaries delivered directly into your communication channels.</p></div>
+          <div class="tier-del"><h5>Ad-Hoc Requests Included</h5><p>Up to 8 hours per month of ad-hoc analytical work included.</p></div>
+        </div>
+      </div>
+      <div class="tier-row">
+        <div>
+          <div class="tier-row-label">Enterprise Tier</div>
+          <h2>Command</h2>
+          <div class="tier-row-price">Custom engagements · Retainers from $10,000/mo</div>
+          <p>For organizations that need a full-scale intelligence infrastructure. A dedicated data scientist, organization-wide data coverage, and a strategic intelligence operation built around exactly what leadership needs to make better decisions at scale.</p>
+          <button class="btn-primary" onclick="showPage('start')">Start a Project</button>
+        </div>
+        <div class="tier-deliverables">
+          <div class="tier-del"><h5>Unlimited Domains</h5><p>Full organizational data coverage with no domain limits.</p></div>
+          <div class="tier-del"><h5>Custom Dashboard Suite</h5><p>Fully custom-designed dashboards built to your brand and exact specifications.</p></div>
+          <div class="tier-del"><h5>Daily Leadership Briefings</h5><p>A daily intelligence digest delivered to the executive team every morning.</p></div>
+          <div class="tier-del"><h5>Dedicated Data Scientist</h5><p>A dedicated numarket data scientist who knows your data and your business as deeply as any internal hire.</p></div>
+          <div class="tier-del"><h5>Executive Reporting</h5><p>Board-ready reports and investor-grade analytics produced on demand.</p></div>
+          <div class="tier-del"><h5>Unlimited Ad-Hoc Requests</h5><p>No cap on analytical requests — your analyst is part of the team, not on a meter.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════ DASHBOARDS ═══════════ -->
+<div class="page" id="page-dashboards">
+  <div class="dashboards-hero">
+    <div class="container">
+      <div class="section-tag">Interactive Demos</div>
+      <h1>The dashboards<br>speak for themselves.</h1>
+      <p>Six fully interactive demos across different industries. Live filters that update the data, hover tooltips explaining every metric, animated charts, and the exact experience your team would use.</p>
+      <div class="dashboard-tabs">
+        <button class="dash-tab active" onclick="switchDash(0)">Utilities Operations</button>
+        <button class="dash-tab" onclick="switchDash(1)">Construction PM</button>
+        <button class="dash-tab" onclick="switchDash(2)">HR Analytics</button>
+        <button class="dash-tab" onclick="switchDash(3)">Financial Performance</button>
+        <button class="dash-tab" onclick="switchDash(4)">Operations Center</button>
+        <button class="dash-tab" onclick="switchDash(5)">Healthcare</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="dashboard-viewer">
+    <div class="container">
+
+      <!-- DASH 1: UTILITIES — teal/green accent -->
+      <div class="dashboard-panel active" id="dash-0">
+        <div class="db-frame">
+          <div class="db-header" style="background:#22577A">
+            <div class="db-header-left">
+              <div style="width:4px;height:40px;background:#57CC99;border-radius:4px;flex-shrink:0"></div>
+              <div><div class="db-title">Grid Operations Intelligence</div><div class="db-subtitle">Regional Utility — Transmission &amp; Distribution</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div class="db-badge" style="background:rgba(87,204,153,.2);color:#80ED99"><span style="width:6px;height:6px;border-radius:50%;background:#57CC99;display:inline-block;animation:pulse 2s infinite"></span>Live</div>
+              <span style="font-size:12px;color:rgba(255,255,255,0.35)">Updated 2 min ago</span>
+            </div>
+          </div>
+          <div class="db-filters">
+            <span class="db-filter-label">Region:</span>
+            <select class="db-filter-select" id="util-region" onchange="updateUtilities()">
+              <option value="all">All Regions</option>
+              <option value="north">North District</option>
+              <option value="south">South District</option>
+              <option value="east">East District</option>
+              <option value="west">West District</option>
+            </select>
+            <select class="db-filter-select" id="util-period" onchange="updateUtilities()">
+              <option value="30">Last 30 Days</option>
+              <option value="90">Last 90 Days</option>
+              <option value="ytd">Year to Date</option>
+            </select>
+          </div>
+          <div class="db-body">
+            <div class="db-insight-bar">
+              <div><div class="db-insight-label">numarket Analysis</div><span>South District SAIDI (91.8) is 9% above the regional average. Crew utilization in that district dropped to 71% — investigate scheduling inefficiencies before the summer peak load period.</span></div>
+            </div>
+            <div class="db-kpi-row">
+              <div class="kpi-card" style="--kc:#57CC99">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#57CC99;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">System Reliability (SAIDI)<span class="tooltip-icon">i</span><div class="tooltip-box">Avg. customer outage minutes/year. Lower is better. Industry benchmark: under 90 min/year.</div></div></div>
+                <div class="kpi-value" id="u-saidi">84.2</div>
+                <div class="kpi-change kpi-up" id="u-saidi-c">6.1% better than last year</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#38A3A5;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Outage Events (period)<span class="tooltip-icon">i</span><div class="tooltip-box">Total unplanned outages in the period — includes momentary and sustained interruptions.</div></div></div>
+                <div class="kpi-value" id="u-outages">23</div>
+                <div class="kpi-change kpi-up" id="u-outages-c">4 fewer than prior period</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#80ED99;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Crew Utilization<span class="tooltip-icon">i</span><div class="tooltip-box">Crew hours on actual work vs. idle/travel/admin. Target: 80%.</div></div></div>
+                <div class="kpi-value" id="u-crew">78%</div>
+                <div class="kpi-change kpi-down" id="u-crew-c">2% below 80% target</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#C7F9CC;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Asset Health Index<span class="tooltip-icon">i</span><div class="tooltip-box">Score (0–100) across monitored assets — age, inspections, maintenance. Above 70 is acceptable.</div></div></div>
+                <div class="kpi-value" id="u-ahi">71.8</div>
+                <div class="kpi-change kpi-up" id="u-ahi-c">Stable — above 70 threshold</div>
+              </div>
+            </div>
+            <div class="db-charts">
+              <div class="chart-card">
+                <div class="chart-card-header">
+                  <div><div class="chart-card-title">Outage Duration by Month (minutes)</div><div class="chart-card-sub">Hover bars for exact values</div></div>
+                </div>
+                <div class="chart-wrap"><canvas id="util-bar" height="200"></canvas></div>
+                <div class="chart-card-legend">
+                  <div class="legend-item"><div class="legend-dot" style="background:#57CC99"></div>Duration (min)</div>
+                </div>
+              </div>
+              <div class="chart-card chart-card-compact">
+                <div class="chart-card-header"><div class="chart-card-title">Outage Cause Breakdown</div></div>
+                <div class="chart-wrap chart-wrap-compact"><canvas id="util-doughnut" height="160"></canvas></div>
+                <div id="mini-util" style="padding:14px 16px 12px;border-top:1px solid #F2F5F8"></div>
+              </div>
+            </div>
+            <div class="db-table-wrap">
+              <div class="db-table-title" style="padding:14px 16px 10px">District Breakdown</div>
+              <table>
+                <thead><tr><th>District</th><th>SAIDI</th><th>Outages</th><th>Avg Restore (hrs)</th><th>Crew Efficiency</th><th>Status</th></tr></thead>
+                <tbody id="util-table">
+                  <tr><td>North</td><td>72.4</td><td>6</td><td>2.1</td><td>83%</td><td><span class="status-pill status-green">On Target</span></td></tr>
+                  <tr><td>South</td><td>91.8</td><td>9</td><td>3.8</td><td>71%</td><td><span class="status-pill status-yellow">Watch</span></td></tr>
+                  <tr><td>East</td><td>88.5</td><td>5</td><td>2.6</td><td>79%</td><td><span class="status-pill status-green">On Target</span></td></tr>
+                  <tr><td>West</td><td>84.2</td><td>3</td><td>1.9</td><td>80%</td><td><span class="status-pill status-green">On Target</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DASH 2: CONSTRUCTION — amber accent -->
+      <div class="dashboard-panel" id="dash-1">
+        <div class="db-frame">
+          <div class="db-header" style="background:#1C3A4A">
+            <div class="db-header-left">
+              <div style="width:4px;height:40px;background:#F0A500;border-radius:4px;flex-shrink:0"></div>
+              <div><div class="db-title">Capital Project Management Suite</div><div class="db-subtitle">Multi-Site Construction Portfolio — 2025–2026</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div class="db-badge" style="background:rgba(240,165,0,.15);color:#F0C040"><span style="width:6px;height:6px;border-radius:50%;background:#F0A500;display:inline-block;animation:pulse 2s infinite"></span>Live</div>
+              <span style="font-size:12px;color:rgba(255,255,255,0.35)">Updated 5 min ago</span>
+            </div>
+          </div>
+          <div class="db-filters">
+            <span class="db-filter-label">Project:</span>
+            <select class="db-filter-select" id="constr-project" onchange="updateConstruction()">
+              <option value="all">All Projects</option>
+              <option value="terminal">Terminal Expansion</option>
+              <option value="bridge">Bridge Rehab</option>
+              <option value="dc">Data Center Build</option>
+              <option value="sub">Substation Upgrade</option>
+            </select>
+            <select class="db-filter-select" id="constr-phase" onchange="updateConstruction()">
+              <option value="all">All Phases</option>
+              <option value="design">Design</option>
+              <option value="construction">Construction</option>
+              <option value="closeout">Closeout</option>
+            </select>
+          </div>
+          <div class="db-body">
+            <div class="db-insight-bar" style="background:#FFF8ED;border-left-color:#F0A500">
+              <div><div class="db-insight-label" style="color:#C8860A">numarket Analysis</div><span>Substation Upgrade is 4% over budget at 98% complete. Bridge Rehab RFI backlog (19 open) is the leading schedule risk — design team response time averaging 12 days vs. 5-day target.</span></div>
+            </div>
+            <div class="db-kpi-row">
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#F0A500;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Portfolio CPI<span class="tooltip-icon">i</span><div class="tooltip-box">Earned Value ÷ Actual Cost. Above 1.0 = under budget. Below 1.0 = over budget.</div></div></div>
+                <div class="kpi-value" id="c-cpi">0.96</div>
+                <div class="kpi-change kpi-down" id="c-cpi-c">Slightly over plan</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#F0A500;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Schedule Index (SPI)<span class="tooltip-icon">i</span><div class="tooltip-box">Earned Value ÷ Planned Value. Above 1.0 = ahead of schedule. Below 1.0 = behind.</div></div></div>
+                <div class="kpi-value" id="c-spi">1.03</div>
+                <div class="kpi-change kpi-up" id="c-spi-c">Slightly ahead of schedule</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#F0A500;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Committed Cost<span class="tooltip-icon">i</span><div class="tooltip-box">Total contracted costs including approved change orders and contingency draws.</div></div></div>
+                <div class="kpi-value" id="c-cost">$148M</div>
+                <div class="kpi-change kpi-down" id="c-cost-c">$3.2M above baseline</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#F0A500;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Open RFIs<span class="tooltip-icon">i</span><div class="tooltip-box">Open Requests for Information across all projects. High counts signal design gaps. Target: under 40.</div></div></div>
+                <div class="kpi-value" id="c-rfi">47</div>
+                <div class="kpi-change kpi-down" id="c-rfi-c">8 above target threshold</div>
+              </div>
+            </div>
+            <div class="db-charts">
+              <div class="chart-card">
+                <div class="chart-card-header"><div class="chart-card-title">Planned vs Actual Spend by Month ($M)</div></div>
+                <div class="chart-wrap"><canvas id="constr-line" height="200"></canvas></div>
+                <div class="chart-card-legend">
+                  <div class="legend-item"><div class="legend-dot" style="background:#9BB3C4"></div>Planned</div>
+                  <div class="legend-item"><div class="legend-dot" style="background:#F0A500"></div>Actual</div>
+                </div>
+              </div>
+              <div class="chart-card chart-card-compact">
+                <div class="chart-card-header"><div class="chart-card-title">Change Orders by Category</div></div>
+                <div class="chart-wrap chart-wrap-compact"><canvas id="constr-pie" height="160"></canvas></div>
+                <div id="mini-constr" style="padding:14px 16px 12px;border-top:1px solid #F2F5F8"></div>
+              </div>
+            </div>
+            <div class="db-table-wrap">
+              <div class="db-table-title" style="padding:14px 16px 10px">Project Status</div>
+              <table>
+                <thead><tr><th>Project</th><th>Budget</th><th>Spent</th><th>% Complete</th><th>Forecast Finish</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>Terminal Expansion</td><td>$82M</td><td>$53M</td><td>64%</td><td>Oct 2025</td><td><span class="status-pill status-green">On Track</span></td></tr>
+                  <tr><td>Bridge Rehabilitation</td><td>$31M</td><td>$22M</td><td>71%</td><td>Aug 2025</td><td><span class="status-pill status-yellow">At Risk</span></td></tr>
+                  <tr><td>Data Center Build-Out</td><td>$24M</td><td>$9M</td><td>38%</td><td>Jan 2026</td><td><span class="status-pill status-green">On Track</span></td></tr>
+                  <tr><td>Substation Upgrade</td><td>$11M</td><td>$11.4M</td><td>98%</td><td>May 2025</td><td><span class="status-pill status-red">Over Budget</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DASH 3: HR — purple accent -->
+      <div class="dashboard-panel" id="dash-2">
+        <div class="db-frame">
+          <div class="db-header" style="background:#1E2D40">
+            <div class="db-header-left">
+              <div style="width:4px;height:40px;background:#9B72CF;border-radius:4px;flex-shrink:0"></div>
+              <div><div class="db-title">Workforce Intelligence Center</div><div class="db-subtitle">Human Resources Analytics — 1,240 Employees</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div class="db-badge" style="background:rgba(155,114,207,.2);color:#C4A8F0"><span style="width:6px;height:6px;border-radius:50%;background:#9B72CF;display:inline-block;animation:pulse 2s infinite"></span>Daily</div>
+              <span style="font-size:12px;color:rgba(255,255,255,0.35)">Updated daily at 6am</span>
+            </div>
+          </div>
+          <div class="db-filters">
+            <span class="db-filter-label">Department:</span>
+            <select class="db-filter-select" id="hr-dept" onchange="updateHR()">
+              <option value="all">All Departments</option>
+              <option value="eng">Engineering</option>
+              <option value="ops">Operations</option>
+              <option value="fin">Finance</option>
+              <option value="sales">Sales</option>
+            </select>
+            <select class="db-filter-select" id="hr-period" onchange="updateHR()">
+              <option value="12">Last 12 Months</option>
+              <option value="6">Last 6 Months</option>
+              <option value="3">Last 3 Months</option>
+            </select>
+          </div>
+          <div class="db-body">
+            <div class="db-insight-bar" style="background:#F4EEFF;border-left-color:#9B72CF">
+              <div><div class="db-insight-label" style="color:#7C4DB8">numarket Analysis</div><span>Sales attrition at 22.1% is nearly double the company average. Tenure data shows 68% of Sales exits happen in the first 18 months. Onboarding and manager effectiveness are the primary levers to investigate.</span></div>
+            </div>
+            <div class="db-kpi-row">
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#9B72CF;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Voluntary Attrition Rate<span class="tooltip-icon">i</span><div class="tooltip-box">Employees who voluntarily left in the period. Benchmark: 12–15%. Above 18% is a warning.</div></div></div>
+                <div class="kpi-value" id="hr-att">14.2%</div>
+                <div class="kpi-change kpi-up" id="hr-att-c">Improved from 17.1% last year</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#9B72CF;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Time-to-Fill (days)<span class="tooltip-icon">i</span><div class="tooltip-box">Avg. days from job opening to accepted offer. Target: under 35 days.</div></div></div>
+                <div class="kpi-value" id="hr-ttf">38d</div>
+                <div class="kpi-change kpi-down" id="hr-ttf-c">3 days above target</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#9B72CF;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Headcount vs. Plan<span class="tooltip-icon">i</span><div class="tooltip-box">Filled headcount vs. approved plan. Gaps signal open roles or hiring delays.</div></div></div>
+                <div class="kpi-value" id="hr-hc">97%</div>
+                <div class="kpi-change kpi-up" id="hr-hc-c">38 open roles (52 last quarter)</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#9B72CF;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">eNPS Score<span class="tooltip-icon">i</span><div class="tooltip-box">Would employees recommend this company? Scale -100 to 100. Above 20 is good; 50+ is excellent.</div></div></div>
+                <div class="kpi-value" id="hr-enps">+34</div>
+                <div class="kpi-change kpi-up" id="hr-enps-c">+6 points from last survey</div>
+              </div>
+            </div>
+            <div class="db-charts">
+              <div class="chart-card">
+                <div class="chart-card-header"><div class="chart-card-title">Headcount — Actual vs Plan (12 months)</div></div>
+                <div class="chart-wrap"><canvas id="hr-line" height="200"></canvas></div>
+                <div class="chart-card-legend">
+                  <div class="legend-item"><div class="legend-dot" style="background:#9BB3C4"></div>Plan</div>
+                  <div class="legend-item"><div class="legend-dot" style="background:#9B72CF"></div>Actual</div>
+                </div>
+              </div>
+              <div class="chart-card chart-card-compact">
+                <div class="chart-card-header"><div class="chart-card-title">Attrition Rate by Department</div></div>
+                <div class="chart-wrap chart-wrap-compact"><canvas id="hr-bar" height="160"></canvas></div>
+                <div id="mini-hr" style="padding:14px 16px 12px;border-top:1px solid #F2F5F8"></div>
+              </div>
+            </div>
+            <div class="db-table-wrap">
+              <div class="db-table-title" style="padding:14px 16px 10px">Department Scorecard</div>
+              <table>
+                <thead><tr><th>Department</th><th>Headcount</th><th>Open Roles</th><th>Attrition</th><th>Avg Tenure</th><th>Health</th></tr></thead>
+                <tbody>
+                  <tr><td>Engineering</td><td>312</td><td>14</td><td>11.4%</td><td>4.2 yrs</td><td><span class="status-pill status-green">Strong</span></td></tr>
+                  <tr><td>Operations</td><td>428</td><td>8</td><td>16.2%</td><td>3.1 yrs</td><td><span class="status-pill status-yellow">Watch</span></td></tr>
+                  <tr><td>Finance</td><td>94</td><td>3</td><td>9.8%</td><td>5.7 yrs</td><td><span class="status-pill status-green">Strong</span></td></tr>
+                  <tr><td>Sales</td><td>186</td><td>11</td><td>22.1%</td><td>2.4 yrs</td><td><span class="status-pill status-red">At Risk</span></td></tr>
+                  <tr><td>Corporate</td><td>220</td><td>2</td><td>12.3%</td><td>6.1 yrs</td><td><span class="status-pill status-green">Strong</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DASH 4: FINANCIAL — blue accent -->
+      <div class="dashboard-panel" id="dash-3">
+        <div class="db-frame">
+          <div class="db-header" style="background:#12283A">
+            <div class="db-header-left">
+              <div style="width:4px;height:40px;background:#38A3A5;border-radius:4px;flex-shrink:0"></div>
+              <div><div class="db-title">Financial Performance Dashboard</div><div class="db-subtitle">Executive View — Regional Mid-Market Firm</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div class="db-badge" style="background:rgba(56,163,165,.2);color:#80E8EA"><span style="width:6px;height:6px;border-radius:50%;background:#38A3A5;display:inline-block;animation:pulse 2s infinite"></span>EOD</div>
+              <span style="font-size:12px;color:rgba(255,255,255,0.35)">End-of-day refresh</span>
+            </div>
+          </div>
+          <div class="db-filters">
+            <span class="db-filter-label">View:</span>
+            <select class="db-filter-select" id="fin-unit" onchange="updateFinancial()">
+              <option value="all">Consolidated</option>
+              <option value="ea">Business Unit — East</option>
+              <option value="we">Business Unit — West</option>
+              <option value="pr">Products Division</option>
+            </select>
+            <select class="db-filter-select" id="fin-yr" onchange="updateFinancial()">
+              <option value="25">FY 2025</option>
+              <option value="q1">Q1 2025</option>
+              <option value="q2">Q2 2025</option>
+              <option value="24">FY 2024 (Actuals)</option>
+            </select>
+          </div>
+          <div class="db-body">
+            <div class="db-insight-bar" style="background:#EAF6F6;border-left-color:#38A3A5">
+              <div><div class="db-insight-label" style="color:#2A8587">numarket Analysis</div><span>Revenue is tracking 8.4% ahead of budget but EBITDA margin (19.8%) is 2.2 pts below target. The gap is in the Products Division — gross margin compression needs investigation before Q3 planning.</span></div>
+            </div>
+            <div class="db-kpi-row">
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#38A3A5;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Revenue YTD<span class="tooltip-icon">i</span><div class="tooltip-box">Recognized revenue YTD vs. prorated annual budget.</div></div></div>
+                <div class="kpi-value" id="f-rev">$24.7M</div>
+                <div class="kpi-change kpi-up" id="f-rev-c">8.4% ahead of budget pace</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#38A3A5;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">EBITDA Margin<span class="tooltip-icon">i</span><div class="tooltip-box">Operational profit margin (before interest, taxes, depreciation). Target: 22%.</div></div></div>
+                <div class="kpi-value" id="f-ebitda">19.8%</div>
+                <div class="kpi-change kpi-down" id="f-ebitda-c">2.2 pts below 22% target</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#38A3A5;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Cash on Hand<span class="tooltip-icon">i</span><div class="tooltip-box">Liquid cash across all accounts. Policy minimum: 60 days of operating expenses.</div></div></div>
+                <div class="kpi-value" id="f-cash">$6.2M</div>
+                <div class="kpi-change kpi-up" id="f-cash-c">82 days of operating reserve</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#38A3A5;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Pipeline Coverage<span class="tooltip-icon">i</span><div class="tooltip-box">Qualified pipeline ÷ remaining revenue target. 3.0× or higher is healthy.</div></div></div>
+                <div class="kpi-value" id="f-pipe">3.4×</div>
+                <div class="kpi-change kpi-up" id="f-pipe-c">Healthy coverage ratio</div>
+              </div>
+            </div>
+            <div class="db-charts">
+              <div class="chart-card">
+                <div class="chart-card-header"><div class="chart-card-title">Revenue vs. Budget by Month ($M)</div></div>
+                <div class="chart-wrap"><canvas id="fin-bar" height="200"></canvas></div>
+                <div class="chart-card-legend">
+                  <div class="legend-item"><div class="legend-dot" style="background:#E2EAF0"></div>Budget</div>
+                  <div class="legend-item"><div class="legend-dot" style="background:#38A3A5"></div>Actual</div>
+                </div>
+              </div>
+              <div class="chart-card chart-card-compact">
+                <div class="chart-card-header"><div class="chart-card-title">Revenue Mix by Segment</div></div>
+                <div class="chart-wrap chart-wrap-compact"><canvas id="fin-doughnut" height="160"></canvas></div>
+                <div id="mini-fin" style="padding:14px 16px 12px;border-top:1px solid #F2F5F8"></div>
+              </div>
+            </div>
+            <div class="db-table-wrap">
+              <div class="db-table-title" style="padding:14px 16px 10px">Business Unit Performance</div>
+              <table>
+                <thead><tr><th>Business Unit</th><th>Revenue YTD</th><th>vs. Budget</th><th>EBITDA%</th><th>Forecast FY</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>Services — East</td><td>$9.1M</td><td>+6.2%</td><td>22.4%</td><td>$21.8M</td><td><span class="status-pill status-green">On Target</span></td></tr>
+                  <tr><td>Services — West</td><td>$8.4M</td><td>+11.3%</td><td>21.1%</td><td>$20.2M</td><td><span class="status-pill status-green">On Target</span></td></tr>
+                  <tr><td>Products Division</td><td>$4.8M</td><td>+2.8%</td><td>14.2%</td><td>$11.5M</td><td><span class="status-pill status-yellow">Watch</span></td></tr>
+                  <tr><td>Advisory</td><td>$2.4M</td><td>-4.1%</td><td>31.8%</td><td>$5.8M</td><td><span class="status-pill status-yellow">Watch</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DASH 5: OPERATIONS — orange/green accent -->
+      <div class="dashboard-panel" id="dash-4">
+        <div class="db-frame">
+          <div class="db-header" style="background:#1A2E20">
+            <div class="db-header-left">
+              <div style="width:4px;height:40px;background:#57CC99;border-radius:4px;flex-shrink:0"></div>
+              <div><div class="db-title">Operations Command Center</div><div class="db-subtitle">Manufacturing &amp; Fulfillment — 3 Facilities</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div class="db-badge" style="background:rgba(87,204,153,.2);color:#80ED99"><span style="width:6px;height:6px;border-radius:50%;background:#57CC99;display:inline-block;animation:pulse 2s infinite"></span>Real-time</div>
+              <span style="font-size:12px;color:rgba(255,255,255,0.35)">15-second refresh</span>
+            </div>
+          </div>
+          <div class="db-filters">
+            <span class="db-filter-label">Facility:</span>
+            <select class="db-filter-select" id="ops-fac" onchange="updateOps()">
+              <option value="all">All Facilities</option>
+              <option value="atl">Atlanta — Plant A</option>
+              <option value="hou">Houston — Plant B</option>
+              <option value="phx">Phoenix — Plant C</option>
+            </select>
+            <select class="db-filter-select" id="ops-period" onchange="updateOps()">
+              <option value="day">Today</option>
+              <option value="week">This Week</option>
+              <option value="month">This Month</option>
+            </select>
+          </div>
+          <div class="db-body">
+            <div class="db-insight-bar">
+              <div><div class="db-insight-label">numarket Analysis</div><span>Houston Plant B OEE at 71% is dragging the portfolio average. Root cause: 2.1 hrs downtime from equipment failure — highest of the three facilities. PM schedule should be reviewed before next production cycle.</span></div>
+            </div>
+            <div class="db-kpi-row">
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#57CC99;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">OEE — All Facilities<span class="tooltip-icon">i</span><div class="tooltip-box">Availability × Performance × Quality. World-class is 85%+. Below 65% = major opportunity.</div></div></div>
+                <div class="kpi-value" id="o-oee">74%</div>
+                <div class="kpi-change kpi-up" id="o-oee-c">+3 pts from last month</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#57CC99;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">First Pass Yield<span class="tooltip-icon">i</span><div class="tooltip-box">Units passing all quality checks without rework. Target: 97.5%.</div></div></div>
+                <div class="kpi-value" id="o-fpy">96.4%</div>
+                <div class="kpi-change kpi-down" id="o-fpy-c">1.1 pts below target</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#57CC99;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">On-Time Delivery<span class="tooltip-icon">i</span><div class="tooltip-box">Orders shipped on or before promised date. Target: 98%.</div></div></div>
+                <div class="kpi-value" id="o-otd">97.1%</div>
+                <div class="kpi-change kpi-up" id="o-otd-c">Near target, stable</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#57CC99;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Units Produced<span class="tooltip-icon">i</span><div class="tooltip-box">Completed units across all lines vs. production plan for the period.</div></div></div>
+                <div class="kpi-value" id="o-units">4,820</div>
+                <div class="kpi-change kpi-up" id="o-units-c">102% of daily plan</div>
+              </div>
+            </div>
+            <div class="db-charts">
+              <div class="chart-card">
+                <div class="chart-card-header"><div class="chart-card-title">Daily Production — Actual vs. Plan</div></div>
+                <div class="chart-wrap"><canvas id="ops-line" height="200"></canvas></div>
+                <div class="chart-card-legend">
+                  <div class="legend-item"><div class="legend-dot" style="background:#9BB3C4"></div>Plan</div>
+                  <div class="legend-item"><div class="legend-dot" style="background:#57CC99"></div>Actual</div>
+                </div>
+              </div>
+              <div class="chart-card chart-card-compact">
+                <div class="chart-card-header"><div class="chart-card-title">Downtime by Root Cause (hrs)</div></div>
+                <div class="chart-wrap chart-wrap-compact"><canvas id="ops-bar" height="160"></canvas></div>
+                <div id="mini-ops" style="padding:14px 16px 12px;border-top:1px solid #F2F5F8"></div>
+              </div>
+            </div>
+            <div class="db-table-wrap">
+              <div class="db-table-title" style="padding:14px 16px 10px">Facility Status</div>
+              <table>
+                <thead><tr><th>Facility</th><th>OEE</th><th>FPY</th><th>Units</th><th>Downtime (hrs)</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>Atlanta — Plant A</td><td>78%</td><td>97.8%</td><td>2,140</td><td>0.8</td><td><span class="status-pill status-green">Running</span></td></tr>
+                  <tr><td>Houston — Plant B</td><td>71%</td><td>95.1%</td><td>1,620</td><td>2.1</td><td><span class="status-pill status-yellow">Degraded</span></td></tr>
+                  <tr><td>Phoenix — Plant C</td><td>76%</td><td>96.8%</td><td>1,060</td><td>0.4</td><td><span class="status-pill status-green">Running</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DASH 6: HEALTHCARE — rose/red accent -->
+      <div class="dashboard-panel" id="dash-5">
+        <div class="db-frame">
+          <div class="db-header" style="background:#1F1A2E">
+            <div class="db-header-left">
+              <div style="width:4px;height:40px;background:#E05C8A;border-radius:4px;flex-shrink:0"></div>
+              <div><div class="db-title">Clinical Operations Dashboard</div><div class="db-subtitle">Regional Health Network — 3 Hospitals, 14 Clinics</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div class="db-badge" style="background:rgba(224,92,138,.15);color:#F4A0BF"><span style="width:6px;height:6px;border-radius:50%;background:#E05C8A;display:inline-block;animation:pulse 2s infinite"></span>Hourly</div>
+              <span style="font-size:12px;color:rgba(255,255,255,0.35)">Refreshed each hour</span>
+            </div>
+          </div>
+          <div class="db-filters">
+            <span class="db-filter-label">Facility:</span>
+            <select class="db-filter-select" id="hc-fac" onchange="updateHealthcare()">
+              <option value="all">All Facilities</option>
+              <option value="main">Main Campus Hospital</option>
+              <option value="north">North Campus Hospital</option>
+              <option value="clinics">Outpatient Clinics</option>
+            </select>
+            <select class="db-filter-select" id="hc-dept" onchange="updateHealthcare()">
+              <option value="all">All Departments</option>
+              <option value="ed">Emergency Dept.</option>
+              <option value="icu">ICU / Critical Care</option>
+              <option value="surg">Surgical</option>
+              <option value="med">Med / Surg</option>
+            </select>
+          </div>
+          <div class="db-body">
+            <div class="db-insight-bar" style="background:#FFF0F5;border-left-color:#E05C8A">
+              <div><div class="db-insight-label" style="color:#C0376A">numarket Analysis</div><span>ED door-to-provider time has increased 18% over 30 days, driven by patient volume surge and nursing vacancy rate hitting 14.2% — 4 pts above target. Travel nurse spend is up $340K MoM as a result.</span></div>
+            </div>
+            <div class="db-kpi-row">
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#E05C8A;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Avg ED Wait Time<span class="tooltip-icon">i</span><div class="tooltip-box">Avg. ED arrival to first provider contact. CMS benchmark: under 24 min.</div></div></div>
+                <div class="kpi-value" id="hc-wait">34 min</div>
+                <div class="kpi-change kpi-down" id="hc-wait-c">18% above 28-min target</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#E05C8A;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Nursing Vacancy Rate<span class="tooltip-icon">i</span><div class="tooltip-box">Unfilled nursing positions vs. budget. Above 10% typically requires travel staff.</div></div></div>
+                <div class="kpi-value" id="hc-vac">14.2%</div>
+                <div class="kpi-change kpi-down" id="hc-vac-c">4.2 pts above 10% target</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#E05C8A;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Bed Occupancy Rate<span class="tooltip-icon">i</span><div class="tooltip-box">Inpatient beds occupied. Optimal: 85–90%. Above 95% creates bottlenecks.</div></div></div>
+                <div class="kpi-value" id="hc-bed">88%</div>
+                <div class="kpi-change kpi-up" id="hc-bed-c">Within optimal 85–90% range</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#E05C8A;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">HCAHPS Score<span class="tooltip-icon">i</span><div class="tooltip-box">Standardized patient satisfaction survey, nationally percentile-ranked. Top quartile: 75th+ percentile.</div></div></div>
+                <div class="kpi-value" id="hc-hcahps">72nd</div>
+                <div class="kpi-change kpi-neutral" id="hc-hcahps-c">3 pts from top quartile</div>
+              </div>
+            </div>
+            <div class="db-charts">
+              <div class="chart-card">
+                <div class="chart-card-header"><div class="chart-card-title">ED Wait Time — 30-Day Trend (minutes)</div></div>
+                <div class="chart-wrap"><canvas id="hc-line" height="200"></canvas></div>
+                <div class="chart-card-legend">
+                  <div class="legend-item"><div class="legend-dot" style="background:#9BB3C4"></div>Target (28 min)</div>
+                  <div class="legend-item"><div class="legend-dot" style="background:#E05C8A"></div>Actual</div>
+                </div>
+              </div>
+              <div class="chart-card chart-card-compact">
+                <div class="chart-card-header"><div class="chart-card-title">Staffing Vacancy by Unit</div></div>
+                <div class="chart-wrap chart-wrap-compact"><canvas id="hc-bar" height="160"></canvas></div>
+                <div id="mini-hc" style="padding:14px 16px 12px;border-top:1px solid #F2F5F8"></div>
+              </div>
+            </div>
+            <div class="db-table-wrap">
+              <div class="db-table-title" style="padding:14px 16px 10px">Facility Summary</div>
+              <table>
+                <thead><tr><th>Facility</th><th>Occupancy</th><th>Nursing Vacancy</th><th>ED Wait</th><th>HCAHPS</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>Main Campus</td><td>91%</td><td>16.8%</td><td>38 min</td><td>68th</td><td><span class="status-pill status-red">At Risk</span></td></tr>
+                  <tr><td>North Campus</td><td>84%</td><td>11.2%</td><td>29 min</td><td>76th</td><td><span class="status-pill status-green">On Target</span></td></tr>
+                  <tr><td>Outpatient Clinics</td><td>78%</td><td>9.4%</td><td>18 min</td><td>81st</td><td><span class="status-pill status-green">On Target</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════ WORK ═══════════ -->
+<div class="page" id="page-work">
+  <section class="work-hero">
+    <div class="container">
+      <div class="section-tag">Our Work</div>
+      <h1>We show before<br>we sell.</h1>
+      <p>Every engagement starts with one question: what would it mean if leadership could see this clearly? These case studies represent the types of intelligence transformations we deliver — across industries, data environments, and organizational sizes.</p>
+    </div>
+  </section>
+  <section class="case-studies">
+    <div class="container">
+      <div class="case-grid reveal-stagger">
+        <div class="case-card">
+          <div class="case-card-visual" style="background:linear-gradient(135deg,#EBF8F7,#C7F9CC)">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#22577A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <div class="case-card-content">
+            <div class="case-industry">Regional Utility — Southeast</div>
+            <h3>From spreadsheet chaos to live grid intelligence in 3 weeks</h3>
+            <p>A regional utility was running outage reporting from 14 separate Excel files maintained by different district teams. Leadership had no unified view. Field crews had no shared priority queue. We connected their outage management system, work order database, and crew scheduling tool — and built a live command center that replaced 40 hours of weekly manual reporting.</p>
+            <div class="case-results">
+              <div><div class="case-result-num">40<span>hrs</span></div><div class="case-result-label">weekly reporting eliminated</div></div>
+              <div><div class="case-result-num">18<span>%</span></div><div class="case-result-label">improvement in crew deployment</div></div>
+              <div><div class="case-result-num">3<span>wk</span></div><div class="case-result-label">time to first live dashboard</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="case-card">
+          <div class="case-card-content">
+            <div class="case-industry">General Contractor — Multi-State</div>
+            <h3>$148M portfolio managed from one screen instead of twelve</h3>
+            <p>A regional GC managing 9 concurrent capital projects had budget data in one system, schedules in another, subcontractor performance in spreadsheets, and RFI logs in email threads. We built a unified portfolio dashboard that pulled from all four sources — giving the CFO and PM leadership real-time cost performance, schedule risk, and change order burn in a single view.</p>
+            <div class="case-results">
+              <div><div class="case-result-num">9</div><div class="case-result-label">projects in one view</div></div>
+              <div><div class="case-result-num">$2.4<span>M</span></div><div class="case-result-label">over-budget flags caught early</div></div>
+            </div>
+          </div>
+          <div class="case-card-visual" style="background:linear-gradient(135deg,#FFF9E8,#FFE8B2)">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#22577A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="1"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+          </div>
+        </div>
+        <div class="case-card">
+          <div class="case-card-visual" style="background:linear-gradient(135deg,#F4EEFF,#DDD0F8)">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#22577A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          <div class="case-card-content">
+            <div class="case-industry">Professional Services Firm — National</div>
+            <h3>HR leadership finally saw their attrition problem — and its source</h3>
+            <p>An 1,100-person firm knew attrition was high but had no visibility into where, why, or when people were leaving. We built a workforce intelligence dashboard that segmented attrition by department, tenure band, and manager — revealing that 68% of voluntary exits in the prior year came from employees in their first 18 months reporting to five specific managers.</p>
+            <div class="case-results">
+              <div><div class="case-result-num">68<span>%</span></div><div class="case-result-label">of exits traced to root cause</div></div>
+              <div><div class="case-result-num">$1.1<span>M</span></div><div class="case-result-label">estimated retention savings</div></div>
+              <div><div class="case-result-num">2<span>wk</span></div><div class="case-result-label">kickoff to live dashboard</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="approach">
+    <div class="container">
+      <div class="section-tag">Our Approach</div>
+      <h2>Why numarket works<br>when others don't.</h2>
+      <div class="approach-grid reveal-stagger">
+        <div class="approach-card"><div class="approach-num">01</div><h4>We use your existing data</h4><p>We don't require new software purchases, expensive migrations, or a 6-month implementation. We connect to what you already have.</p></div>
+        <div class="approach-card"><div class="approach-num">02</div><h4>Data scientists, not staffing</h4><p>A numarket analyst moves faster than a legacy PMO firm — because our methodology is built for speed and our team focuses on outcomes, not billable hours.</p></div>
+        <div class="approach-card"><div class="approach-num">03</div><h4>We explain what it means</h4><p>Dashboards show the numbers. We explain what they mean and what to do about them. Plain language, not analyst jargon.</p></div>
+        <div class="approach-card"><div class="approach-num">04</div><h4>We show before we sell</h4><p>Our back-pocket offer: one free dashboard built on your own data before you spend a dollar. We earn trust by delivering it first.</p></div>
+        <div class="approach-card"><div class="approach-num">05</div><h4>The product is insight</h4><p>We're not selling software subscriptions. We're selling better decisions — the technology is how we deliver it.</p></div>
+        <div class="approach-card"><div class="approach-num">06</div><h4>Three options, always</h4><p>Every proposal shows three engagement options. You choose the scope, timeline, and investment level that fits where your organization is right now.</p></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════ CONTACT ═══════════ -->
+<div class="page" id="page-contact">
+  <section class="contact-hero">
+    <div class="container">
+      <div class="section-tag">Contact</div>
+      <h1>Let's talk about<br>your data.</h1>
+      <p>Whether you have a specific project in mind or just want to understand what's possible — we're easy to reach and quick to respond.</p>
+    </div>
+  </section>
+
+  <!-- About + contact details -->
+  <div style="background:var(--navy);padding:72px 0">
+    <div class="container">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start">
+        <div>
+          <div class="section-tag" style="color:var(--lgreen)">About numarket</div>
+          <h2 style="color:var(--white);margin-bottom:20px;font-size:clamp(1.6rem,2.5vw,2.2rem)">Atlanta-built.<br>Nationally deployed.</h2>
+          <p style="color:rgba(255,255,255,0.65);font-size:0.975rem;line-height:1.85;margin-bottom:28px">numarket was founded in Atlanta, Georgia by data scientists who were tired of watching mid-size companies overpay for slow, consultant-heavy analytics that delivered a PDF and disappeared. We built numarket to be different — a data intelligence partner that moves at the speed of your business, speaks the language of your industry, and earns the right to stay by showing results before asking for a contract.</p>
+          <p style="color:rgba(255,255,255,0.65);font-size:0.975rem;line-height:1.85">Atlanta is our home. Every major industry is our market. If your data isn't working for your leadership team yet, that's exactly the problem we exist to solve.</p>
+          <div style="margin-top:32px">
+            <button class="btn-green" onclick="showPage('start')">Start a Project →</button>
+          </div>
+        </div>
+        <div style="display:grid;gap:16px">
+          <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:28px;display:flex;gap:18px;align-items:flex-start">
+            <div style="width:44px;height:44px;background:rgba(87,204,153,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#57CC99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:6px">Headquarters</div>
+              <div style="font-size:15px;color:var(--white);font-weight:500;margin-bottom:3px">Atlanta, Georgia</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.5)">Serving clients across the United States</div>
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:28px;display:flex;gap:18px;align-items:flex-start">
+            <div style="width:44px;height:44px;background:rgba(87,204,153,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#57CC99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.7A2 2 0 012 .98h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.58a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.9v2.02z"/></svg>
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:6px">Phone</div>
+              <div style="font-size:15px;color:var(--white);font-weight:500;margin-bottom:3px">(404) 555-0192</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.5)">Mon–Fri, 8am–6pm ET</div>
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:28px;display:flex;gap:18px;align-items:flex-start">
+            <div style="width:44px;height:44px;background:rgba(87,204,153,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#57CC99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:6px">Email</div>
+              <div style="font-size:15px;color:var(--white);font-weight:500;margin-bottom:3px">hello@numarket.io</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.5)">Response within 1 business day</div>
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:28px;display:flex;gap:18px;align-items:flex-start">
+            <div style="width:44px;height:44px;background:rgba(87,204,153,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#57CC99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:6px">Response Time</div>
+              <div style="font-size:15px;color:var(--white);font-weight:500;margin-bottom:3px">Within 1 Business Day</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.5)">No pitch deck before we listen</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Free dashboard offer strip -->
+  <div style="padding:64px 0;background:var(--off);border-bottom:1px solid var(--gray100)">
+    <div class="container">
+      <div style="display:grid;grid-template-columns:1fr auto;gap:48px;align-items:center">
+        <div>
+          <div class="section-tag">The Free Dashboard Offer</div>
+          <h2 style="font-size:clamp(1.4rem,2.2vw,1.9rem);color:var(--navy);margin-bottom:12px">We show what's possible before<br>you invest anything.</h2>
+          <p style="font-size:0.975rem;color:var(--gray500);line-height:1.7;max-width:560px">Ask us about building your first dashboard using your own data — at no cost, no commitment. We connect to your data, build it out, and show you what live intelligence looks like for your specific operation. This is how every great partnership starts.</p>
+        </div>
+        <div style="flex-shrink:0">
+          <button class="btn-primary" onclick="showPage('start')">Start a Project →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ START A PROJECT ═══════════ -->
+<div class="page" id="page-start">
+  <section class="contact-hero">
+    <div class="container">
+      <div class="section-tag">Start a Project</div>
+      <h1>Every engagement<br>starts with a conversation.</h1>
+      <p>Tell us what you're trying to see — we'll tell you what's possible. No commitment required. Every proposal includes three options at different scope and investment levels.</p>
+    </div>
+  </section>
+  <section class="contact-main">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h3>What happens after<br>you reach out</h3>
+          <p>We respond within one business day. If there's a fit, we schedule a 30-minute discovery call to understand your data environment and what decisions you're trying to make better.</p>
+          <ul class="contact-bullets">
+            <li>We audit what data you already have</li>
+            <li>We scope what's possible in your environment</li>
+            <li>We deliver a proposal with three engagement options</li>
+            <li>You choose the scope — or we offer one free dashboard first</li>
+          </ul>
+          <div style="margin-top:8px;padding:24px;background:var(--mint);border-radius:12px;">
+            <div style="font-weight:600;font-size:14px;color:var(--navy);margin-bottom:8px">The Free Dashboard Offer</div>
+            <p style="font-size:13px;color:var(--gray700);line-height:1.65;margin:0">Ask us about building your first dashboard using your own data — at no cost, no commitment. We show what's possible before you invest anything.</p>
+          </div>
+          <div style="margin-top:24px">
+            <div style="font-size:13px;color:var(--gray500);margin-bottom:6px">Or reach us directly:</div>
+            <div style="font-size:14px;font-weight:500;color:var(--navy)" data-cfg-email>hello@numarket.io</div>
+            <div style="font-size:14px;font-weight:500;color:var(--navy);margin-top:4px" data-cfg-phone>(404) 555-0192</div>
+              <div id="location-block" style="display:none;margin-top:8px">
+                <div style="font-size:14px;font-weight:500;color:var(--navy)" id="cfg-location-street"></div>
+                <div style="font-size:14px;color:var(--gray500)" id="cfg-location-city"></div>
+              </div>
+          </div>
+        </div>
+        <div class="contact-form">
+          <h3>Request a Proposal</h3>
+          <p>Tell us a bit about your organization and what you're looking to solve.</p>
+          <div id="contact-form-wrap">
+            <div class="form-row">
+              <div class="form-group"><label>First Name *</label><input type="text" placeholder="Jane" id="f-firstname" required></div>
+              <div class="form-group"><label>Last Name *</label><input type="text" placeholder="Smith" id="f-lastname" required></div>
+            </div>
+            <div class="form-group"><label>Work Email *</label><input type="email" placeholder="jane@company.com" id="f-email" required></div>
+            <div class="form-row">
+              <div class="form-group"><label>Company *</label><input type="text" placeholder="Acme Corp" id="f-company" required></div>
+              <div class="form-group"><label>Phone</label><input type="tel" placeholder="(404) 555-0100"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Company Size</label>
+                <select><option value="">Select...</option><option>50–200 employees</option><option>200–500 employees</option><option>500–2,000 employees</option><option>2,000+ employees</option></select>
+              </div>
+              <div class="form-group"><label>Industry</label>
+                <select><option value="">Select...</option><option>Utilities / Energy</option><option>Construction / Real Estate</option><option>Healthcare</option><option>Finance / Insurance</option><option>Manufacturing / Operations</option><option>Professional Services</option><option>Government / Public Sector</option><option>Other</option></select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Primary Data System</label>
+                <select>
+                  <option value="">Select your main system...</option>
+                  <optgroup label="Project Management">
+                    <option>Microsoft Project</option>
+                    <option>Primavera P6</option>
+                    <option>Asana</option>
+                    <option>Monday.com</option>
+                    <option>Smartsheet</option>
+                    <option>Jira</option>
+                    <option>Procore</option>
+                  </optgroup>
+                  <optgroup label="ERP / Finance">
+                    <option>SAP</option>
+                    <option>Oracle / JD Edwards</option>
+                    <option>Microsoft Dynamics</option>
+                    <option>NetSuite</option>
+                    <option>QuickBooks</option>
+                    <option>Sage</option>
+                  </optgroup>
+                  <optgroup label="HR / Workforce">
+                    <option>Workday</option>
+                    <option>ADP</option>
+                    <option>UKG (Kronos)</option>
+                    <option>BambooHR</option>
+                    <option>Ceridian Dayforce</option>
+                  </optgroup>
+                  <optgroup label="BI / Analytics">
+                    <option>Power BI</option>
+                    <option>Tableau</option>
+                    <option>Looker / Google Data Studio</option>
+                    <option>Qlik</option>
+                  </optgroup>
+                  <optgroup label="Other">
+                    <option>Spreadsheets (Excel / Google Sheets)</option>
+                    <option>Custom / In-house system</option>
+                    <option>Multiple systems</option>
+                    <option>Not sure / Other</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="form-group"><label>Data Storage</label>
+                <select>
+                  <option value="">Where does your data live?</option>
+                  <option>Cloud (AWS / Azure / GCP)</option>
+                  <option>Microsoft 365 / SharePoint</option>
+                  <option>Google Workspace</option>
+                  <option>On-premise servers</option>
+                  <option>Mostly spreadsheets / local files</option>
+                  <option>Mix of cloud and on-premise</option>
+                  <option>Not sure</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group"><label>What are you trying to see more clearly?</label>
+              <textarea placeholder="Describe the data problem, the decisions you're trying to make, or the systems you're working with…"></textarea>
+            </div>
+            <div id="form-error" style="display:none;background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:12px 16px;margin-top:8px;font-size:13px;color:#B91C1C;"></div>
+            <button class="btn-primary" id="submit-btn" onclick="submitForm()" style="width:100%;justify-content:center;margin-top:8px">Send Request →</button>
+            <p class="form-note">We respond within 1 business day. No pitch deck before we listen.</p>
+          </div>
+          <div class="form-success" id="form-success" style="display:none">
+            <div style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:40px 24px">
+              <div style="width:56px;height:56px;border-radius:50%;background:#EBF8F0;display:flex;align-items:center;justify-content:center;margin-bottom:20px">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="#57CC99" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <h4 style="margin:0 0 12px;color:var(--navy)">We've received your request.</h4>
+              <p style="color:var(--gray500);font-size:14px;max-width:320px;margin:0 0 28px;line-height:1.65">Someone from numarket will be in touch within one business day. We'll come prepared — and curious.</p>
+              <button onclick="resetForm()" style="background:none;border:1.5px solid var(--teal);color:var(--teal);padding:11px 28px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;transition:all .18s ease" onmouseover="this.style.background='var(--teal)';this.style.color='#fff'" onmouseout="this.style.background='none';this.style.color='var(--teal)'">Submit Another Request</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="logo-mark">
+          <span class="logo-nu">nu</span>
+          <span class="logo-slash"><svg viewBox="0 0 14 20" fill="none"><line x1="2" y1="18" x2="12" y2="2" stroke="#57CC99" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="2" r="1.5" fill="#57CC99"/></svg></span>
+          <span class="logo-market">market</span>
+        </div>
+        <div class="footer-tagline-sub">Trust the Data.</div>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><button onclick="showPage('home')">Home</button></li>
+          <li><button onclick="showPage('work')">Our Work</button></li>
+          <li><button onclick="showPage('contact')">Contact</button></li>
+          <li><button onclick="showPage('start')">Start a Project</button></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Services</h5>
+        <ul>
+          <li><button onclick="showPage('services')">Insight</button></li>
+          <li><button onclick="showPage('services')">Operate</button></li>
+          <li><button onclick="showPage('services')">Command</button></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Demos</h5>
+        <ul>
+          <li><button onclick="showPage('dashboards');switchDash(0)">Utilities</button></li>
+          <li><button onclick="showPage('dashboards');switchDash(1)">Construction</button></li>
+          <li><button onclick="showPage('dashboards');switchDash(2)">HR Analytics</button></li>
+          <li><button onclick="showPage('dashboards');switchDash(3)">Financial</button></li>
+          <li><button onclick="showPage('dashboards');switchDash(4)">Operations</button></li>
+          <li><button onclick="showPage('dashboards');switchDash(5)">Healthcare</button></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 numarket LLC. All rights reserved.</p>
+      <span class="footer-bottom-tagline">Trust the Data.</span>
+    </div>
+  </div>
+</footer>
+
+
+<script src="app.js"></script>
+</html>
