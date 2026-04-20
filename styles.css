@@ -554,7 +554,8 @@ footer { background: var(--navy); padding: 56px 0 32px; }
 }
 
 /* ── COMPACT RIGHT-SIDE CHART CARDS ── */
-.chart-card-compact { display: flex; flex-direction: column; justify-content: flex-start; }
+.chart-card-compact { display: flex; flex-direction: column; justify-content: space-between; }
+.chart-card-compact [id^="mini-"] { margin-top: auto; }
 .chart-wrap-compact { display: flex; align-items: center; justify-content: center; overflow: hidden; }
 .chart-wrap-compact canvas { max-height: 175px !important; max-width: 100%; }
 /* Ensure left-side chart-card heights match right-side */
