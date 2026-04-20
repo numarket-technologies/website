@@ -7,563 +7,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --navy:   #22577A;
-  --teal:   #38A3A5;
-  --green:  #57CC99;
-  --lgreen: #80ED99;
-  --mint:   #C7F9CC;
-  --white:  #ffffff;
-  --off:    #F8FAFB;
-  --gray50: #F0F4F8;
-  --gray100:#E2EAF0;
-  --gray300:#9BB3C4;
-  --gray500:#5A7A8E;
-  --gray700:#2D4A5C;
-  --text:   #0F1F2A;
-  --font-display: 'DM Serif Display', Georgia, serif;
-  --font-body:    'DM Sans', sans-serif;
-  --radius: 12px;
-  --shadow-sm: 0 1px 3px rgba(34,87,122,.06), 0 2px 8px rgba(34,87,122,.04);
-  --shadow-md: 0 4px 16px rgba(34,87,122,.10), 0 1px 4px rgba(34,87,122,.06);
-  --shadow-lg: 0 8px 40px rgba(34,87,122,.14), 0 2px 8px rgba(34,87,122,.06);
-  --transition: 0.22s cubic-bezier(.4,0,.2,1);
-}
-html { scroll-behavior: smooth; font-size: 16px; }
-body { font-family: var(--font-body); color: var(--text); background: var(--white); line-height: 1.6; overflow-x: hidden; }
-a { color: inherit; text-decoration: none; }
-img { max-width: 100%; display: block; }
-button { cursor: pointer; font-family: var(--font-body); border: none; background: none; }
-.page { display: none; }
-.page.active { display: block; animation: pageFadeIn 0.28s ease both; }
-@keyframes pageFadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-
-/* ── NAV ── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
-  background: rgba(255,255,255,0.96); backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--gray100); height: 64px; display: flex; align-items: center;
-}
-.nav-inner { max-width: 1200px; margin: 0 auto; width: 100%; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; }
-.logo-mark { display: flex; align-items: center; gap: 0; cursor: pointer; user-select: none; }
-.logo-nu { font-family: var(--font-display); font-size: 22px; font-style: italic; color: var(--navy); letter-spacing: -0.5px; line-height: 1; }
-.logo-slash { display: inline-block; width: 14px; height: 20px; margin: 0 1px; position: relative; top: 1px; }
-.logo-slash svg { width: 14px; height: 20px; }
-.logo-market { font-family: var(--font-body); font-size: 18px; font-weight: 500; color: var(--green); letter-spacing: -0.2px; line-height: 1; }
-.nav-links { display: flex; align-items: center; gap: 8px; list-style: none; }
-.nav-links li button { font-size: 14px; font-weight: 400; color: var(--gray500); padding: 6px 14px; border-radius: 6px; transition: color var(--transition); background: none !important; }
-.nav-links li button:hover { color: var(--navy); background: none !important; }
-.nav-links li button.active { color: var(--navy); font-weight: 500; background: none !important; }
-.nav-cta { background: var(--navy) !important; color: var(--white) !important; font-weight: 500 !important; padding: 8px 20px !important; border-radius: 8px !important; transition: background var(--transition) !important; }
-.nav-cta:hover { background: var(--gray700) !important; }
-
-/* ── SHARED ── */
-.section-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--teal); margin-bottom: 16px; }
-.section-tag::before { content: ''; display: block; width: 16px; height: 2px; background: var(--green); border-radius: 2px; }
-h1,h2,h3,h4 { font-family: var(--font-display); line-height: 1.15; }
-h1 { font-size: clamp(2.4rem, 5vw, 4rem); }
-h2 { font-size: clamp(1.8rem, 3vw, 2.8rem); }
-h3 { font-size: 1.3rem; }
-.lead { font-size: 1.1rem; color: var(--gray500); line-height: 1.7; max-width: 600px; }
-.container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
-section { padding: 96px 0; }
-.btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--navy); color: var(--white); font-size: 15px; font-weight: 500; padding: 13px 28px; border-radius: 10px; transition: all var(--transition); box-shadow: 0 2px 8px rgba(34,87,122,.2); }
-.btn-primary:hover { background: var(--gray700); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(34,87,122,.25); }
-.btn-secondary { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--navy); font-size: 15px; font-weight: 500; padding: 12px 28px; border-radius: 10px; border: 1.5px solid var(--gray100); transition: all var(--transition); }
-.btn-secondary:hover { border-color: var(--navy); background: rgba(34,87,122,0.06); color: var(--navy); }
-/* btn-secondary variant on dark background */
-.btn-secondary-dark { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: rgba(255,255,255,0.8); font-size: 15px; font-weight: 500; padding: 12px 28px; border-radius: 10px; border: 1.5px solid rgba(255,255,255,0.2); transition: all var(--transition); }
-.btn-secondary-dark:hover { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.08); color: var(--white); }
-.btn-green { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: var(--navy); font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; transition: all var(--transition); box-shadow: 0 2px 8px rgba(87,204,153,.25); }
-.btn-green:hover { background: var(--lgreen); transform: translateY(-1px); }
-
-/* ═══════ HOME ═══════ */
-.hero { padding: 140px 0 96px; position: relative; overflow: hidden; }
-.hero-bg { position: absolute; inset: 0; z-index: 0; background: linear-gradient(135deg, var(--white) 0%, var(--off) 50%, #EBF8F0 100%); }
-.hero-grid { position: absolute; inset: 0; z-index: 0; opacity: 0.35; background-image: linear-gradient(var(--gray100) 1px, transparent 1px), linear-gradient(90deg, var(--gray100) 1px, transparent 1px); background-size: 48px 48px; }
-.hero-inner { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
-.hero h1 { color: var(--navy); margin-bottom: 24px; letter-spacing: -1px; }
-.hero h1 em { font-style: italic; color: var(--teal); }
-.hero .lead { margin-bottom: 40px; }
-.hero-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-.hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--gray100); }
-.hero-stat-num { font-family: var(--font-display); font-size: 2.2rem; color: var(--navy); line-height: 1; margin-bottom: 4px; }
-.hero-stat-num span { color: var(--green); }
-.hero-stat-label { font-size: 13px; color: var(--gray500); }
-
-/* Hero mini-dashboard preview */
-.hero-dashboard-preview {
-  background: var(--white); border: 1px solid var(--gray100); border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(34,87,122,.15), 0 4px 16px rgba(34,87,122,.08);
-  overflow: hidden; transform: perspective(1000px) rotateY(-4deg) rotateX(2deg);
-  transition: transform 0.4s ease;
-  animation: floatDash 5s ease-in-out infinite;
-}
-.hero-dashboard-preview:hover { transform: perspective(1000px) rotateY(0deg) rotateX(0deg); }
-@keyframes floatDash { 0%,100%{transform:perspective(1000px) rotateY(-4deg) rotateX(2deg) translateY(0)} 50%{transform:perspective(1000px) rotateY(-4deg) rotateX(2deg) translateY(-8px)} }
-.hdp-header { background: var(--navy); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
-.hdp-title { font-size: 12px; font-weight: 600; color: var(--white); }
-.hdp-live { display: inline-flex; align-items: center; gap: 4px; background: rgba(87,204,153,.2); color: var(--lgreen); font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 20px; }
-.hdp-live::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
-.hdp-kpis { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; padding: 12px; background: var(--gray50); }
-.hdp-kpi { background: var(--white); border-radius: 8px; padding: 10px 12px; border: 1px solid var(--gray100); }
-.hdp-kpi-label { font-size: 9px; color: var(--gray500); font-weight: 500; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
-.hdp-kpi-val { font-family: var(--font-display); font-size: 1.3rem; color: var(--navy); line-height: 1; }
-.hdp-kpi-chg { font-size: 9px; color: #1B9E5E; margin-top: 2px; }
-.hdp-chart-area { padding: 12px; }
-.hdp-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-.hdp-bar-label { font-size: 10px; color: var(--gray500); width: 48px; flex-shrink: 0; text-align: right; }
-.hdp-bar-track { flex: 1; height: 6px; background: var(--gray100); border-radius: 3px; overflow: hidden; }
-.hdp-bar-fill { height: 100%; border-radius: 3px; transition: width 1.2s cubic-bezier(.4,0,.2,1); }
-.hdp-bar-val { font-size: 10px; color: var(--navy); font-weight: 600; width: 28px; }
-
-/* Ticker */
-.trusted { padding: 0; border-bottom: 1px solid var(--gray100); overflow: hidden; }
-.trusted-inner-wrap { display: flex; align-items: center; height: 52px; }
-.trusted-label-fixed { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--gray300); white-space: nowrap; padding: 0 24px 0 32px; flex-shrink: 0; border-right: 1px solid var(--gray100); height: 100%; display: flex; align-items: center; }
-.ticker-outer { flex: 1; overflow: hidden; position: relative; }
-.ticker-outer::before, .ticker-outer::after { content:''; position:absolute; top:0; bottom:0; width:48px; z-index:2; pointer-events:none; }
-.ticker-outer::before { left:0; background:linear-gradient(to right,var(--white),transparent); }
-.ticker-outer::after { right:0; background:linear-gradient(to left,var(--white),transparent); }
-.ticker-track { display: flex; align-items: center; gap: 0; white-space: nowrap; animation: ticker 36s linear infinite; width: max-content; }
-.ticker-track:hover { animation-play-state: paused; }
-.ticker-item { font-size: 13px; font-weight: 500; color: var(--gray500); padding: 0 16px; }
-.ticker-sep { color: var(--green); font-weight: 700; font-size: 14px; flex-shrink: 0; }
-@keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
-
-/* Problem section */
-.problem { background: var(--navy); padding: 96px 0; }
-.problem .container { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-.problem .section-tag { color: var(--lgreen); }
-.problem h2 { color: var(--white); margin-bottom: 24px; font-size: clamp(2rem, 3.5vw, 3rem); }
-.problem .lead { color: rgba(255,255,255,0.65); max-width: 100%; font-size: 1.05rem; }
-.problem-cards { display: grid; gap: 16px; }
-.problem-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 24px; display: flex; align-items: flex-start; gap: 14px; }
-.problem-icon-block { width: 36px; height: 36px; border-radius: 8px; background: rgba(87,204,153,.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.problem-icon-block svg { width: 18px; height: 18px; stroke: var(--green); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.problem-card h4 { font-family: var(--font-body); font-weight: 600; font-size: 15px; color: var(--white); margin-bottom: 6px; }
-.problem-card p { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.6; }
-
-/* How it works */
-.how-works { background: var(--white); }
-.how-works .section-header { text-align: center; margin-bottom: 64px; }
-.how-works .lead { margin: 0 auto; text-align: center; }
-.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; position: relative; }
-.steps::before { content: ''; position: absolute; top: 28px; left: calc(12.5% + 20px); right: calc(12.5% + 20px); height: 1px; background: var(--gray100); }
-.step { text-align: center; }
-.step-num { width: 56px; height: 56px; border-radius: 50%; background: var(--white); border: 1.5px solid var(--gray100); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-family: var(--font-display); font-size: 1.1rem; color: var(--navy); position: relative; z-index: 1; box-shadow: var(--shadow-sm); }
-.step h4 { font-family: var(--font-body); font-weight: 600; font-size: 15px; color: var(--navy); margin-bottom: 8px; }
-.step p { font-size: 14px; color: var(--gray500); line-height: 1.6; }
-
-/* Services preview */
-.services-preview { background: var(--gray50); }
-.services-preview .section-header { margin-bottom: 48px; }
-.tier-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-.tier-card { background: var(--white); border: 1.5px solid var(--gray100); border-radius: var(--radius); padding: 36px; transition: all var(--transition); position: relative; overflow: hidden; }
-.tier-card:hover { border-color: var(--teal); box-shadow: var(--shadow-md); transform: translateY(-2px); }
-.tier-card.featured { background: var(--navy); border-color: var(--navy); }
-.tier-card.featured::after { content: 'Most Popular'; position: absolute; top: 16px; right: -28px; background: var(--green); color: var(--navy); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; padding: 4px 40px; transform: rotate(35deg); }
-.tier-label { font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--teal); margin-bottom: 12px; }
-.tier-card.featured .tier-label { color: var(--lgreen); }
-.tier-card h3 { font-family: var(--font-display); font-size: 1.6rem; color: var(--navy); margin-bottom: 8px; }
-.tier-card.featured h3 { color: var(--white); }
-.tier-price { font-size: 13px; color: var(--teal); font-weight: 600; margin-bottom: 16px; }
-.tier-card.featured .tier-price { color: var(--lgreen); }
-.tier-card > p { font-size: 14px; color: var(--gray500); margin-bottom: 24px; line-height: 1.6; }
-.tier-card.featured > p { color: rgba(255,255,255,0.6); }
-.tier-features { list-style: none; display: grid; gap: 10px; margin-bottom: 28px; }
-.tier-features li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--gray700); }
-.tier-card.featured .tier-features li { color: rgba(255,255,255,0.8); }
-.tier-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
-
-/* Industries */
-.industries { background: var(--white); }
-.industries .section-header { text-align: center; margin-bottom: 48px; }
-.industry-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-.industry-tile { border: 1.5px solid var(--gray100); border-radius: 10px; padding: 28px 20px; text-align: center; transition: all var(--transition); cursor: default; }
-.industry-tile:hover { border-color: var(--green); background: #F0FBF5; transform: translateY(-2px); box-shadow: var(--shadow-sm); }
-.industry-tile-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--gray50); margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; }
-.industry-tile-icon svg { width: 20px; height: 20px; stroke: var(--navy); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.industry-tile:hover .industry-tile-icon { background: var(--mint); }
-.industry-tile:hover .industry-tile-icon svg { stroke: var(--navy); }
-.industry-tile h4 { font-family: var(--font-body); font-weight: 600; font-size: 14px; color: var(--navy); margin-bottom: 4px; }
-.industry-tile p { font-size: 12px; color: var(--gray500); line-height: 1.5; }
-
-/* CTA */
-.home-cta { background: linear-gradient(135deg, var(--navy) 0%, #1A4463 100%); padding: 96px 0; }
-.home-cta .container { text-align: center; }
-.home-cta h2 { color: var(--white); margin-bottom: 20px; }
-.home-cta p { color: rgba(255,255,255,0.65); font-size: 1.05rem; margin-bottom: 40px; max-width: 500px; margin-left: auto; margin-right: auto; }
-.home-cta-btns { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
-
-/* ═══════ SERVICES ═══════ */
-.services-hero { padding: 140px 0 80px; background: var(--off); border-bottom: 1px solid var(--gray100); }
-.services-hero .container { max-width: 1200px; }
-.services-hero h1 { margin-bottom: 20px; color: var(--navy); }
-.services-hero p { font-size: 1.05rem; color: var(--gray500); line-height: 1.75; max-width: 640px; }
-.services-what { padding: 96px 0; }
-.services-what .container { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
-.services-what h2 { margin-bottom: 20px; color: var(--navy); }
-.services-what p { color: var(--gray500); line-height: 1.75; margin-bottom: 16px; font-size: 0.975rem; }
-.services-list { display: grid; gap: 20px; }
-.service-item { display: flex; gap: 16px; align-items: flex-start; padding: 20px; border-radius: 10px; border: 1px solid var(--gray100); transition: all var(--transition); }
-.service-item:hover { background: var(--off); }
-.service-ico { width: 40px; height: 40px; border-radius: 10px; background: var(--mint); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.service-ico svg { width: 20px; height: 20px; stroke: var(--navy); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.service-item h4 { font-family: var(--font-body); font-weight: 600; font-size: 14px; color: var(--navy); margin-bottom: 4px; }
-.service-item p { font-size: 13px; color: var(--gray500); line-height: 1.55; margin: 0; }
-.tiers-full { padding: 0 0 96px; }
-.tier-row { display: grid; grid-template-columns: 320px 1fr; gap: 64px; align-items: start; padding: 64px 0; border-top: 1px solid var(--gray100); }
-.tier-row-label { font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
-.tier-row h2 { font-size: 2rem; color: var(--navy); margin-bottom: 8px; }
-.tier-row-price { font-size: 14px; color: var(--teal); font-weight: 600; margin-bottom: 16px; }
-.tier-row > div:first-child > p { font-size: 14px; color: var(--gray500); line-height: 1.7; margin-bottom: 24px; }
-.tier-deliverables { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.tier-del { background: var(--gray50); border-radius: 8px; padding: 16px; border-left: 3px solid var(--green); }
-.tier-del h5 { font-family: var(--font-body); font-weight: 600; font-size: 13px; color: var(--navy); margin-bottom: 4px; }
-.tier-del p { font-size: 12px; color: var(--gray500); line-height: 1.5; }
-
-/* ═══════ DASHBOARDS ═══════ */
-.dashboards-hero { padding: 120px 0 0; background: var(--off); border-bottom: 1px solid var(--gray100); }
-.dashboards-hero h1 { color: var(--navy); margin-bottom: 16px; }
-.dashboards-hero p { color: var(--gray500); font-size: 1.05rem; max-width: 640px; }
-.dashboard-tabs { display: flex; gap: 8px; flex-wrap: wrap; padding: 28px 0 36px; }
-.dash-tab { padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 500; color: var(--gray500); border: 1.5px solid var(--gray100); transition: all var(--transition); cursor: pointer; background: var(--white); }
-.dash-tab.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
-.dash-tab:hover:not(.active) { border-color: var(--navy); color: var(--navy); }
-.dashboard-viewer { padding: 48px 0 96px; }
-.dashboard-panel { display: none; }
-.dashboard-panel.active { display: block; animation: fadeUp 0.3s ease both; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
-
-/* DB Frame */
-.db-frame { background: var(--white); border: 1px solid var(--gray100); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-lg); }
-.db-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 28px; border-bottom: 1px solid var(--gray100); }
-.db-header-left { display: flex; align-items: center; gap: 12px; }
-.db-header-accent { width: 4px; border-radius: 4px; height: 36px; flex-shrink: 0; }
-.db-title { font-size: 15px; font-weight: 600; color: var(--white); }
-.db-subtitle { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 2px; }
-.db-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
-.db-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-.db-filters { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 14px 28px; background: var(--gray50); border-bottom: 1px solid var(--gray100); }
-.db-filter-label { font-size: 12px; color: var(--gray500); font-weight: 500; }
-.db-filter-select { font-family: var(--font-body); font-size: 13px; font-weight: 500; color: var(--navy); background: var(--white); border: 1.5px solid var(--gray100); border-radius: 7px; padding: 6px 28px 6px 12px; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235A7A8E' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; cursor: pointer; transition: border-color var(--transition); }
-.db-filter-select:focus { outline: none; border-color: var(--teal); }
-.db-body { padding: 24px 28px; }
-.db-kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
-.kpi-card { background: var(--white); border: 1px solid var(--gray100); border-radius: 10px; padding: 18px; transition: all var(--transition); position: relative; cursor: default; overflow: hidden; }
-.kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 2px 2px 0 0; }
-.kpi-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
-.kpi-label { font-size: 11px; color: var(--gray500); font-weight: 500; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
-.kpi-label .tooltip-icon { cursor: help; color: var(--gray300); font-size: 11px; border: 1px solid var(--gray100); border-radius: 50%; width: 14px; height: 14px; display: inline-flex; align-items: center; justify-content: center; font-style: normal; font-size: 9px; flex-shrink: 0; }
-.kpi-value { font-family: var(--font-display); font-size: 1.9rem; color: var(--navy); line-height: 1; margin-bottom: 8px; }
-.kpi-change { font-size: 11px; display: flex; align-items: center; gap: 4px; font-weight: 500; }
-.kpi-up { color: #1B9E5E; }
-.kpi-down { color: #C0392B; }
-.kpi-neutral { color: var(--gray500); }
-.db-charts { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px; }
-.db-charts-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-.db-charts-half { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-.chart-card { background: var(--white); border: 1px solid var(--gray100); border-radius: 10px; padding: 18px; }
-.chart-card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
-.chart-card-title { font-size: 13px; font-weight: 600; color: var(--navy); }
-.chart-card-sub { font-size: 11px; color: var(--gray300); margin-top: 2px; }
-.chart-card-legend { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
-.legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--gray500); }
-.legend-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
-.chart-wrap { position: relative; }
-canvas { max-width: 100% !important; }
-.db-table-wrap { background: var(--white); border: 1px solid var(--gray100); border-radius: 10px; overflow: hidden; margin-top: 0; }
-.db-table-title { font-size: 13px; font-weight: 600; color: var(--navy); padding: 14px 16px 0; }
-table { width: 100%; border-collapse: collapse; }
-thead tr { background: var(--gray50); }
-th { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.7px; color: var(--gray500); padding: 10px 16px; text-align: left; }
-td { font-size: 13px; color: var(--gray700); padding: 11px 16px; border-top: 1px solid var(--gray50); }
-tr:hover td { background: #F6FAFD; cursor: default; }
-.status-pill { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-.status-green { background: #E6F9F0; color: #1B9E5E; }
-.status-yellow { background: #FFF9E6; color: #C8860A; }
-.status-red { background: #FEF0EF; color: #C0392B; }
-.status-blue { background: #EAF3FC; color: #2471A3; }
-.status-gray { background: var(--gray50); color: var(--gray500); }
-.db-insight-bar { display: flex; gap: 12px; padding: 14px 18px; background: #EBF8FF; border-radius: 8px; margin-bottom: 16px; align-items: flex-start; border-left: 3px solid var(--teal); }
-.db-insight-bar span { font-size: 12px; color: var(--gray700); line-height: 1.5; }
-.db-insight-label { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--teal); margin-bottom: 2px; }
-
-/* Tooltip */
-.tooltip-wrap { position: relative; display: inline-flex; align-items: center; gap: 5px; }
-.kpi-label { font-size: 11px; color: var(--gray500); font-weight: 500; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
-.tooltip-box { position: fixed; background: #0F1F2A; color: var(--white); font-family: var(--font-body); font-size: 12px; line-height: 1.55; padding: 10px 14px; border-radius: 8px; opacity: 0; pointer-events: none; transition: opacity 0.18s ease; z-index: 99999; width: 220px; text-align: left; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
-.tooltip-box.tt-visible { opacity: 1; }
-.tooltip-box::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: #0F1F2A; }
-
-/* ═══════ WORK ═══════ */
-.work-hero { padding: 140px 0 80px; background: var(--off); border-bottom: 1px solid var(--gray100); }
-.work-hero h1 { color: var(--navy); margin-bottom: 20px; }
-.work-hero p { color: var(--gray500); font-size: 1.05rem; max-width: 600px; line-height: 1.75; }
-.case-studies { padding: 96px 0; }
-.case-grid { display: grid; gap: 40px; }
-.case-card { display: grid; grid-template-columns: 1fr 1fr; border: 1.5px solid var(--gray100); border-radius: 16px; overflow: hidden; transition: all var(--transition); }
-.case-card:hover { box-shadow: var(--shadow-lg); border-color: var(--teal); }
-.case-card-visual { display: flex; align-items: center; justify-content: center; padding: 48px 40px; min-height: 280px; }
-.case-card-content { padding: 48px 40px; display: flex; flex-direction: column; justify-content: center; }
-.case-industry { font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--teal); margin-bottom: 12px; }
-.case-card h3 { font-family: var(--font-display); font-size: 1.5rem; color: var(--navy); margin-bottom: 16px; line-height: 1.2; }
-.case-card p { font-size: 14px; color: var(--gray500); line-height: 1.7; margin-bottom: 24px; }
-.case-results { display: flex; gap: 32px; }
-.case-result-num { font-family: var(--font-display); font-size: 1.8rem; color: var(--navy); line-height: 1; margin-bottom: 2px; }
-.case-result-num span { color: var(--green); }
-.case-result-label { font-size: 12px; color: var(--gray500); }
-.approach { background: var(--gray50); padding: 96px 0; }
-.approach-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 48px; }
-.approach-card { background: var(--white); border-radius: 12px; padding: 32px; border: 1px solid var(--gray100); transition: all var(--transition); }
-.approach-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-.approach-num { font-family: var(--font-display); font-size: 2.5rem; color: var(--mint); line-height: 1; margin-bottom: 12px; }
-.approach-card h4 { font-family: var(--font-body); font-weight: 600; font-size: 15px; color: var(--navy); margin-bottom: 8px; }
-.approach-card p { font-size: 14px; color: var(--gray500); line-height: 1.65; }
-
-/* ═══════ CONTACT ═══════ */
-.contact-hero { padding: 140px 0 80px; background: var(--off); border-bottom: 1px solid var(--gray100); }
-.contact-hero h1 { color: var(--navy); margin-bottom: 16px; }
-.contact-hero p { color: var(--gray500); font-size: 1.05rem; max-width: 560px; }
-.contact-main { padding: 96px 0; }
-.contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: start; }
-.contact-info h3 { font-family: var(--font-display); font-size: 1.3rem; color: var(--navy); margin-bottom: 16px; }
-.contact-info p { font-size: 14px; color: var(--gray500); line-height: 1.75; margin-bottom: 32px; }
-.contact-bullets { list-style: none; display: grid; gap: 12px; margin-bottom: 40px; }
-.contact-bullets li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--gray700); }
-.contact-bullets li::before { content: '→'; color: var(--green); flex-shrink: 0; font-weight: 700; }
-.contact-detail { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; }
-.contact-detail-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--mint); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.contact-detail-icon svg { width: 16px; height: 16px; stroke: var(--navy); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.contact-detail-text strong { display: block; font-size: 13px; color: var(--navy); }
-.contact-detail-text span { font-size: 13px; color: var(--gray500); }
-.contact-form { background: var(--white); border: 1.5px solid var(--gray100); border-radius: 16px; padding: 40px; box-shadow: var(--shadow-md); }
-.contact-form h3 { font-family: var(--font-display); font-size: 1.4rem; color: var(--navy); margin-bottom: 8px; }
-.contact-form > p { font-size: 14px; color: var(--gray500); margin-bottom: 28px; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.form-group { margin-bottom: 16px; }
-.form-group label { display: block; font-size: 13px; font-weight: 500; color: var(--gray700); margin-bottom: 6px; }
-.form-group input, .form-group select, .form-group textarea { width: 100%; font-family: var(--font-body); font-size: 14px; color: var(--text); background: var(--white); border: 1.5px solid var(--gray100); border-radius: 8px; padding: 10px 14px; outline: none; transition: border-color var(--transition); }
-.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--teal); }
-.form-group textarea { resize: vertical; min-height: 100px; }
-.form-note { font-size: 12px; color: var(--gray300); margin-top: 12px; text-align: center; }
-.form-success { display: none; text-align: center; padding: 32px; }
-.form-success .success-icon { font-size: 48px; margin-bottom: 16px; }
-.form-success h4 { font-family: var(--font-display); font-size: 1.3rem; color: var(--navy); margin-bottom: 8px; }
-.form-success p { font-size: 14px; color: var(--gray500); }
-
-/* ── FOOTER ── */
-footer { background: var(--navy); padding: 56px 0 32px; }
-.footer-inner { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
-.footer-brand .logo-nu { color: var(--white); }
-.footer-tagline-sub { font-family: var(--font-display); font-style: italic; font-size: 15px; color: var(--green); margin-top: 12px; }
-.footer-col h5 { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 16px; }
-.footer-col ul { list-style: none; display: grid; gap: 10px; }
-.footer-col ul li button { font-size: 13px; color: rgba(255,255,255,0.55); transition: color var(--transition); background: none; border: none; cursor: pointer; padding: 0; }
-.footer-col ul li button:hover { color: var(--white); }
-.footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; }
-.footer-bottom p { font-size: 12px; color: rgba(255,255,255,0.3); }
-.footer-bottom-tagline { font-size: 13px; color: var(--green); font-weight: 600; letter-spacing: 0.5px; font-family: var(--font-display); font-style: italic; }
-@media(max-width:900px){ .footer-inner{grid-template-columns:1fr 1fr} }
-
-/* ── INTERACTIVE ENHANCEMENTS ── */
-
-/* Animated underline on nav links */
-.nav-links li button:not(.nav-cta) {
-  position: relative;
-}
-.nav-links li button:not(.nav-cta)::after {
-  content: '';
-  position: absolute;
-  bottom: 2px; left: 14px; right: 14px;
-  height: 2px; background: var(--green);
-  border-radius: 2px;
-  transform: scaleX(0);
-  transform-origin: center;
-  transition: transform 0.22s cubic-bezier(.4,0,.2,1);
-}
-.nav-links li button:not(.nav-cta):hover::after,
-.nav-links li button.active::after {
-  transform: scaleX(1);
-}
-
-/* Problem cards — lift + left-border flash */
-.problem-card {
-  transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease;
-}
-.problem-card:hover {
-  transform: translateY(-3px);
-  background: rgba(255,255,255,0.10);
-  border-color: rgba(87,204,153,0.4);
-}
-
-/* Step numbers — fill on hover */
-.step:hover .step-num {
-  background: var(--navy);
-  color: var(--white);
-  border-color: var(--navy);
-  transition: all 0.22s ease;
-}
-.step-num { transition: all 0.22s ease; }
-
-/* Industry tiles — icon bounce */
-.industry-tile:hover .industry-tile-icon {
-  animation: iconBounce 0.4s ease;
-}
-@keyframes iconBounce {
-  0%,100%{transform:translateY(0)} 40%{transform:translateY(-6px)} 70%{transform:translateY(-2px)}
-}
-
-/* Case cards — border slide */
-.case-card {
-  transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
-}
-.case-card:hover {
-  transform: translateY(-4px);
-}
-
-/* Approach cards — number color pop */
-.approach-card:hover .approach-num {
-  color: var(--green);
-  transition: color 0.2s ease;
-}
-.approach-num { transition: color 0.2s ease; }
-
-/* Tier cards — shimmer on featured */
-.tier-card.featured {
-  background: linear-gradient(135deg, var(--navy) 0%, #1A4463 100%);
-  transition: all 0.25s ease;
-}
-.tier-card.featured:hover {
-  background: linear-gradient(135deg, #1A4463 0%, #22577A 100%);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 48px rgba(34,87,122,.25);
-}
-
-/* KPI cards — colored top bar glow on hover */
-.kpi-card:hover::before {
-  box-shadow: 0 2px 12px rgba(87,204,153,.4);
-}
-
-/* Buttons — subtle scale */
-.btn-primary:active, .btn-green:active { transform: scale(0.98); }
-
-/* Footer links — slide right */
-.footer-col ul li button {
-  position: relative;
-  padding-left: 0;
-  transition: color 0.2s ease, padding-left 0.2s ease;
-}
-.footer-col ul li button:hover {
-  padding-left: 8px;
-}
-
-/* Scroll-reveal utility */
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.55s cubic-bezier(.4,0,.2,1), transform 0.55s cubic-bezier(.4,0,.2,1);
-}
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Stagger children */
-.reveal-stagger > * {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.45s ease, transform 0.45s ease;
-}
-.reveal-stagger.visible > *:nth-child(1){transition-delay:.05s;opacity:1;transform:none}
-.reveal-stagger.visible > *:nth-child(2){transition-delay:.12s;opacity:1;transform:none}
-.reveal-stagger.visible > *:nth-child(3){transition-delay:.19s;opacity:1;transform:none}
-.reveal-stagger.visible > *:nth-child(4){transition-delay:.26s;opacity:1;transform:none}
-.reveal-stagger.visible > *:nth-child(5){transition-delay:.33s;opacity:1;transform:none}
-.reveal-stagger.visible > *:nth-child(6){transition-delay:.40s;opacity:1;transform:none}
-.reveal-stagger.visible > *:nth-child(7){transition-delay:.47s;opacity:1;transform:none}
-.reveal-stagger.visible > *:nth-child(8){transition-delay:.54s;opacity:1;transform:none}
-.reveal-stagger.visible > *:nth-child(9){transition-delay:.61s;opacity:1;transform:none}
-.reveal-stagger.visible > *:nth-child(10){transition-delay:.68s;opacity:1;transform:none}
-.reveal-stagger.visible > *:nth-child(n+11){transition-delay:.72s;opacity:1;transform:none}
-
-/* ── NAV MOBILE ── */
-.nav-hamburger {
-  display: none; flex-direction: column; gap: 5px; cursor: pointer;
-  padding: 8px; border-radius: 6px; transition: background var(--transition);
-}
-.nav-hamburger:hover { background: var(--gray50); }
-.nav-hamburger span {
-  display: block; width: 22px; height: 2px; background: var(--navy);
-  border-radius: 2px; transition: all 0.25s ease;
-}
-.nav-hamburger.open span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
-.nav-hamburger.open span:nth-child(2){ opacity: 0; transform: scaleX(0); }
-.nav-hamburger.open span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
-
-.mobile-menu {
-  display: none; position: fixed; top: 64px; left: 0; right: 0; z-index: 998;
-  background: var(--white); border-bottom: 1px solid var(--gray100);
-  padding: 16px 24px 24px;
-  box-shadow: 0 8px 32px rgba(34,87,122,.08);
-  flex-direction: column; gap: 4px;
-  transform: translateY(-8px); opacity: 0;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-.mobile-menu.open {
-  display: flex; opacity: 1; transform: translateY(0);
-}
-.mobile-menu button {
-  font-size: 15px; font-weight: 400; color: var(--gray700);
-  padding: 12px 16px; border-radius: 8px; text-align: left; width: 100%;
-  transition: background var(--transition), color var(--transition);
-}
-.mobile-menu button:hover { background: var(--gray50); color: var(--navy); }
-.mobile-menu button.active { color: var(--navy); font-weight: 600; }
-.mobile-menu-cta {
-  margin-top: 8px; padding: 13px 16px !important;
-  background: var(--navy) !important; color: var(--white) !important;
-  font-weight: 500 !important; border-radius: 10px !important; text-align: center !important;
-}
-
-/* ── BASE ANIMATIONS ── */
-@keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-.fade-up { animation: fadeInUp 0.55s cubic-bezier(.4,0,.2,1) both; }
-.delay-1 { animation-delay: 0.1s; } .delay-2 { animation-delay: 0.2s; } .delay-3 { animation-delay: 0.3s; } .delay-4 { animation-delay: 0.4s; }
-
-/* ── RESPONSIVE ── */
-@media(max-width:900px){
-  .nav-links{display:none}
-  .nav-hamburger{display:flex}
-  .problem .container,.services-what .container,.contact-grid,.case-card,.tier-row,.hero-inner{grid-template-columns:1fr}
-  .tier-cards,.steps,.industry-grid{grid-template-columns:1fr 1fr}
-  .db-kpi-row{grid-template-columns:1fr 1fr}
-  .db-charts,.db-charts-3,.db-charts-half{grid-template-columns:1fr}
-  .hero-dashboard-preview{display:none}
-  .footer-inner{grid-template-columns:1fr 1fr}
-  .contact-hero h1{font-size:2.2rem}
-}
-@media(max-width:600px){
-  .container{padding:0 20px}
-  .tier-cards,.steps,.industry-grid{grid-template-columns:1fr}
-  .db-kpi-row{grid-template-columns:1fr 1fr}
-  .footer-inner{grid-template-columns:1fr}
-  .form-row{grid-template-columns:1fr}
-  .tier-row{grid-template-columns:1fr}
-  .case-card{grid-template-columns:1fr}
-  .case-card-visual{min-height:160px}
-  .dashboard-tabs{gap:6px}
-  .dash-tab{font-size:12px;padding:7px 14px}
-  .db-body{padding:16px}
-  .db-header{padding:14px 16px}
-  .db-filters{padding:10px 16px}
-}
-</style>
+<!-- Styles → assets/styles.css -->
 </head>
 <body>
 
@@ -581,7 +27,7 @@ footer { background: var(--navy); padding: 56px 0 32px; }
       <li><button onclick="showPage('dashboards')" id="nav-dashboards">Dashboards</button></li>
       <li><button onclick="showPage('work')" id="nav-work">Work</button></li>
       <li><button onclick="showPage('contact')" id="nav-contact">Contact</button></li>
-      <li><button onclick="showPage('start')" id="nav-start" class="nav-cta">Start a Project</button></li>
+      <li><button onclick="showPage('start')" id="nav-start" class="nav-cta">Start a Project →</button></li>
     </ul>
     <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -1092,25 +538,25 @@ footer { background: var(--navy); padding: 56px 0 32px; }
             <div class="db-kpi-row">
               <div class="kpi-card" style="--kc:#57CC99">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#57CC99;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">System Reliability (SAIDI)<span class="tooltip-icon">i</span><div class="tooltip-box">SAIDI measures average minutes of interruption per customer per year. Lower is better. Industry benchmark: under 90 min/year. Your current value is below benchmark.</div></div></div>
+                <div class="kpi-label">System Reliability (SAIDI) <span class="tooltip-icon" data-tip="SAIDI measures average minutes of interruption per customer per year. Lower is better. Industry benchmark: under 90 min/year. Your current value is below benchmark.">i</span></div>
                 <div class="kpi-value" id="u-saidi">84.2</div>
                 <div class="kpi-change kpi-up" id="u-saidi-c">6.1% better than last year</div>
               </div>
               <div class="kpi-card">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#38A3A5;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">Outage Events (period)<span class="tooltip-icon">i</span><div class="tooltip-box">Total unplanned outage events in the selected period, across all grid levels. Includes momentary and sustained interruptions.</div></div></div>
+                <div class="kpi-label">Outage Events (period) <span class="tooltip-icon" data-tip="Total unplanned outage events in the selected period, across all grid levels. Includes momentary and sustained interruptions.">i</span></div>
                 <div class="kpi-value" id="u-outages">23</div>
                 <div class="kpi-change kpi-up" id="u-outages-c">4 fewer than prior period</div>
               </div>
               <div class="kpi-card">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#80ED99;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">Crew Utilization<span class="tooltip-icon">i</span><div class="tooltip-box">Percentage of scheduled crew hours productively deployed on work orders vs. idle, travel, or admin time. Target: 80%.</div></div></div>
+                <div class="kpi-label">Crew Utilization <span class="tooltip-icon" data-tip="Percentage of scheduled crew hours productively deployed on work orders vs. idle, travel, or admin time. Target: 80%.">i</span></div>
                 <div class="kpi-value" id="u-crew">78%</div>
                 <div class="kpi-change kpi-down" id="u-crew-c">2% below 80% target</div>
               </div>
               <div class="kpi-card">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#C7F9CC;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">Asset Health Index<span class="tooltip-icon">i</span><div class="tooltip-box">Composite score (0–100) across monitored transmission assets. Combines age, inspection results, and maintenance history. Above 70 is acceptable.</div></div></div>
+                <div class="kpi-label">Asset Health Index <span class="tooltip-icon" data-tip="Composite score (0–100) across monitored transmission assets. Combines age, inspection results, and maintenance history. Above 70 is acceptable.">i</span></div>
                 <div class="kpi-value" id="u-ahi">71.8</div>
                 <div class="kpi-change kpi-up" id="u-ahi-c">Stable — above 70 threshold</div>
               </div>
@@ -1182,25 +628,25 @@ footer { background: var(--navy); padding: 56px 0 32px; }
             <div class="db-kpi-row">
               <div class="kpi-card">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#F0A500;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">Portfolio CPI<span class="tooltip-icon">i</span><div class="tooltip-box">Cost Performance Index: Earned Value ÷ Actual Cost. CPI above 1.0 means under budget. Below 1.0 means over. A CPI of 0.96 means you're spending $1 for every $0.96 of work completed.</div></div></div>
+                <div class="kpi-label">Portfolio CPI <span class="tooltip-icon" data-tip="Cost Performance Index: Earned Value ÷ Actual Cost. CPI above 1.0 means under budget. Below 1.0 means over. A CPI of 0.96 means you're spending $1 for every $0.96 of work completed.">i</span></div>
                 <div class="kpi-value" id="c-cpi">0.96</div>
                 <div class="kpi-change kpi-down" id="c-cpi-c">Slightly over plan</div>
               </div>
               <div class="kpi-card">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#F0A500;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">Schedule Index (SPI)<span class="tooltip-icon">i</span><div class="tooltip-box">Schedule Performance Index: Earned Value ÷ Planned Value. Above 1.0 = ahead of schedule. Below 1.0 = behind schedule.</div></div></div>
+                <div class="kpi-label">Schedule Index (SPI) <span class="tooltip-icon" data-tip="Schedule Performance Index: Earned Value ÷ Planned Value. Above 1.0 = ahead of schedule. Below 1.0 = behind schedule.">i</span></div>
                 <div class="kpi-value" id="c-spi">1.03</div>
                 <div class="kpi-change kpi-up" id="c-spi-c">Slightly ahead of schedule</div>
               </div>
               <div class="kpi-card">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#F0A500;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">Committed Cost<span class="tooltip-icon">i</span><div class="tooltip-box">Total contracted costs across the portfolio, including approved change orders and contingency draws to date.</div></div></div>
+                <div class="kpi-label">Committed Cost <span class="tooltip-icon" data-tip="Total contracted costs across the portfolio, including approved change orders and contingency draws to date.">i</span></div>
                 <div class="kpi-value" id="c-cost">$148M</div>
                 <div class="kpi-change kpi-down" id="c-cost-c">$3.2M above baseline</div>
               </div>
               <div class="kpi-card">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#F0A500;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">Open RFIs<span class="tooltip-icon">i</span><div class="tooltip-box">Total open Requests for Information across all active projects. High RFI counts can signal design gaps or slow response from the design team. Target: under 40.</div></div></div>
+                <div class="kpi-label">Open RFIs <span class="tooltip-icon" data-tip="Total open Requests for Information across all active projects. High RFI counts can signal design gaps or slow response from the design team. Target: under 40.">i</span></div>
                 <div class="kpi-value" id="c-rfi">47</div>
                 <div class="kpi-change kpi-down" id="c-rfi-c">8 above target threshold</div>
               </div>
@@ -1270,25 +716,25 @@ footer { background: var(--navy); padding: 56px 0 32px; }
             <div class="db-kpi-row">
               <div class="kpi-card">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#9B72CF;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">Voluntary Attrition Rate<span class="tooltip-icon">i</span><div class="tooltip-box">Percentage of employees who voluntarily resigned in the trailing period. Industry benchmark for professional services: 12–15%. Above 18% is a warning signal.</div></div></div>
+                <div class="kpi-label">Voluntary Attrition Rate <span class="tooltip-icon" data-tip="Percentage of employees who voluntarily resigned in the trailing period. Industry benchmark for professional services: 12–15%. Above 18% is a warning signal.">i</span></div>
                 <div class="kpi-value" id="hr-att">14.2%</div>
                 <div class="kpi-change kpi-up" id="hr-att-c">Improved from 17.1% last year</div>
               </div>
               <div class="kpi-card">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#9B72CF;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">Time-to-Fill (days)<span class="tooltip-icon">i</span><div class="tooltip-box">Average days from job requisition opening to accepted offer. Target: under 35 days for professional roles.</div></div></div>
+                <div class="kpi-label">Time-to-Fill (days) <span class="tooltip-icon" data-tip="Average days from job requisition opening to accepted offer. Target: under 35 days for professional roles.">i</span></div>
                 <div class="kpi-value" id="hr-ttf">38d</div>
                 <div class="kpi-change kpi-down" id="hr-ttf-c">3 days above target</div>
               </div>
               <div class="kpi-card">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#9B72CF;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">Headcount vs. Plan<span class="tooltip-icon">i</span><div class="tooltip-box">Actual filled headcount vs. approved plan. Gaps indicate open roles or hiring delays that may impact productivity and budget.</div></div></div>
+                <div class="kpi-label">Headcount vs. Plan <span class="tooltip-icon" data-tip="Actual filled headcount vs. approved plan. Gaps indicate open roles or hiring delays that may impact productivity and budget.">i</span></div>
                 <div class="kpi-value" id="hr-hc">97%</div>
                 <div class="kpi-change kpi-up" id="hr-hc-c">38 open roles (52 last quarter)</div>
               </div>
               <div class="kpi-card">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#9B72CF;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">eNPS Score<span class="tooltip-icon">i</span><div class="tooltip-box">Employee Net Promoter Score. How likely are employees to recommend this company? Scale of -100 to 100. Above 20 is good; above 50 is excellent.</div></div></div>
+                <div class="kpi-label">eNPS Score <span class="tooltip-icon" data-tip="Employee Net Promoter Score. How likely are employees to recommend this company? Scale of -100 to 100. Above 20 is good; above 50 is excellent.">i</span></div>
                 <div class="kpi-value" id="hr-enps">+34</div>
                 <div class="kpi-change kpi-up" id="hr-enps-c">+6 points from last survey</div>
               </div>
@@ -1359,25 +805,25 @@ footer { background: var(--navy); padding: 56px 0 32px; }
             <div class="db-kpi-row">
               <div class="kpi-card">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#38A3A5;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">Revenue YTD<span class="tooltip-icon">i</span><div class="tooltip-box">Total recognized revenue from the start of the fiscal year through the current period, compared against the annual budget on a prorated basis.</div></div></div>
+                <div class="kpi-label">Revenue YTD <span class="tooltip-icon" data-tip="Total recognized revenue from the start of the fiscal year through the current period, compared against the annual budget on a prorated basis.">i</span></div>
                 <div class="kpi-value" id="f-rev">$24.7M</div>
                 <div class="kpi-change kpi-up" id="f-rev-c">8.4% ahead of budget pace</div>
               </div>
               <div class="kpi-card">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#38A3A5;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">EBITDA Margin<span class="tooltip-icon">i</span><div class="tooltip-box">Earnings Before Interest, Taxes, Depreciation, and Amortization as a percentage of total revenue. A proxy for operational profitability. Target for this business: 22%.</div></div></div>
+                <div class="kpi-label">EBITDA Margin <span class="tooltip-icon" data-tip="Earnings Before Interest, Taxes, Depreciation, and Amortization as a percentage of total revenue. A proxy for operational profitability. Target for this business: 22%.">i</span></div>
                 <div class="kpi-value" id="f-ebitda">19.8%</div>
                 <div class="kpi-change kpi-down" id="f-ebitda-c">2.2 pts below 22% target</div>
               </div>
               <div class="kpi-card">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#38A3A5;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">Cash on Hand<span class="tooltip-icon">i</span><div class="tooltip-box">Current liquid cash and equivalents across all operating accounts. Measured against the minimum operating reserve policy of 60 days of expenses.</div></div></div>
+                <div class="kpi-label">Cash on Hand <span class="tooltip-icon" data-tip="Current liquid cash and equivalents across all operating accounts. Measured against the minimum operating reserve policy of 60 days of expenses.">i</span></div>
                 <div class="kpi-value" id="f-cash">$6.2M</div>
                 <div class="kpi-change kpi-up" id="f-cash-c">82 days of operating reserve</div>
               </div>
               <div class="kpi-card">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#38A3A5;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">Pipeline Coverage<span class="tooltip-icon">i</span><div class="tooltip-box">Total qualified pipeline divided by remaining annual revenue target. A 3.0× ratio or higher is considered healthy coverage for achieving year-end goals.</div></div></div>
+                <div class="kpi-label">Pipeline Coverage <span class="tooltip-icon" data-tip="Total qualified pipeline divided by remaining annual revenue target. A 3.0× ratio or higher is considered healthy coverage for achieving year-end goals.">i</span></div>
                 <div class="kpi-value" id="f-pipe">3.4×</div>
                 <div class="kpi-change kpi-up" id="f-pipe-c">Healthy coverage ratio</div>
               </div>
@@ -1446,25 +892,25 @@ footer { background: var(--navy); padding: 56px 0 32px; }
             <div class="db-kpi-row">
               <div class="kpi-card">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#57CC99;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">OEE — All Facilities<span class="tooltip-icon">i</span><div class="tooltip-box">Overall Equipment Effectiveness: the gold standard for manufacturing productivity. Combines Availability × Performance × Quality. World-class OEE is 85%+. Below 65% signals major opportunity.</div></div></div>
+                <div class="kpi-label">OEE — All Facilities <span class="tooltip-icon" data-tip="Overall Equipment Effectiveness: the gold standard for manufacturing productivity. Combines Availability × Performance × Quality. World-class OEE is 85%+. Below 65% signals major opportunity.">i</span></div>
                 <div class="kpi-value" id="o-oee">74%</div>
                 <div class="kpi-change kpi-up" id="o-oee-c">+3 pts from last month</div>
               </div>
               <div class="kpi-card">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#57CC99;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">First Pass Yield<span class="tooltip-icon">i</span><div class="tooltip-box">Percentage of units completing production and meeting all quality standards without rework. Target: 97.5%.</div></div></div>
+                <div class="kpi-label">First Pass Yield <span class="tooltip-icon" data-tip="Percentage of units completing production and meeting all quality standards without rework. Target: 97.5%.">i</span></div>
                 <div class="kpi-value" id="o-fpy">96.4%</div>
                 <div class="kpi-change kpi-down" id="o-fpy-c">1.1 pts below target</div>
               </div>
               <div class="kpi-card">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#57CC99;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">On-Time Delivery<span class="tooltip-icon">i</span><div class="tooltip-box">Percentage of customer orders shipped on or before the promised delivery date. Directly tied to customer satisfaction and contract compliance. Target: 98%.</div></div></div>
+                <div class="kpi-label">On-Time Delivery <span class="tooltip-icon" data-tip="Percentage of customer orders shipped on or before the promised delivery date. Directly tied to customer satisfaction and contract compliance. Target: 98%.">i</span></div>
                 <div class="kpi-value" id="o-otd">97.1%</div>
                 <div class="kpi-change kpi-up" id="o-otd-c">Near target, stable</div>
               </div>
               <div class="kpi-card">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#57CC99;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">Units Produced<span class="tooltip-icon">i</span><div class="tooltip-box">Total completed units across all active production lines for the selected period, compared against the production plan.</div></div></div>
+                <div class="kpi-label">Units Produced <span class="tooltip-icon" data-tip="Total completed units across all active production lines for the selected period, compared against the production plan.">i</span></div>
                 <div class="kpi-value" id="o-units">4,820</div>
                 <div class="kpi-change kpi-up" id="o-units-c">102% of daily plan</div>
               </div>
@@ -1534,25 +980,25 @@ footer { background: var(--navy); padding: 56px 0 32px; }
             <div class="db-kpi-row">
               <div class="kpi-card">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#E05C8A;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">Avg ED Wait Time<span class="tooltip-icon">i</span><div class="tooltip-box">Average time from patient arrival to first contact with a licensed provider in the Emergency Department. CMS benchmark: under 24 minutes. Higher wait times are tied to patient satisfaction and outcomes.</div></div></div>
+                <div class="kpi-label">Avg ED Wait Time <span class="tooltip-icon" data-tip="Average time from patient arrival to first contact with a licensed provider in the Emergency Department. CMS benchmark: under 24 minutes. Higher wait times are tied to patient satisfaction and outcomes.">i</span></div>
                 <div class="kpi-value" id="hc-wait">34 min</div>
                 <div class="kpi-change kpi-down" id="hc-wait-c">18% above 28-min target</div>
               </div>
               <div class="kpi-card">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#E05C8A;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">Nursing Vacancy Rate<span class="tooltip-icon">i</span><div class="tooltip-box">Percentage of budgeted nursing FTE positions that are currently unfilled. A vacancy rate above 10% typically requires travel staff. Target: under 10%.</div></div></div>
+                <div class="kpi-label">Nursing Vacancy Rate <span class="tooltip-icon" data-tip="Percentage of budgeted nursing FTE positions that are currently unfilled. A vacancy rate above 10% typically requires travel staff. Target: under 10%.">i</span></div>
                 <div class="kpi-value" id="hc-vac">14.2%</div>
                 <div class="kpi-change kpi-down" id="hc-vac-c">4.2 pts above 10% target</div>
               </div>
               <div class="kpi-card">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#E05C8A;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">Bed Occupancy Rate<span class="tooltip-icon">i</span><div class="tooltip-box">Percentage of licensed inpatient beds currently occupied. Optimal range for efficiency: 85–90%. Above 95% creates patient flow bottlenecks.</div></div></div>
+                <div class="kpi-label">Bed Occupancy Rate <span class="tooltip-icon" data-tip="Percentage of licensed inpatient beds currently occupied. Optimal range for efficiency: 85–90%. Above 95% creates patient flow bottlenecks.">i</span></div>
                 <div class="kpi-value" id="hc-bed">88%</div>
                 <div class="kpi-change kpi-up" id="hc-bed-c">Within optimal 85–90% range</div>
               </div>
               <div class="kpi-card">
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#E05C8A;border-radius:2px 2px 0 0"></div>
-                <div class="kpi-label"><div class="tooltip-wrap">HCAHPS Score<span class="tooltip-icon">i</span><div class="tooltip-box">Hospital Consumer Assessment of Healthcare Providers and Systems — the standardized patient satisfaction survey. Scores are percentile-ranked nationally. Top quartile starts at 75th percentile.</div></div></div>
+                <div class="kpi-label">HCAHPS Score <span class="tooltip-icon" data-tip="Hospital Consumer Assessment of Healthcare Providers and Systems — the standardized patient satisfaction survey. Scores are percentile-ranked nationally. Top quartile starts at 75th percentile.">i</span></div>
                 <div class="kpi-value" id="hc-hcahps">72nd</div>
                 <div class="kpi-change kpi-neutral" id="hc-hcahps-c">3 pts from top quartile</div>
               </div>
@@ -1803,6 +1249,28 @@ footer { background: var(--navy); padding: 56px 0 32px; }
                 <select><option value="">Select...</option><option>Utilities / Energy</option><option>Construction / Real Estate</option><option>Healthcare</option><option>Finance / Insurance</option><option>Manufacturing / Operations</option><option>Professional Services</option><option>Government / Public Sector</option><option>Other</option></select>
               </div>
             </div>
+            <div class="form-group"><label>Current Data Systems</label>
+              <select name="data_systems">
+                <option value="">Select your primary system...</option>
+                <option value="excel">Microsoft Excel / Google Sheets</option>
+                <option value="salesforce">Salesforce</option>
+                <option value="quickbooks">QuickBooks / QuickBooks Online</option>
+                <option value="sage">Sage (50 / 100 / 300 / Intacct)</option>
+                <option value="sap">SAP (ECC / S/4HANA)</option>
+                <option value="netsuite">NetSuite</option>
+                <option value="dynamics">Microsoft Dynamics 365</option>
+                <option value="procore">Procore</option>
+                <option value="viewpoint">Viewpoint / Trimble</option>
+                <option value="servicenow">ServiceNow</option>
+                <option value="workday">Workday</option>
+                <option value="adp">ADP / Paylocity / Paychex</option>
+                <option value="hubspot">HubSpot</option>
+                <option value="sql">SQL / MySQL / PostgreSQL / MS SQL Server</option>
+                <option value="powerbi">Power BI / Tableau (existing BI tool)</option>
+                <option value="custom">Custom / In-house system</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
             <div class="form-group"><label>What are you trying to see more clearly?</label>
               <textarea placeholder="Describe the data problem, the decisions you're trying to make, or the systems you're working with…"></textarea>
             </div>
@@ -1868,512 +1336,10 @@ footer { background: var(--navy); padding: 56px 0 32px; }
   </div>
 </footer>
 
-<script>
-/* ── ROUTING ── */
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  const pg = document.getElementById('page-' + name);
-  if (pg) pg.classList.add('active');
-  document.querySelectorAll('.nav-links button, .mobile-menu button').forEach(b => b.classList.remove('active'));
-  const navId = name === 'start' ? 'nav-start' : 'nav-' + name;
-  const nb = document.getElementById(navId);
-  if (nb) nb.classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  if (name === 'dashboards') setTimeout(initAllCharts, 80);
-  setTimeout(initReveal, 60);
-  closeMobileMenu();
-}
+<!-- Global tooltip — positioned via JS, lives outside any overflow/transform context -->
+<div id="g-tip" role="tooltip" aria-hidden="true"></div>
 
-/* ── MOBILE MENU ── */
-function toggleMenu() {
-  const btn = document.getElementById('hamburger');
-  const menu = document.getElementById('mobile-menu');
-  const isOpen = menu.classList.contains('open');
-  btn.classList.toggle('open', !isOpen);
-  if (!isOpen) {
-    menu.style.display = 'flex';
-    requestAnimationFrame(() => menu.classList.add('open'));
-  } else {
-    closeMobileMenu();
-  }
-}
-function closeMobileMenu() {
-  const btn = document.getElementById('hamburger');
-  const menu = document.getElementById('mobile-menu');
-  if (btn) btn.classList.remove('open');
-  if (menu) {
-    menu.classList.remove('open');
-    setTimeout(() => { if (!menu.classList.contains('open')) menu.style.display = 'none'; }, 200);
-  }
-}
-function navTo(page) { showPage(page); }
-
-/* ── TOOLTIP POSITIONING ── */
-document.addEventListener('mouseover', function(e) {
-  const icon = e.target.closest('.tooltip-icon');
-  if (!icon) return;
-  const box = icon.parentElement.querySelector('.tooltip-box');
-  if (!box) return;
-  const rect = icon.getBoundingClientRect();
-  box.style.left = Math.min(rect.left + rect.width / 2, window.innerWidth - 130) + 'px';
-  box.style.top  = (rect.top - 10) + 'px';
-  box.style.transform = 'translate(-50%, -100%)';
-  box.classList.add('tt-visible');
-});
-document.addEventListener('mouseout', function(e) {
-  const icon = e.target.closest('.tooltip-icon');
-  if (!icon) return;
-  const box = icon.parentElement.querySelector('.tooltip-box');
-  if (box) box.classList.remove('tt-visible');
-});
-// Close mobile menu on outside click
-document.addEventListener('click', function(e) {
-  const menu = document.getElementById('mobile-menu');
-  const btn  = document.getElementById('hamburger');
-  if (menu && menu.classList.contains('open') && !menu.contains(e.target) && !btn.contains(e.target)) {
-    closeMobileMenu();
-  }
-});
-
-/* ── DASHBOARD TABS ── */
-function switchDash(idx) {
-  document.querySelectorAll('.dashboard-panel').forEach((p,i) => p.classList.toggle('active', i === idx));
-  document.querySelectorAll('.dash-tab').forEach((t,i) => t.classList.toggle('active', i === idx));
-  setTimeout(initAllCharts, 60);
-}
-
-/* ── CHART HELPERS ── */
-const P = {
-  navy:'#22577A', teal:'#38A3A5', green:'#57CC99', lgreen:'#80ED99', mint:'#C7F9CC',
-  gray:'#9BB3C4', lgray:'#E2EAF0', amber:'#F0A500', purple:'#9B72CF', rose:'#E05C8A',
-  font:"'DM Sans', sans-serif"
-};
-const ttOpts = { bodyFont:{family:P.font}, titleFont:{family:P.font,weight:'600'}, backgroundColor:'#0F1F2A', padding:12, cornerRadius:8, displayColors:true };
-const scaleOpts = {
-  x: { grid:{color:'rgba(34,87,122,0.05)',drawBorder:false}, ticks:{font:{family:P.font,size:11},color:P.gray} },
-  y: { grid:{color:'rgba(34,87,122,0.05)',drawBorder:false}, ticks:{font:{family:P.font,size:11},color:P.gray} }
-};
-const instances = {};
-function mk(id, cfg) {
-  if (instances[id]) { instances[id].destroy(); delete instances[id]; }
-  const el = document.getElementById(id);
-  if (!el) return;
-  instances[id] = new Chart(el, cfg);
-}
-
-/* ══════════════════════════════════════════
-   SOURCE-OF-TRUTH DATA
-   All "All" values are sums/averages of parts
-══════════════════════════════════════════ */
-
-/* ── UTILITIES ──
-   Per-region monthly outage duration (min).
-   All = sum of all 4 regions each month. */
-const UD = {
-  north: { dur:[180,140,160,130,100, 85,105,115,110, 85, 95,140], saidi:72.4, outages:6, crew:83, ahi:76.2, cause:[22,20,35,14, 9] },
-  south: { dur:[280,210,240,200,145,135,155,175,165,130,140,210], saidi:91.8, outages:9, crew:71, ahi:68.4, cause:[42,32,12, 8, 6] },
-  east:  { dur:[220,170,190,160,115,105,125,145,135,105,115,170], saidi:88.5, outages:5, crew:79, ahi:72.1, cause:[35,28,18,12, 7] },
-  west:  { dur:[140,120,120, 90, 70, 65, 75, 85, 80, 60, 70, 90], saidi:84.2, outages:3, crew:80, ahi:73.8, cause:[28,25,24,14, 9] }
-};
-// Compute "all" from parts
-UD.all = {
-  dur: UD.north.dur.map((_,i)=>UD.north.dur[i]+UD.south.dur[i]+UD.east.dur[i]+UD.west.dur[i]),
-  saidi: +((UD.north.saidi+UD.south.saidi+UD.east.saidi+UD.west.saidi)/4).toFixed(1),
-  outages: UD.north.outages+UD.south.outages+UD.east.outages+UD.west.outages,
-  crew: Math.round((UD.north.crew+UD.south.crew+UD.east.crew+UD.west.crew)/4),
-  ahi: +((UD.north.ahi+UD.south.ahi+UD.east.ahi+UD.west.ahi)/4).toFixed(1),
-  cause: [34,28,18,12,8]  // weighted portfolio cause mix
-};
-
-/* ── CONSTRUCTION ──
-   Per-project cumulative spend. All = sum of all 4. */
-const CD = {
-  terminal:{ plan:[4.8, 6.0, 6.8, 7.6, 8.0, 9.2,10.0,10.7,11.5,12.2,13.0,13.8], act:[4.7,5.9,7.0,8.0,8.4,9.4,10.3,11.1,11.9,12.8,13.6,null], cpi:1.01, spi:1.05, cost:'$53M', costC:'On track', rfi:12, co:[8,26,22,14,30] },
-  bridge:   { plan:[1.8, 2.3, 2.7, 3.0, 3.2, 3.6, 4.0, 4.2, 4.5, 4.8, 5.1, 5.4], act:[1.8,2.3,2.8,3.2,3.4,3.8,4.2,4.5,4.8,5.2,5.6,null], cpi:0.94, spi:0.97, cost:'$22M', costC:'$1.4M at risk', rfi:19, co:[41,18,20,14, 7] },
-  dc:       { plan:[0.8, 1.2, 1.5, 1.8, 2.1, 2.4, 2.7, 2.9, 3.2, 3.4, 3.7, 3.9], act:[0.7,1.1,1.4,1.7,1.9,2.2,2.5,null,null,null,null,null], cpi:1.03, spi:1.08, cost:'$9M',  costC:'On track', rfi:8,  co:[22,28,25,18, 7] },
-  sub:      { plan:[0.8, 0.9, 1.3, 1.8, 2.0, 2.2, 2.4,null,null,null,null,null], act:[0.8,0.9,1.4,2.0,2.2,2.4,2.6,2.7,null,null,null,null], cpi:0.96, spi:0.99, cost:'$11.4M',costC:'$400K over budget', rfi:8, co:[19,22,31,20, 8] }
-};
-// Compute "all" as sum (null-safe)
-CD.all = {
-  plan: Array.from({length:12},(_,i)=>{
-    const v=[CD.terminal.plan[i],CD.bridge.plan[i],CD.dc.plan[i],CD.sub.plan[i]].filter(x=>x!=null);
-    if(!v.length) return null;
-    return +v.reduce((a,b)=>a+b,0).toFixed(1);
-  }),
-  act: Array.from({length:12},(_,i)=>{
-    const v=[CD.terminal.act[i],CD.bridge.act[i],CD.dc.act[i],CD.sub.act[i]].filter(x=>x!=null);
-    if(!v.length) return null;
-    return +v.reduce((a,b)=>a+b,0).toFixed(1);
-  }),
-  cpi:0.96, spi:1.03, cost:'$148M', costC:'$3.2M above baseline', rfi:47,
-  co:[31,26,19,14,10]
-};
-
-/* ── HR ──
-   Per-department headcount and attrition. All = sum/avg. */
-const HR = {
-  eng:  { hcPlan:[296,298,300,302,304,306,308,309,310,311,312,312], hcAct:[290,293,295,297,299,302,304,306,308,309,311,312], att:11.4, ttf:42, hcN:312, open:14, enps:41, tenure:4.2 },
-  ops:  { hcPlan:[420,421,422,423,424,425,426,427,428,428,428,428], hcAct:[412,414,416,418,420,421,423,424,425,426,427,428], att:16.2, ttf:31, hcN:428, open:8,  enps:28, tenure:3.1 },
-  fin:  { hcPlan:[ 90, 90, 91, 91, 92, 92, 92, 93, 93, 93, 94, 94], hcAct:[ 88, 89, 90, 90, 91, 91, 92, 92, 93, 93, 94, 94], att: 9.8, ttf:36, hcN: 94, open:3,  enps:45, tenure:5.7 },
-  sales:{ hcPlan:[180,180,181,182,183,184,184,185,185,186,186,186], hcAct:[175,176,177,178,179,180,181,182,183,184,185,186], att:22.1, ttf:44, hcN:186, open:11, enps:12, tenure:2.4 },
-  corp: { hcPlan:[214,215,216,217,218,218,219,219,220,220,220,220], hcAct:[213,214,214,215,215,214,216,214,215,216,217,220], att:12.3, ttf:28, hcN:220, open:2,  enps:38, tenure:6.1 }
-};
-HR.all = {
-  hcPlan: HR.eng.hcPlan.map((_,i)=>HR.eng.hcPlan[i]+HR.ops.hcPlan[i]+HR.fin.hcPlan[i]+HR.sales.hcPlan[i]+HR.corp.hcPlan[i]),
-  hcAct:  HR.eng.hcAct.map((_,i)=>HR.eng.hcAct[i]+HR.ops.hcAct[i]+HR.fin.hcAct[i]+HR.sales.hcAct[i]+HR.corp.hcAct[i]),
-  att: +((HR.eng.att*HR.eng.hcN+HR.ops.att*HR.ops.hcN+HR.fin.att*HR.fin.hcN+HR.sales.att*HR.sales.hcN+HR.corp.att*HR.corp.hcN)/(HR.eng.hcN+HR.ops.hcN+HR.fin.hcN+HR.sales.hcN+HR.corp.hcN)).toFixed(1),
-  ttf: Math.round((HR.eng.ttf+HR.ops.ttf+HR.fin.ttf+HR.sales.ttf+HR.corp.ttf)/5),
-  hcN: HR.eng.hcN+HR.ops.hcN+HR.fin.hcN+HR.sales.hcN+HR.corp.hcN,
-  open:HR.eng.open+HR.ops.open+HR.fin.open+HR.sales.open+HR.corp.open,
-  enps:Math.round((HR.eng.enps+HR.ops.enps+HR.fin.enps+HR.sales.enps+HR.corp.enps)/5),
-  tenure:+((HR.eng.tenure+HR.ops.tenure+HR.fin.tenure+HR.sales.tenure+HR.corp.tenure)/5).toFixed(1)
-};
-
-/* ── FINANCIAL ──
-   Per-BU monthly revenue. All = sum. */
-const FD = {
-  ea: { budget:[1.40,1.44,1.52,1.48,1.56,1.60], actual:[1.48,1.55,1.50,1.58,1.62,1.68], ebitda:22.4, cash:'$2.1M', cashC:'On plan', pipe:'3.8×', pipeC:'Strong coverage',    donut:[58,22,12,8],  donutL:['Core Services','Managed Svcs','Advisory','Other'] },
-  we: { budget:[1.24,1.28,1.36,1.32,1.40,1.44], actual:[1.32,1.38,1.36,1.48,1.44,1.52], ebitda:21.1, cash:'$2.4M', cashC:'Strong',   pipe:'4.1×', pipeC:'Best in portfolio', donut:[62,18,14,6],  donutL:['Core Services','Managed Svcs','Projects','Other'] },
-  pr: { budget:[0.72,0.76,0.80,0.76,0.84,0.88], actual:[0.74,0.76,0.76,0.82,0.80,0.84], ebitda:14.2, cash:'$1.1M', cashC:'Tight — 48 days', pipe:'2.4×', pipeC:'Below 3.0× threshold', donut:[44,31,16,9], donutL:['Product A','Product B','Product C','Other'] },
-  adv:{ budget:[0.44,0.42,0.46,0.44,0.44,0.48], actual:[0.36,0.40,0.38,0.44,0.36,0.48], ebitda:31.8, cash:'$0.6M', cashC:'Conservative', pipe:'2.8×', pipeC:'Below 3.0× target', donut:[50,30,12,8], donutL:['Strategy','Transactions','Research','Other'] }
-};
-FD.all = {
-  budget: FD.ea.budget.map((_,i)=>+(FD.ea.budget[i]+FD.we.budget[i]+FD.pr.budget[i]+FD.adv.budget[i]).toFixed(2)),
-  actual: FD.ea.actual.map((_,i)=>+(FD.ea.actual[i]+FD.we.actual[i]+FD.pr.actual[i]+FD.adv.actual[i]).toFixed(2)),
-  ebitda:19.8, cash:'$6.2M', cashC:'82 days reserve', pipe:'3.4×', pipeC:'Healthy coverage ratio',
-  donut:[37,34,19,10], donutL:['Services East','Services West','Products','Advisory']
-};
-
-/* ── OPERATIONS ──
-   Per-facility daily plan and variance seed. */
-const OD = {
-  all: { planVal:4720, variance:420, oee:74, fpy:96.4, otd:97.1, units:'4,820', unitsC:'102% of daily plan', downLabels:['Equip. Failure','Changeover','Planned Maint.','Material','Quality Hold','Other'], downVals:[12.4,9.8,8.2,4.1,3.6,2.1] },
-  atl: { planVal:2100, variance:180, oee:78, fpy:97.8, otd:98.4, units:'2,140', unitsC:'104% of plan',        downLabels:['Equip. Failure','Changeover','Planned Maint.','Material','Quality Hold','Other'], downVals:[ 3.2,3.8,4.0,1.2,1.0,0.6] },
-  hou: { planVal:1680, variance:220, oee:71, fpy:95.1, otd:95.8, units:'1,620', unitsC:'96% of plan',         downLabels:['Equip. Failure','Changeover','Planned Maint.','Material','Quality Hold','Other'], downVals:[ 6.8,3.4,2.4,1.8,1.4,0.8] },
-  phx: { planVal:1040, variance:140, oee:76, fpy:96.8, otd:97.6, units:'1,060', unitsC:'100% of plan',        downLabels:['Equip. Failure','Changeover','Planned Maint.','Material','Quality Hold','Other'], downVals:[ 2.4,2.6,1.8,1.1,1.2,0.7] }
-};
-// Verify: atl+hou+phx downtime ≈ all (3.2+6.8+2.4=12.4 ✓, 3.8+3.4+2.6=9.8 ✓, 4.0+2.4+1.8=8.2 ✓, etc.)
-
-/* ── HEALTHCARE ── */
-const HC = {
-  all:     { wait:34, vacRate:14.2, vacC:'4.2 pts above 10% target', bed:88, hcahps:'72nd', hcahpsC:'3 pts from top quartile',  unitVac:[18.2,14.6,12.8,11.1,9.4,7.2] },
-  main:    { wait:38, vacRate:16.8, vacC:'High — travel spend rising', bed:91, hcahps:'68th', hcahpsC:'Below top quartile',      unitVac:[22.4,18.2,15.6,13.8,11.2,8.8] },
-  north:   { wait:29, vacRate:11.2, vacC:'1.2 pts above 10% target',  bed:84, hcahps:'76th', hcahpsC:'Top quartile achieved',   unitVac:[14.4,12.0,10.8, 9.4, 7.8,5.6] },
-  clinics: { wait:18, vacRate: 9.4, vacC:'Under 10% target',          bed:78, hcahps:'81st', hcahpsC:'Strong performance',      unitVac:[ 9.8, 8.6, 8.2, 7.4, 6.2,4.8] }
-};
-// ED trend seeds per facility (baseline + variance)
-HC.all.trendBase=28;    HC.all.trendVar=10;   HC.all.trendDrift=6;
-HC.main.trendBase=30;   HC.main.trendVar=10;  HC.main.trendDrift=10;
-HC.north.trendBase=26;  HC.north.trendVar=6;  HC.north.trendDrift=4;
-HC.clinics.trendBase=16;HC.clinics.trendVar=4;HC.clinics.trendDrift=2;
-
-/* ══════════════════════════════════════════
-   INIT ALL CHARTS (builds from scratch)
-══════════════════════════════════════════ */
-function initAllCharts() {
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-
-  /* ─ UTILITIES ─ */
-  if (document.getElementById('util-bar')) {
-    const r = (document.getElementById('util-region')||{value:'all'}).value || 'all';
-    const d = UD[r];
-    mk('util-bar', { type:'bar', data:{ labels:months, datasets:[{
-      label:'Outage Duration (min)', data:d.dur,
-      backgroundColor:P.green+'BB', borderRadius:5, borderSkipped:false
-    }]}, options:{ responsive:true, maintainAspectRatio:true,
-      plugins:{legend:{display:false},tooltip:ttOpts}, scales:scaleOpts }
-    });
-    mk('util-doughnut', { type:'doughnut',
-      data:{ labels:['Weather','Equipment Failure','Planned Maint.','Third-Party','Other'],
-        datasets:[{data:d.cause, backgroundColor:[P.navy,P.teal,P.green,P.lgreen,P.gray], borderWidth:0, hoverOffset:8}] },
-      options:{ responsive:true, maintainAspectRatio:true, aspectRatio:1.6, cutout:'64%',
-        plugins:{legend:{position:'bottom',labels:{font:{family:P.font,size:11},color:'#5A7A8E',padding:8,boxWidth:10,boxHeight:8}},tooltip:ttOpts} }
-    });
-  }
-
-  /* ─ CONSTRUCTION ─ */
-  if (document.getElementById('constr-line')) {
-    const proj = (document.getElementById('constr-project')||{value:'all'}).value || 'all';
-    const d = CD[proj];
-    mk('constr-line', { type:'line', data:{ labels:months, datasets:[
-      { label:'Planned ($M)', data:d.plan, borderColor:P.lgray, borderDash:[5,5], tension:0.3, pointRadius:2, borderWidth:1.5, fill:false, spanGaps:false },
-      { label:'Actual ($M)',  data:d.act,  borderColor:P.amber, tension:0.4, pointRadius:3, pointBackgroundColor:P.amber, borderWidth:2, spanGaps:false,
-        fill:{target:'-1',above:'rgba(240,165,0,0.07)',below:'rgba(192,57,43,0.06)'} }
-    ]}, options:{responsive:true,plugins:{legend:{display:false},tooltip:ttOpts},scales:scaleOpts} });
-    mk('constr-pie', { type:'doughnut',
-      data:{ labels:['Design Errors','Owner Changes','Unforeseen Conditions','Weather','Scope Additions'],
-        datasets:[{data:d.co, backgroundColor:['#1C3A4A',P.amber,'#E8C060','#E2D0A0',P.gray], borderWidth:0}] },
-      options:{ responsive:true, maintainAspectRatio:true, aspectRatio:1.6, cutout:'60%',
-        plugins:{legend:{position:'bottom',labels:{font:{family:P.font,size:11},color:'#5A7A8E',padding:8,boxWidth:10,boxHeight:8}},tooltip:ttOpts} }
-    });
-  }
-
-  /* ─ HR ─ */
-  if (document.getElementById('hr-line')) {
-    const dept = (document.getElementById('hr-dept')||{value:'all'}).value || 'all';
-    const deptKey = dept==='all'?'all': dept==='eng'?'eng': dept==='ops'?'ops': dept==='fin'?'fin': dept==='sales'?'sales':'corp';
-    const d = deptKey==='all' ? HR.all : HR[deptKey];
-    const period = (document.getElementById('hr-period')||{value:'12'}).value || '12';
-    const n = period==='3'?3:period==='6'?6:12;
-    mk('hr-line', { type:'line', data:{ labels:months.slice(12-n), datasets:[
-      { label:'Plan',   data:d.hcPlan.slice(12-n), borderColor:P.lgray, borderDash:[5,5], tension:0.3, pointRadius:2, borderWidth:1.5, fill:false },
-      { label:'Actual', data:d.hcAct.slice(12-n),  borderColor:P.purple, tension:0.3, pointRadius:3, pointBackgroundColor:P.purple, borderWidth:2, fill:false }
-    ]}, options:{responsive:true,plugins:{legend:{display:false},tooltip:ttOpts},scales:scaleOpts} });
-    // Horizontal bar — all depts, highlight selected
-    const depts=['Engineering','Operations','Finance','Sales','Corporate'];
-    const attVals=[HR.eng.att,HR.ops.att,HR.fin.att,HR.sales.att,HR.corp.att];
-    const deptMap={eng:'Engineering',ops:'Operations',fin:'Finance',sales:'Sales',corp:'Corporate'};
-    const colors=depts.map(lbl=> deptKey==='all'?P.purple : lbl===deptMap[deptKey]?'#C0392B':P.purple+'44');
-    mk('hr-bar', { type:'bar',
-      data:{ labels:depts, datasets:[{label:'Attrition %', data:attVals, backgroundColor:colors, borderRadius:5}] },
-      options:{ responsive:true, maintainAspectRatio:true, aspectRatio:1.8, indexAxis:'y',
-        plugins:{legend:{display:false},tooltip:ttOpts},
-        scales:{
-          x:{grid:{color:'rgba(34,87,122,0.05)',drawBorder:false},ticks:{font:{family:P.font,size:11},color:P.gray}},
-          y:{grid:{display:false},ticks:{font:{family:P.font,size:11},color:P.gray}}
-        } }
-    });
-  }
-
-  /* ─ FINANCIAL ─ */
-  if (document.getElementById('fin-bar')) {
-    const unit = (document.getElementById('fin-unit')||{value:'all'}).value || 'all';
-    const yr   = (document.getElementById('fin-yr')||{value:'25'}).value || '25';
-    const fdKey = unit==='all'?'all':unit==='ea'?'ea':unit==='we'?'we':unit==='pr'?'pr':'adv';
-    const fd = FD[fdKey];
-    const scale = yr==='24'?0.91:yr==='q1'?1:yr==='q2'?1:1;
-    const labels = yr==='q1'?months.slice(0,3):yr==='q2'?months.slice(3,6):months.slice(0,6);
-    const sl = yr==='q1'?[0,3]:yr==='q2'?[3,6]:[0,6];
-    mk('fin-bar', { type:'bar', data:{ labels, datasets:[
-      { label:'Budget ($M)', data:fd.budget.slice(sl[0],sl[1]).map(v=>+(v*scale).toFixed(2)), backgroundColor:P.lgray, borderRadius:4 },
-      { label:'Actual ($M)', data:fd.actual.slice(sl[0],sl[1]).map(v=>+(v*scale).toFixed(2)), backgroundColor:P.teal+'CC', borderRadius:4 }
-    ]}, options:{responsive:true,plugins:{legend:{display:false},tooltip:ttOpts},scales:scaleOpts} });
-    mk('fin-doughnut', { type:'doughnut',
-      data:{ labels:fd.donutL, datasets:[{data:fd.donut, backgroundColor:[P.navy,P.teal,P.green,P.lgreen], borderWidth:0}] },
-      options:{ responsive:true, maintainAspectRatio:true, aspectRatio:1.6, cutout:'60%',
-        plugins:{legend:{position:'bottom',labels:{font:{family:P.font,size:11},color:'#5A7A8E',padding:8,boxWidth:10,boxHeight:8}},tooltip:ttOpts} }
-    });
-  }
-
-  /* ─ OPERATIONS ─ */
-  if (document.getElementById('ops-line')) {
-    const fac = (document.getElementById('ops-fac')||{value:'all'}).value || 'all';
-    const d = OD[fac];
-    // Use deterministic seed based on fac key so data doesn't jump on re-render
-    const seed = fac==='all'?7:fac==='atl'?3:fac==='hou'?5:2;
-    function seededRand(i){ let x=Math.sin(seed*100+i)*10000; return x-Math.floor(x); }
-    const days30 = Array.from({length:30},(_,i)=>`D${i+1}`);
-    const plan30 = Array(30).fill(d.planVal);
-    const act30  = days30.map((_,i)=>Math.round(d.planVal - d.variance/2 + seededRand(i)*d.variance));
-    mk('ops-line', { type:'line', data:{ labels:days30, datasets:[
-      { label:'Plan',   data:plan30, borderColor:P.lgray, borderDash:[4,4], borderWidth:1.5, pointRadius:0, fill:false },
-      { label:'Actual', data:act30,  borderColor:P.green, tension:0.4, borderWidth:2, pointRadius:0,
-        fill:{target:'-1',above:'rgba(87,204,153,0.08)',below:'rgba(192,57,43,0.07)'} }
-    ]}, options:{responsive:true,plugins:{legend:{display:false},tooltip:ttOpts},scales:scaleOpts} });
-    mk('ops-bar', { type:'bar',
-      data:{ labels:d.downLabels, datasets:[{label:'Downtime (hrs)', data:d.downVals,
-        backgroundColor:[P.navy+'CC',P.teal+'CC',P.green+'CC',P.lgreen+'CC',P.gray+'CC','#CCC'], borderRadius:5}] },
-      options:{responsive:true,plugins:{legend:{display:false},tooltip:ttOpts},scales:scaleOpts}
-    });
-  }
-
-  /* ─ HEALTHCARE ─ */
-  if (document.getElementById('hc-line')) {
-    const fac = (document.getElementById('hc-fac')||{value:'all'}).value || 'all';
-    const d = HC[fac];
-    function seededHC(i){ let x=Math.sin((fac==='all'?11:fac==='main'?17:fac==='north'?23:31)*100+i)*10000; return x-Math.floor(x); }
-    const days30 = Array.from({length:30},(_,i)=>`D${i+1}`);
-    const target = Array(30).fill(28);
-    const actual = days30.map((_,i)=>Math.round(d.trendBase + seededHC(i)*d.trendVar + (i>14?d.trendDrift*i/28:0)));
-    mk('hc-line', { type:'line', data:{ labels:days30, datasets:[
-      { label:'Target (28 min)', data:target, borderColor:P.lgray, borderDash:[5,5], borderWidth:1.5, pointRadius:0, fill:false },
-      { label:'Actual (min)',    data:actual,  borderColor:P.rose,  tension:0.4, borderWidth:2, pointRadius:0,
-        fill:{target:'-1',above:'rgba(224,92,138,0.08)',below:'rgba(56,163,165,0.06)'} }
-    ]}, options:{responsive:true,plugins:{legend:{display:false},tooltip:ttOpts},scales:scaleOpts} });
-    mk('hc-bar', { type:'bar',
-      data:{ labels:['ED','ICU','Med/Surg','Surgical','OB','Float'],
-        datasets:[{label:'Vacancy %', data:d.unitVac,
-          backgroundColor:d.unitVac.map(v=>v>=18?'#C0392B':v>=14?P.rose:v>=10?P.rose+'99':'#E8A0B8'), borderRadius:5}] },
-      options:{ responsive:true, maintainAspectRatio:true, aspectRatio:1.8, indexAxis:'y',
-        plugins:{legend:{display:false},tooltip:ttOpts},
-        scales:{
-          x:{grid:{color:'rgba(34,87,122,0.05)',drawBorder:false},ticks:{font:{family:P.font,size:11},color:P.gray}},
-          y:{grid:{display:false},ticks:{font:{family:P.font,size:11},color:P.gray}}
-        } }
-    });
-  }
-}
-
-/* ══════════════════════════════════════════
-   FILTER HANDLERS — all update KPIs + charts
-══════════════════════════════════════════ */
-
-function updateUtilities() {
-  const r = document.getElementById('util-region').value;
-  const d = UD[r];
-  const crewTarget = 80;
-  const prevSaidi = {all:89.6, north:78.2, south:96.4, east:92.1, west:88.0}[r];
-  document.getElementById('u-saidi').textContent = d.saidi;
-  document.getElementById('u-saidi-c').textContent = `${Math.abs(((d.saidi-prevSaidi)/prevSaidi*100)).toFixed(1)}% ${d.saidi<prevSaidi?'better':'worse'} than last year`;
-  document.getElementById('u-saidi-c').className = 'kpi-change '+(d.saidi<prevSaidi?'kpi-up':'kpi-down');
-  document.getElementById('u-outages').textContent = d.outages;
-  document.getElementById('u-outages-c').textContent = r==='all'?'4 fewer than prior period':r==='south'?'Highest in region — watch':r==='north'?'Lowest in region':'Near average';
-  document.getElementById('u-outages-c').className = 'kpi-change '+(r==='south'?'kpi-down':'kpi-up');
-  document.getElementById('u-crew').textContent = d.crew+'%';
-  document.getElementById('u-crew-c').textContent = d.crew>=crewTarget?`${d.crew-crewTarget}% above target`:`${crewTarget-d.crew}% below ${crewTarget}% target`;
-  document.getElementById('u-crew-c').className = 'kpi-change '+(d.crew>=crewTarget?'kpi-up':'kpi-down');
-  document.getElementById('u-ahi').textContent = d.ahi;
-  document.getElementById('u-ahi-c').textContent = d.ahi>=70?'Stable — above 70 threshold':'Below 70 — review required';
-  document.getElementById('u-ahi-c').className = 'kpi-change '+(d.ahi>=70?'kpi-up':'kpi-down');
-  initAllCharts();
-}
-
-function updateConstruction() {
-  const proj = document.getElementById('constr-project').value;
-  const d = CD[proj];
-  document.getElementById('c-cpi').textContent  = d.cpi;
-  document.getElementById('c-cpi-c').textContent = d.cpi>=1?'Under budget':'Over plan — watch';
-  document.getElementById('c-cpi-c').className = 'kpi-change '+(d.cpi>=1?'kpi-up':'kpi-down');
-  document.getElementById('c-spi').textContent  = d.spi;
-  document.getElementById('c-spi-c').textContent = d.spi>=1?'Ahead of schedule':'Behind schedule';
-  document.getElementById('c-spi-c').className = 'kpi-change '+(d.spi>=1?'kpi-up':'kpi-down');
-  document.getElementById('c-cost').textContent = d.cost;
-  document.getElementById('c-cost-c').textContent = d.costC;
-  document.getElementById('c-rfi').textContent  = d.rfi;
-  document.getElementById('c-rfi-c').textContent = d.rfi<=40?'Within target threshold':`${d.rfi-40} above 40-RFI threshold`;
-  document.getElementById('c-rfi-c').className = 'kpi-change '+(d.rfi<=40?'kpi-up':'kpi-down');
-  initAllCharts();
-}
-
-function updateHR() {
-  const dept = document.getElementById('hr-dept').value;
-  const deptKey = dept==='all'?'all':dept==='eng'?'eng':dept==='ops'?'ops':dept==='fin'?'fin':dept==='sales'?'sales':'all';
-  const d = deptKey==='all' ? HR.all : HR[deptKey];
-  const ttfTarget=35, attTarget=13;
-  document.getElementById('hr-att').textContent   = d.att+'%';
-  document.getElementById('hr-att-c').textContent = d.att<=attTarget?`Below ${attTarget}% target — strong`:`${(d.att-attTarget).toFixed(1)} pts above ${attTarget}% target`;
-  document.getElementById('hr-att-c').className   = 'kpi-change '+(d.att<=attTarget?'kpi-up':'kpi-down');
-  document.getElementById('hr-ttf').textContent   = d.ttf+'d';
-  document.getElementById('hr-ttf-c').textContent = d.ttf<=ttfTarget?`Under ${ttfTarget}-day target`:`${d.ttf-ttfTarget} days above target`;
-  document.getElementById('hr-ttf-c').className   = 'kpi-change '+(d.ttf<=ttfTarget?'kpi-up':'kpi-down');
-  const hcPct = Math.round((d.hcN-d.open)/d.hcN*100);
-  document.getElementById('hr-hc').textContent    = hcPct+'%';
-  document.getElementById('hr-hc-c').textContent  = `${d.open} open roles`;
-  document.getElementById('hr-hc-c').className    = 'kpi-change '+(d.open<=10?'kpi-up':'kpi-down');
-  document.getElementById('hr-enps').textContent  = (d.enps>0?'+':'')+d.enps;
-  document.getElementById('hr-enps-c').textContent= d.enps>=30?'Healthy engagement':d.enps>=20?'Stable':'At risk — intervention needed';
-  document.getElementById('hr-enps-c').className  = 'kpi-change '+(d.enps>=20?'kpi-up':'kpi-down');
-  initAllCharts();
-}
-
-function updateFinancial() {
-  const unit = document.getElementById('fin-unit').value;
-  const yr   = document.getElementById('fin-yr').value;
-  const fdKey = unit==='all'?'all':unit==='ea'?'ea':unit==='we'?'we':unit==='pr'?'pr':'adv';
-  const fd = FD[fdKey];
-  const scale = yr==='24'?0.91:1;
-  const totalRev = fd.actual.reduce((a,b)=>a+b,0)*scale;
-  const totalBud = fd.budget.reduce((a,b)=>a+b,0)*scale;
-  const vs = ((totalRev-totalBud)/totalBud*100).toFixed(1);
-  document.getElementById('f-rev').textContent = '$'+totalRev.toFixed(1)+'M';
-  document.getElementById('f-rev-c').textContent = `${Math.abs(vs)}% ${vs>=0?'ahead of':'behind'} budget`;
-  document.getElementById('f-rev-c').className = 'kpi-change '+(vs>=0?'kpi-up':'kpi-down');
-  document.getElementById('f-ebitda').textContent = fd.ebitda+'%';
-  document.getElementById('f-ebitda-c').textContent = fd.ebitda>=22?'At or above 22% target':`${(22-fd.ebitda).toFixed(1)} pts below 22% target`;
-  document.getElementById('f-ebitda-c').className = 'kpi-change '+(fd.ebitda>=22?'kpi-up':'kpi-down');
-  document.getElementById('f-cash').textContent = fd.cash;
-  document.getElementById('f-cash-c').textContent = fd.cashC;
-  document.getElementById('f-pipe').textContent = fd.pipe;
-  document.getElementById('f-pipe-c').textContent = fd.pipeC;
-  initAllCharts();
-}
-
-function updateOps() {
-  const fac = document.getElementById('ops-fac').value;
-  const d = OD[fac];
-  document.getElementById('o-oee').textContent    = d.oee+'%';
-  document.getElementById('o-oee-c').textContent  = d.oee>=77?'Above 75% baseline':d.oee>=70?'Near baseline':'Below baseline — review';
-  document.getElementById('o-oee-c').className    = 'kpi-change '+(d.oee>=74?'kpi-up':'kpi-down');
-  document.getElementById('o-fpy').textContent    = d.fpy+'%';
-  document.getElementById('o-fpy-c').textContent  = d.fpy>=97.5?'At or above 97.5% target':`${(97.5-d.fpy).toFixed(1)} pts below target`;
-  document.getElementById('o-fpy-c').className    = 'kpi-change '+(d.fpy>=97.5?'kpi-up':'kpi-down');
-  document.getElementById('o-otd').textContent    = d.otd+'%';
-  document.getElementById('o-otd-c').textContent  = d.otd>=98?'At or above 98% target':`${(98-d.otd).toFixed(1)} pts below target`;
-  document.getElementById('o-otd-c').className    = 'kpi-change '+(d.otd>=98?'kpi-up':'kpi-down');
-  document.getElementById('o-units').textContent  = d.units;
-  document.getElementById('o-units-c').textContent= d.unitsC;
-  document.getElementById('o-units-c').className  = 'kpi-change '+(d.unitsC.includes('100')||d.unitsC.includes('102')||d.unitsC.includes('104')?'kpi-up':'kpi-down');
-  initAllCharts();
-}
-
-function updateHealthcare() {
-  const fac = document.getElementById('hc-fac').value;
-  const d = HC[fac];
-  const waitTarget=28, vacTarget=10, bedLow=85, bedHigh=90;
-  document.getElementById('hc-wait').textContent    = d.wait+' min';
-  document.getElementById('hc-wait-c').textContent  = d.wait<=waitTarget?`At or below ${waitTarget}-min target`:`${Math.round((d.wait-waitTarget)/waitTarget*100)}% above ${waitTarget}-min target`;
-  document.getElementById('hc-wait-c').className    = 'kpi-change '+(d.wait<=waitTarget?'kpi-up':'kpi-down');
-  document.getElementById('hc-vac').textContent     = d.vacRate+'%';
-  document.getElementById('hc-vac-c').textContent   = d.vacC;
-  document.getElementById('hc-vac-c').className     = 'kpi-change '+(d.vacRate<=vacTarget?'kpi-up':'kpi-down');
-  document.getElementById('hc-bed').textContent     = d.bed+'%';
-  document.getElementById('hc-bed-c').textContent   = d.bed>=bedLow&&d.bed<=bedHigh?'Within optimal 85–90% range':d.bed>bedHigh?'Above optimal — patient flow risk':'Below optimal range';
-  document.getElementById('hc-bed-c').className     = 'kpi-change '+(d.bed>=bedLow&&d.bed<=bedHigh?'kpi-up':'kpi-down');
-  document.getElementById('hc-hcahps').textContent  = d.hcahps;
-  document.getElementById('hc-hcahps-c').textContent= d.hcahpsC;
-  document.getElementById('hc-hcahps-c').className  = 'kpi-change '+(d.hcahps>='75th'||d.hcahps==='76th'||d.hcahps==='81st'?'kpi-up':'kpi-neutral');
-  initAllCharts();
-}
-
-function updateHCDept() { updateHealthcare(); }
-
-function submitForm() {
-  document.getElementById('contact-form-wrap').style.display = 'none';
-  document.getElementById('form-success').style.display = 'block';
-}
-
-/* ── SCROLL REVEAL ── */
-function initReveal() {
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => obs.observe(el));
-}
-
-/* ── ANIMATED STAT COUNTERS ── */
-function animateCounter(el) {
-  const target = parseFloat(el.dataset.target);
-  const isInt = Number.isInteger(target);
-  const prefix = el.dataset.prefix || '';
-  const suffix = el.dataset.suffix || '';
-  const duration = 1400;
-  const start = performance.now();
-  function step(now) {
-    const progress = Math.min((now - start) / duration, 1);
-    const ease = 1 - Math.pow(1 - progress, 3);
-    const val = target * ease;
-    el.textContent = prefix + (isInt ? Math.round(val) : val.toFixed(1)) + suffix;
-    if (progress < 1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
-}
-
-function initCounters() {
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting && !e.target.dataset.counted) {
-        e.target.dataset.counted = 'true';
-        animateCounter(e.target);
-      }
-    });
-  }, { threshold: 0.5 });
-  document.querySelectorAll('.count-up').forEach(el => obs.observe(el));
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  initReveal();
-  initCounters();
-});
-</script>
+<script src="assets/config.js"></script>
+<script src="assets/app.js"></script>
 </body>
 </html>
