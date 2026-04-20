@@ -1,0 +1,2379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>numarket — Trust the Data</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:   #22577A;
+  --teal:   #38A3A5;
+  --green:  #57CC99;
+  --lgreen: #80ED99;
+  --mint:   #C7F9CC;
+  --white:  #ffffff;
+  --off:    #F8FAFB;
+  --gray50: #F0F4F8;
+  --gray100:#E2EAF0;
+  --gray300:#9BB3C4;
+  --gray500:#5A7A8E;
+  --gray700:#2D4A5C;
+  --text:   #0F1F2A;
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body:    'DM Sans', sans-serif;
+  --radius: 12px;
+  --shadow-sm: 0 1px 3px rgba(34,87,122,.06), 0 2px 8px rgba(34,87,122,.04);
+  --shadow-md: 0 4px 16px rgba(34,87,122,.10), 0 1px 4px rgba(34,87,122,.06);
+  --shadow-lg: 0 8px 40px rgba(34,87,122,.14), 0 2px 8px rgba(34,87,122,.06);
+  --transition: 0.22s cubic-bezier(.4,0,.2,1);
+}
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: var(--font-body); color: var(--text); background: var(--white); line-height: 1.6; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { cursor: pointer; font-family: var(--font-body); border: none; background: none; }
+.page { display: none; }
+.page.active { display: block; animation: pageFadeIn 0.28s ease both; }
+@keyframes pageFadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+  background: rgba(255,255,255,0.96); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--gray100); height: 64px; display: flex; align-items: center;
+}
+.nav-inner { max-width: 1200px; margin: 0 auto; width: 100%; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; }
+.logo-mark { display: flex; align-items: center; gap: 0; cursor: pointer; user-select: none; }
+.logo-nu { font-family: var(--font-display); font-size: 22px; font-style: italic; color: var(--navy); letter-spacing: -0.5px; line-height: 1; }
+.logo-slash { display: inline-block; width: 14px; height: 20px; margin: 0 1px; position: relative; top: 1px; }
+.logo-slash svg { width: 14px; height: 20px; }
+.logo-market { font-family: var(--font-body); font-size: 18px; font-weight: 500; color: var(--green); letter-spacing: -0.2px; line-height: 1; }
+.nav-links { display: flex; align-items: center; gap: 8px; list-style: none; }
+.nav-links li button { font-size: 14px; font-weight: 400; color: var(--gray500); padding: 6px 14px; border-radius: 6px; transition: color var(--transition); background: none !important; }
+.nav-links li button:hover { color: var(--navy); background: none !important; }
+.nav-links li button.active { color: var(--navy); font-weight: 500; background: none !important; }
+.nav-cta { background: var(--navy) !important; color: var(--white) !important; font-weight: 500 !important; padding: 8px 20px !important; border-radius: 8px !important; transition: background var(--transition) !important; }
+.nav-cta:hover { background: var(--gray700) !important; }
+
+/* ── SHARED ── */
+.section-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--teal); margin-bottom: 16px; }
+.section-tag::before { content: ''; display: block; width: 16px; height: 2px; background: var(--green); border-radius: 2px; }
+h1,h2,h3,h4 { font-family: var(--font-display); line-height: 1.15; }
+h1 { font-size: clamp(2.4rem, 5vw, 4rem); }
+h2 { font-size: clamp(1.8rem, 3vw, 2.8rem); }
+h3 { font-size: 1.3rem; }
+.lead { font-size: 1.1rem; color: var(--gray500); line-height: 1.7; max-width: 600px; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+section { padding: 96px 0; }
+.btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--navy); color: var(--white); font-size: 15px; font-weight: 500; padding: 13px 28px; border-radius: 10px; transition: all var(--transition); box-shadow: 0 2px 8px rgba(34,87,122,.2); }
+.btn-primary:hover { background: var(--gray700); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(34,87,122,.25); }
+.btn-secondary { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--navy); font-size: 15px; font-weight: 500; padding: 12px 28px; border-radius: 10px; border: 1.5px solid var(--gray100); transition: all var(--transition); }
+.btn-secondary:hover { border-color: var(--navy); background: rgba(34,87,122,0.06); color: var(--navy); }
+/* btn-secondary variant on dark background */
+.btn-secondary-dark { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: rgba(255,255,255,0.8); font-size: 15px; font-weight: 500; padding: 12px 28px; border-radius: 10px; border: 1.5px solid rgba(255,255,255,0.2); transition: all var(--transition); }
+.btn-secondary-dark:hover { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.08); color: var(--white); }
+.btn-green { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: var(--navy); font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; transition: all var(--transition); box-shadow: 0 2px 8px rgba(87,204,153,.25); }
+.btn-green:hover { background: var(--lgreen); transform: translateY(-1px); }
+
+/* ═══════ HOME ═══════ */
+.hero { padding: 140px 0 96px; position: relative; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; z-index: 0; background: linear-gradient(135deg, var(--white) 0%, var(--off) 50%, #EBF8F0 100%); }
+.hero-grid { position: absolute; inset: 0; z-index: 0; opacity: 0.35; background-image: linear-gradient(var(--gray100) 1px, transparent 1px), linear-gradient(90deg, var(--gray100) 1px, transparent 1px); background-size: 48px 48px; }
+.hero-inner { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.hero h1 { color: var(--navy); margin-bottom: 24px; letter-spacing: -1px; }
+.hero h1 em { font-style: italic; color: var(--teal); }
+.hero .lead { margin-bottom: 40px; }
+.hero-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--gray100); }
+.hero-stat-num { font-family: var(--font-display); font-size: 2.2rem; color: var(--navy); line-height: 1; margin-bottom: 4px; }
+.hero-stat-num span { color: var(--green); }
+.hero-stat-label { font-size: 13px; color: var(--gray500); }
+
+/* Hero mini-dashboard preview */
+.hero-dashboard-preview {
+  background: var(--white); border: 1px solid var(--gray100); border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(34,87,122,.15), 0 4px 16px rgba(34,87,122,.08);
+  overflow: hidden; transform: perspective(1000px) rotateY(-4deg) rotateX(2deg);
+  transition: transform 0.4s ease;
+  animation: floatDash 5s ease-in-out infinite;
+}
+.hero-dashboard-preview:hover { transform: perspective(1000px) rotateY(0deg) rotateX(0deg); }
+@keyframes floatDash { 0%,100%{transform:perspective(1000px) rotateY(-4deg) rotateX(2deg) translateY(0)} 50%{transform:perspective(1000px) rotateY(-4deg) rotateX(2deg) translateY(-8px)} }
+.hdp-header { background: var(--navy); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
+.hdp-title { font-size: 12px; font-weight: 600; color: var(--white); }
+.hdp-live { display: inline-flex; align-items: center; gap: 4px; background: rgba(87,204,153,.2); color: var(--lgreen); font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 20px; }
+.hdp-live::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+.hdp-kpis { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; padding: 12px; background: var(--gray50); }
+.hdp-kpi { background: var(--white); border-radius: 8px; padding: 10px 12px; border: 1px solid var(--gray100); }
+.hdp-kpi-label { font-size: 9px; color: var(--gray500); font-weight: 500; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+.hdp-kpi-val { font-family: var(--font-display); font-size: 1.3rem; color: var(--navy); line-height: 1; }
+.hdp-kpi-chg { font-size: 9px; color: #1B9E5E; margin-top: 2px; }
+.hdp-chart-area { padding: 12px; }
+.hdp-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.hdp-bar-label { font-size: 10px; color: var(--gray500); width: 48px; flex-shrink: 0; text-align: right; }
+.hdp-bar-track { flex: 1; height: 6px; background: var(--gray100); border-radius: 3px; overflow: hidden; }
+.hdp-bar-fill { height: 100%; border-radius: 3px; transition: width 1.2s cubic-bezier(.4,0,.2,1); }
+.hdp-bar-val { font-size: 10px; color: var(--navy); font-weight: 600; width: 28px; }
+
+/* Ticker */
+.trusted { padding: 0; border-bottom: 1px solid var(--gray100); overflow: hidden; }
+.trusted-inner-wrap { display: flex; align-items: center; height: 52px; }
+.trusted-label-fixed { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--gray300); white-space: nowrap; padding: 0 24px 0 32px; flex-shrink: 0; border-right: 1px solid var(--gray100); height: 100%; display: flex; align-items: center; }
+.ticker-outer { flex: 1; overflow: hidden; position: relative; }
+.ticker-outer::before, .ticker-outer::after { content:''; position:absolute; top:0; bottom:0; width:48px; z-index:2; pointer-events:none; }
+.ticker-outer::before { left:0; background:linear-gradient(to right,var(--white),transparent); }
+.ticker-outer::after { right:0; background:linear-gradient(to left,var(--white),transparent); }
+.ticker-track { display: flex; align-items: center; gap: 0; white-space: nowrap; animation: ticker 36s linear infinite; width: max-content; }
+.ticker-track:hover { animation-play-state: paused; }
+.ticker-item { font-size: 13px; font-weight: 500; color: var(--gray500); padding: 0 16px; }
+.ticker-sep { color: var(--green); font-weight: 700; font-size: 14px; flex-shrink: 0; }
+@keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+/* Problem section */
+.problem { background: var(--navy); padding: 96px 0; }
+.problem .container { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.problem .section-tag { color: var(--lgreen); }
+.problem h2 { color: var(--white); margin-bottom: 24px; font-size: clamp(2rem, 3.5vw, 3rem); }
+.problem .lead { color: rgba(255,255,255,0.65); max-width: 100%; font-size: 1.05rem; }
+.problem-cards { display: grid; gap: 16px; }
+.problem-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 24px; display: flex; align-items: flex-start; gap: 14px; }
+.problem-icon-block { width: 36px; height: 36px; border-radius: 8px; background: rgba(87,204,153,.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.problem-icon-block svg { width: 18px; height: 18px; stroke: var(--green); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.problem-card h4 { font-family: var(--font-body); font-weight: 600; font-size: 15px; color: var(--white); margin-bottom: 6px; }
+.problem-card p { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.6; }
+
+/* How it works */
+.how-works { background: var(--white); }
+.how-works .section-header { text-align: center; margin-bottom: 64px; }
+.how-works .lead { margin: 0 auto; text-align: center; }
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; position: relative; }
+.steps::before { content: ''; position: absolute; top: 28px; left: calc(12.5% + 20px); right: calc(12.5% + 20px); height: 1px; background: var(--gray100); }
+.step { text-align: center; }
+.step-num { width: 56px; height: 56px; border-radius: 50%; background: var(--white); border: 1.5px solid var(--gray100); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-family: var(--font-display); font-size: 1.1rem; color: var(--navy); position: relative; z-index: 1; box-shadow: var(--shadow-sm); }
+.step h4 { font-family: var(--font-body); font-weight: 600; font-size: 15px; color: var(--navy); margin-bottom: 8px; }
+.step p { font-size: 14px; color: var(--gray500); line-height: 1.6; }
+
+/* Services preview */
+.services-preview { background: var(--gray50); }
+.services-preview .section-header { margin-bottom: 48px; }
+.tier-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.tier-card { background: var(--white); border: 1.5px solid var(--gray100); border-radius: var(--radius); padding: 36px; transition: all var(--transition); position: relative; overflow: hidden; }
+.tier-card:hover { border-color: var(--teal); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.tier-card.featured { background: var(--navy); border-color: var(--navy); }
+.tier-card.featured::after { content: 'Most Popular'; position: absolute; top: 16px; right: -28px; background: var(--green); color: var(--navy); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; padding: 4px 40px; transform: rotate(35deg); }
+.tier-label { font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--teal); margin-bottom: 12px; }
+.tier-card.featured .tier-label { color: var(--lgreen); }
+.tier-card h3 { font-family: var(--font-display); font-size: 1.6rem; color: var(--navy); margin-bottom: 8px; }
+.tier-card.featured h3 { color: var(--white); }
+.tier-price { font-size: 13px; color: var(--teal); font-weight: 600; margin-bottom: 16px; }
+.tier-card.featured .tier-price { color: var(--lgreen); }
+.tier-card > p { font-size: 14px; color: var(--gray500); margin-bottom: 24px; line-height: 1.6; }
+.tier-card.featured > p { color: rgba(255,255,255,0.6); }
+.tier-features { list-style: none; display: grid; gap: 10px; margin-bottom: 28px; }
+.tier-features li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--gray700); }
+.tier-card.featured .tier-features li { color: rgba(255,255,255,0.8); }
+.tier-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+/* Industries */
+.industries { background: var(--white); }
+.industries .section-header { text-align: center; margin-bottom: 48px; }
+.industry-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.industry-tile { border: 1.5px solid var(--gray100); border-radius: 10px; padding: 28px 20px; text-align: center; transition: all var(--transition); cursor: default; }
+.industry-tile:hover { border-color: var(--green); background: #F0FBF5; transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.industry-tile-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--gray50); margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; }
+.industry-tile-icon svg { width: 20px; height: 20px; stroke: var(--navy); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.industry-tile:hover .industry-tile-icon { background: var(--mint); }
+.industry-tile:hover .industry-tile-icon svg { stroke: var(--navy); }
+.industry-tile h4 { font-family: var(--font-body); font-weight: 600; font-size: 14px; color: var(--navy); margin-bottom: 4px; }
+.industry-tile p { font-size: 12px; color: var(--gray500); line-height: 1.5; }
+
+/* CTA */
+.home-cta { background: linear-gradient(135deg, var(--navy) 0%, #1A4463 100%); padding: 96px 0; }
+.home-cta .container { text-align: center; }
+.home-cta h2 { color: var(--white); margin-bottom: 20px; }
+.home-cta p { color: rgba(255,255,255,0.65); font-size: 1.05rem; margin-bottom: 40px; max-width: 500px; margin-left: auto; margin-right: auto; }
+.home-cta-btns { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+
+/* ═══════ SERVICES ═══════ */
+.services-hero { padding: 140px 0 80px; background: var(--off); border-bottom: 1px solid var(--gray100); }
+.services-hero .container { max-width: 1200px; }
+.services-hero h1 { margin-bottom: 20px; color: var(--navy); }
+.services-hero p { font-size: 1.05rem; color: var(--gray500); line-height: 1.75; max-width: 640px; }
+.services-what { padding: 96px 0; }
+.services-what .container { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.services-what h2 { margin-bottom: 20px; color: var(--navy); }
+.services-what p { color: var(--gray500); line-height: 1.75; margin-bottom: 16px; font-size: 0.975rem; }
+.services-list { display: grid; gap: 20px; }
+.service-item { display: flex; gap: 16px; align-items: flex-start; padding: 20px; border-radius: 10px; border: 1px solid var(--gray100); transition: all var(--transition); }
+.service-item:hover { background: var(--off); }
+.service-ico { width: 40px; height: 40px; border-radius: 10px; background: var(--mint); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.service-ico svg { width: 20px; height: 20px; stroke: var(--navy); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.service-item h4 { font-family: var(--font-body); font-weight: 600; font-size: 14px; color: var(--navy); margin-bottom: 4px; }
+.service-item p { font-size: 13px; color: var(--gray500); line-height: 1.55; margin: 0; }
+.tiers-full { padding: 0 0 96px; }
+.tier-row { display: grid; grid-template-columns: 320px 1fr; gap: 64px; align-items: start; padding: 64px 0; border-top: 1px solid var(--gray100); }
+.tier-row-label { font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+.tier-row h2 { font-size: 2rem; color: var(--navy); margin-bottom: 8px; }
+.tier-row-price { font-size: 14px; color: var(--teal); font-weight: 600; margin-bottom: 16px; }
+.tier-row > div:first-child > p { font-size: 14px; color: var(--gray500); line-height: 1.7; margin-bottom: 24px; }
+.tier-deliverables { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tier-del { background: var(--gray50); border-radius: 8px; padding: 16px; border-left: 3px solid var(--green); }
+.tier-del h5 { font-family: var(--font-body); font-weight: 600; font-size: 13px; color: var(--navy); margin-bottom: 4px; }
+.tier-del p { font-size: 12px; color: var(--gray500); line-height: 1.5; }
+
+/* ═══════ DASHBOARDS ═══════ */
+.dashboards-hero { padding: 120px 0 0; background: var(--off); border-bottom: 1px solid var(--gray100); }
+.dashboards-hero h1 { color: var(--navy); margin-bottom: 16px; }
+.dashboards-hero p { color: var(--gray500); font-size: 1.05rem; max-width: 640px; }
+.dashboard-tabs { display: flex; gap: 8px; flex-wrap: wrap; padding: 28px 0 36px; }
+.dash-tab { padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 500; color: var(--gray500); border: 1.5px solid var(--gray100); transition: all var(--transition); cursor: pointer; background: var(--white); }
+.dash-tab.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+.dash-tab:hover:not(.active) { border-color: var(--navy); color: var(--navy); }
+.dashboard-viewer { padding: 48px 0 96px; }
+.dashboard-panel { display: none; }
+.dashboard-panel.active { display: block; animation: fadeUp 0.3s ease both; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+/* DB Frame */
+.db-frame { background: var(--white); border: 1px solid var(--gray100); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-lg); }
+.db-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 28px; border-bottom: 1px solid var(--gray100); }
+.db-header-left { display: flex; align-items: center; gap: 12px; }
+.db-header-accent { width: 4px; border-radius: 4px; height: 36px; flex-shrink: 0; }
+.db-title { font-size: 15px; font-weight: 600; color: var(--white); }
+.db-subtitle { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+.db-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+.db-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+.db-filters { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 14px 28px; background: var(--gray50); border-bottom: 1px solid var(--gray100); }
+.db-filter-label { font-size: 12px; color: var(--gray500); font-weight: 500; }
+.db-filter-select { font-family: var(--font-body); font-size: 13px; font-weight: 500; color: var(--navy); background: var(--white); border: 1.5px solid var(--gray100); border-radius: 7px; padding: 6px 28px 6px 12px; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235A7A8E' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; cursor: pointer; transition: border-color var(--transition); }
+.db-filter-select:focus { outline: none; border-color: var(--teal); }
+.db-body { padding: 24px 28px; }
+.db-kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+.kpi-card { background: var(--white); border: 1px solid var(--gray100); border-radius: 10px; padding: 18px; transition: all var(--transition); position: relative; cursor: default; overflow: hidden; }
+.kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 2px 2px 0 0; }
+.kpi-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.kpi-label { font-size: 11px; color: var(--gray500); font-weight: 500; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.kpi-label .tooltip-icon { cursor: help; color: var(--gray300); font-size: 11px; border: 1px solid var(--gray100); border-radius: 50%; width: 14px; height: 14px; display: inline-flex; align-items: center; justify-content: center; font-style: normal; font-size: 9px; flex-shrink: 0; }
+.kpi-value { font-family: var(--font-display); font-size: 1.9rem; color: var(--navy); line-height: 1; margin-bottom: 8px; }
+.kpi-change { font-size: 11px; display: flex; align-items: center; gap: 4px; font-weight: 500; }
+.kpi-up { color: #1B9E5E; }
+.kpi-down { color: #C0392B; }
+.kpi-neutral { color: var(--gray500); }
+.db-charts { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px; }
+.db-charts-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.db-charts-half { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.chart-card { background: var(--white); border: 1px solid var(--gray100); border-radius: 10px; padding: 18px; }
+.chart-card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+.chart-card-title { font-size: 13px; font-weight: 600; color: var(--navy); }
+.chart-card-sub { font-size: 11px; color: var(--gray300); margin-top: 2px; }
+.chart-card-legend { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--gray500); }
+.legend-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+.chart-wrap { position: relative; }
+canvas { max-width: 100% !important; }
+.db-table-wrap { background: var(--white); border: 1px solid var(--gray100); border-radius: 10px; overflow: hidden; margin-top: 0; }
+.db-table-title { font-size: 13px; font-weight: 600; color: var(--navy); padding: 14px 16px 0; }
+table { width: 100%; border-collapse: collapse; }
+thead tr { background: var(--gray50); }
+th { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.7px; color: var(--gray500); padding: 10px 16px; text-align: left; }
+td { font-size: 13px; color: var(--gray700); padding: 11px 16px; border-top: 1px solid var(--gray50); }
+tr:hover td { background: #F6FAFD; cursor: default; }
+.status-pill { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+.status-green { background: #E6F9F0; color: #1B9E5E; }
+.status-yellow { background: #FFF9E6; color: #C8860A; }
+.status-red { background: #FEF0EF; color: #C0392B; }
+.status-blue { background: #EAF3FC; color: #2471A3; }
+.status-gray { background: var(--gray50); color: var(--gray500); }
+.db-insight-bar { display: flex; gap: 12px; padding: 14px 18px; background: #EBF8FF; border-radius: 8px; margin-bottom: 16px; align-items: flex-start; border-left: 3px solid var(--teal); }
+.db-insight-bar span { font-size: 12px; color: var(--gray700); line-height: 1.5; }
+.db-insight-label { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--teal); margin-bottom: 2px; }
+
+/* Tooltip */
+.tooltip-wrap { position: relative; display: inline-flex; align-items: center; gap: 5px; }
+.kpi-label { font-size: 11px; color: var(--gray500); font-weight: 500; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.tooltip-box { position: fixed; background: #0F1F2A; color: var(--white); font-family: var(--font-body); font-size: 12px; line-height: 1.55; padding: 10px 14px; border-radius: 8px; opacity: 0; pointer-events: none; transition: opacity 0.18s ease; z-index: 99999; width: 220px; text-align: left; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+.tooltip-box.tt-visible { opacity: 1; }
+.tooltip-box::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: #0F1F2A; }
+
+/* ═══════ WORK ═══════ */
+.work-hero { padding: 140px 0 80px; background: var(--off); border-bottom: 1px solid var(--gray100); }
+.work-hero h1 { color: var(--navy); margin-bottom: 20px; }
+.work-hero p { color: var(--gray500); font-size: 1.05rem; max-width: 600px; line-height: 1.75; }
+.case-studies { padding: 96px 0; }
+.case-grid { display: grid; gap: 40px; }
+.case-card { display: grid; grid-template-columns: 1fr 1fr; border: 1.5px solid var(--gray100); border-radius: 16px; overflow: hidden; transition: all var(--transition); }
+.case-card:hover { box-shadow: var(--shadow-lg); border-color: var(--teal); }
+.case-card-visual { display: flex; align-items: center; justify-content: center; padding: 48px 40px; min-height: 280px; }
+.case-card-content { padding: 48px 40px; display: flex; flex-direction: column; justify-content: center; }
+.case-industry { font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--teal); margin-bottom: 12px; }
+.case-card h3 { font-family: var(--font-display); font-size: 1.5rem; color: var(--navy); margin-bottom: 16px; line-height: 1.2; }
+.case-card p { font-size: 14px; color: var(--gray500); line-height: 1.7; margin-bottom: 24px; }
+.case-results { display: flex; gap: 32px; }
+.case-result-num { font-family: var(--font-display); font-size: 1.8rem; color: var(--navy); line-height: 1; margin-bottom: 2px; }
+.case-result-num span { color: var(--green); }
+.case-result-label { font-size: 12px; color: var(--gray500); }
+.approach { background: var(--gray50); padding: 96px 0; }
+.approach-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 48px; }
+.approach-card { background: var(--white); border-radius: 12px; padding: 32px; border: 1px solid var(--gray100); transition: all var(--transition); }
+.approach-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.approach-num { font-family: var(--font-display); font-size: 2.5rem; color: var(--mint); line-height: 1; margin-bottom: 12px; }
+.approach-card h4 { font-family: var(--font-body); font-weight: 600; font-size: 15px; color: var(--navy); margin-bottom: 8px; }
+.approach-card p { font-size: 14px; color: var(--gray500); line-height: 1.65; }
+
+/* ═══════ CONTACT ═══════ */
+.contact-hero { padding: 140px 0 80px; background: var(--off); border-bottom: 1px solid var(--gray100); }
+.contact-hero h1 { color: var(--navy); margin-bottom: 16px; }
+.contact-hero p { color: var(--gray500); font-size: 1.05rem; max-width: 560px; }
+.contact-main { padding: 96px 0; }
+.contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: start; }
+.contact-info h3 { font-family: var(--font-display); font-size: 1.3rem; color: var(--navy); margin-bottom: 16px; }
+.contact-info p { font-size: 14px; color: var(--gray500); line-height: 1.75; margin-bottom: 32px; }
+.contact-bullets { list-style: none; display: grid; gap: 12px; margin-bottom: 40px; }
+.contact-bullets li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--gray700); }
+.contact-bullets li::before { content: '→'; color: var(--green); flex-shrink: 0; font-weight: 700; }
+.contact-detail { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; }
+.contact-detail-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--mint); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.contact-detail-icon svg { width: 16px; height: 16px; stroke: var(--navy); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.contact-detail-text strong { display: block; font-size: 13px; color: var(--navy); }
+.contact-detail-text span { font-size: 13px; color: var(--gray500); }
+.contact-form { background: var(--white); border: 1.5px solid var(--gray100); border-radius: 16px; padding: 40px; box-shadow: var(--shadow-md); }
+.contact-form h3 { font-family: var(--font-display); font-size: 1.4rem; color: var(--navy); margin-bottom: 8px; }
+.contact-form > p { font-size: 14px; color: var(--gray500); margin-bottom: 28px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; font-size: 13px; font-weight: 500; color: var(--gray700); margin-bottom: 6px; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; font-family: var(--font-body); font-size: 14px; color: var(--text); background: var(--white); border: 1.5px solid var(--gray100); border-radius: 8px; padding: 10px 14px; outline: none; transition: border-color var(--transition); }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--teal); }
+.form-group textarea { resize: vertical; min-height: 100px; }
+.form-note { font-size: 12px; color: var(--gray300); margin-top: 12px; text-align: center; }
+.form-success { display: none; text-align: center; padding: 32px; }
+.form-success .success-icon { font-size: 48px; margin-bottom: 16px; }
+.form-success h4 { font-family: var(--font-display); font-size: 1.3rem; color: var(--navy); margin-bottom: 8px; }
+.form-success p { font-size: 14px; color: var(--gray500); }
+
+/* ── FOOTER ── */
+footer { background: var(--navy); padding: 56px 0 32px; }
+.footer-inner { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+.footer-brand .logo-nu { color: var(--white); }
+.footer-tagline-sub { font-family: var(--font-display); font-style: italic; font-size: 15px; color: var(--green); margin-top: 12px; }
+.footer-col h5 { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 16px; }
+.footer-col ul { list-style: none; display: grid; gap: 10px; }
+.footer-col ul li button { font-size: 13px; color: rgba(255,255,255,0.55); transition: color var(--transition); background: none; border: none; cursor: pointer; padding: 0; }
+.footer-col ul li button:hover { color: var(--white); }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; }
+.footer-bottom p { font-size: 12px; color: rgba(255,255,255,0.3); }
+.footer-bottom-tagline { font-size: 13px; color: var(--green); font-weight: 600; letter-spacing: 0.5px; font-family: var(--font-display); font-style: italic; }
+@media(max-width:900px){ .footer-inner{grid-template-columns:1fr 1fr} }
+
+/* ── INTERACTIVE ENHANCEMENTS ── */
+
+/* Animated underline on nav links */
+.nav-links li button:not(.nav-cta) {
+  position: relative;
+}
+.nav-links li button:not(.nav-cta)::after {
+  content: '';
+  position: absolute;
+  bottom: 2px; left: 14px; right: 14px;
+  height: 2px; background: var(--green);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.22s cubic-bezier(.4,0,.2,1);
+}
+.nav-links li button:not(.nav-cta):hover::after,
+.nav-links li button.active::after {
+  transform: scaleX(1);
+}
+
+/* Problem cards — lift + left-border flash */
+.problem-card {
+  transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease;
+}
+.problem-card:hover {
+  transform: translateY(-3px);
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(87,204,153,0.4);
+}
+
+/* Step numbers — fill on hover */
+.step:hover .step-num {
+  background: var(--navy);
+  color: var(--white);
+  border-color: var(--navy);
+  transition: all 0.22s ease;
+}
+.step-num { transition: all 0.22s ease; }
+
+/* Industry tiles — icon bounce */
+.industry-tile:hover .industry-tile-icon {
+  animation: iconBounce 0.4s ease;
+}
+@keyframes iconBounce {
+  0%,100%{transform:translateY(0)} 40%{transform:translateY(-6px)} 70%{transform:translateY(-2px)}
+}
+
+/* Case cards — border slide */
+.case-card {
+  transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+.case-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Approach cards — number color pop */
+.approach-card:hover .approach-num {
+  color: var(--green);
+  transition: color 0.2s ease;
+}
+.approach-num { transition: color 0.2s ease; }
+
+/* Tier cards — shimmer on featured */
+.tier-card.featured {
+  background: linear-gradient(135deg, var(--navy) 0%, #1A4463 100%);
+  transition: all 0.25s ease;
+}
+.tier-card.featured:hover {
+  background: linear-gradient(135deg, #1A4463 0%, #22577A 100%);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 48px rgba(34,87,122,.25);
+}
+
+/* KPI cards — colored top bar glow on hover */
+.kpi-card:hover::before {
+  box-shadow: 0 2px 12px rgba(87,204,153,.4);
+}
+
+/* Buttons — subtle scale */
+.btn-primary:active, .btn-green:active { transform: scale(0.98); }
+
+/* Footer links — slide right */
+.footer-col ul li button {
+  position: relative;
+  padding-left: 0;
+  transition: color 0.2s ease, padding-left 0.2s ease;
+}
+.footer-col ul li button:hover {
+  padding-left: 8px;
+}
+
+/* Scroll-reveal utility */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s cubic-bezier(.4,0,.2,1), transform 0.55s cubic-bezier(.4,0,.2,1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children */
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.reveal-stagger.visible > *:nth-child(1){transition-delay:.05s;opacity:1;transform:none}
+.reveal-stagger.visible > *:nth-child(2){transition-delay:.12s;opacity:1;transform:none}
+.reveal-stagger.visible > *:nth-child(3){transition-delay:.19s;opacity:1;transform:none}
+.reveal-stagger.visible > *:nth-child(4){transition-delay:.26s;opacity:1;transform:none}
+.reveal-stagger.visible > *:nth-child(5){transition-delay:.33s;opacity:1;transform:none}
+.reveal-stagger.visible > *:nth-child(6){transition-delay:.40s;opacity:1;transform:none}
+.reveal-stagger.visible > *:nth-child(7){transition-delay:.47s;opacity:1;transform:none}
+.reveal-stagger.visible > *:nth-child(8){transition-delay:.54s;opacity:1;transform:none}
+.reveal-stagger.visible > *:nth-child(9){transition-delay:.61s;opacity:1;transform:none}
+.reveal-stagger.visible > *:nth-child(10){transition-delay:.68s;opacity:1;transform:none}
+.reveal-stagger.visible > *:nth-child(n+11){transition-delay:.72s;opacity:1;transform:none}
+
+/* ── NAV MOBILE ── */
+.nav-hamburger {
+  display: none; flex-direction: column; gap: 5px; cursor: pointer;
+  padding: 8px; border-radius: 6px; transition: background var(--transition);
+}
+.nav-hamburger:hover { background: var(--gray50); }
+.nav-hamburger span {
+  display: block; width: 22px; height: 2px; background: var(--navy);
+  border-radius: 2px; transition: all 0.25s ease;
+}
+.nav-hamburger.open span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2){ opacity: 0; transform: scaleX(0); }
+.nav-hamburger.open span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-menu {
+  display: none; position: fixed; top: 64px; left: 0; right: 0; z-index: 998;
+  background: var(--white); border-bottom: 1px solid var(--gray100);
+  padding: 16px 24px 24px;
+  box-shadow: 0 8px 32px rgba(34,87,122,.08);
+  flex-direction: column; gap: 4px;
+  transform: translateY(-8px); opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.mobile-menu.open {
+  display: flex; opacity: 1; transform: translateY(0);
+}
+.mobile-menu button {
+  font-size: 15px; font-weight: 400; color: var(--gray700);
+  padding: 12px 16px; border-radius: 8px; text-align: left; width: 100%;
+  transition: background var(--transition), color var(--transition);
+}
+.mobile-menu button:hover { background: var(--gray50); color: var(--navy); }
+.mobile-menu button.active { color: var(--navy); font-weight: 600; }
+.mobile-menu-cta {
+  margin-top: 8px; padding: 13px 16px !important;
+  background: var(--navy) !important; color: var(--white) !important;
+  font-weight: 500 !important; border-radius: 10px !important; text-align: center !important;
+}
+
+/* ── BASE ANIMATIONS ── */
+@keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.fade-up { animation: fadeInUp 0.55s cubic-bezier(.4,0,.2,1) both; }
+.delay-1 { animation-delay: 0.1s; } .delay-2 { animation-delay: 0.2s; } .delay-3 { animation-delay: 0.3s; } .delay-4 { animation-delay: 0.4s; }
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .nav-links{display:none}
+  .nav-hamburger{display:flex}
+  .problem .container,.services-what .container,.contact-grid,.case-card,.tier-row,.hero-inner{grid-template-columns:1fr}
+  .tier-cards,.steps,.industry-grid{grid-template-columns:1fr 1fr}
+  .db-kpi-row{grid-template-columns:1fr 1fr}
+  .db-charts,.db-charts-3,.db-charts-half{grid-template-columns:1fr}
+  .hero-dashboard-preview{display:none}
+  .footer-inner{grid-template-columns:1fr 1fr}
+  .contact-hero h1{font-size:2.2rem}
+}
+@media(max-width:600px){
+  .container{padding:0 20px}
+  .tier-cards,.steps,.industry-grid{grid-template-columns:1fr}
+  .db-kpi-row{grid-template-columns:1fr 1fr}
+  .footer-inner{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .tier-row{grid-template-columns:1fr}
+  .case-card{grid-template-columns:1fr}
+  .case-card-visual{min-height:160px}
+  .dashboard-tabs{gap:6px}
+  .dash-tab{font-size:12px;padding:7px 14px}
+  .db-body{padding:16px}
+  .db-header{padding:14px 16px}
+  .db-filters{padding:10px 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo-mark" onclick="showPage('home')">
+      <span class="logo-nu">nu</span>
+      <span class="logo-slash"><svg viewBox="0 0 14 20" fill="none"><line x1="2" y1="18" x2="12" y2="2" stroke="#57CC99" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="2" r="1.5" fill="#57CC99"/></svg></span>
+      <span class="logo-market">market</span>
+    </div>
+    <ul class="nav-links">
+      <li><button onclick="showPage('home')" id="nav-home" class="active">Home</button></li>
+      <li><button onclick="showPage('services')" id="nav-services">Services</button></li>
+      <li><button onclick="showPage('dashboards')" id="nav-dashboards">Dashboards</button></li>
+      <li><button onclick="showPage('work')" id="nav-work">Work</button></li>
+      <li><button onclick="showPage('contact')" id="nav-contact">Contact</button></li>
+      <li><button onclick="showPage('start')" id="nav-start" class="nav-cta">Start a Project</button></li>
+    </ul>
+    <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <button onclick="navTo('home')">Home</button>
+  <button onclick="navTo('services')">Services</button>
+  <button onclick="navTo('dashboards')">Dashboards</button>
+  <button onclick="navTo('work')">Work</button>
+  <button onclick="navTo('contact')">Contact</button>
+  <button onclick="navTo('start')" class="mobile-menu-cta">Start a Project</button>
+</div>
+
+<!-- ═══════════ HOME ═══════════ -->
+<div class="page active" id="page-home">
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div>
+        <div class="section-tag fade-up">Trust the Data</div>
+        <h1 class="fade-up delay-1">Your data already<br>knows <em>what to do next.</em></h1>
+        <p class="lead fade-up delay-2">numarket connects, cleans, and visualizes your operational data — delivering live dashboards and plain-language analysis so leadership can act, not guess.</p>
+        <div class="hero-actions fade-up delay-3">
+          <button class="btn-primary" onclick="showPage('start')">Start a Project →</button>
+          <button class="btn-secondary" onclick="showPage('dashboards')">See Live Demos</button>
+        </div>
+        <div class="hero-stats fade-up delay-4">
+          <div>
+            <div class="hero-stat-num">2<span>×</span></div>
+            <div class="hero-stat-label">faster than legacy PMO firms</div>
+          </div>
+          <div>
+            <div class="hero-stat-num"><span class="count-up" data-prefix="$" data-target="2.5" data-suffix="k">$2.5k</span></div>
+            <div class="hero-stat-label">starting investment for a first engagement</div>
+          </div>
+          <div>
+            <div class="hero-stat-num"><span class="count-up" data-target="8" data-suffix="+">8+</span></div>
+            <div class="hero-stat-label">industries served</div>
+          </div>
+        </div>
+      </div>
+      <!-- Mini dashboard preview -->
+      <div class="hero-dashboard-preview fade-up delay-2">
+        <div class="hdp-header">
+          <div>
+            <div class="hdp-title">Operations Dashboard</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:2px">Regional Operations Center</div>
+          </div>
+          <div class="hdp-live">Live</div>
+        </div>
+        <div class="hdp-kpis">
+          <div class="hdp-kpi">
+            <div class="hdp-kpi-label">OEE Score</div>
+            <div class="hdp-kpi-val">74.2%</div>
+            <div class="hdp-kpi-chg">↑ +3.1 pts this month</div>
+          </div>
+          <div class="hdp-kpi">
+            <div class="hdp-kpi-label">On-Time Delivery</div>
+            <div class="hdp-kpi-val">97.1%</div>
+            <div class="hdp-kpi-chg">↑ Near target</div>
+          </div>
+          <div class="hdp-kpi">
+            <div class="hdp-kpi-label">Units Today</div>
+            <div class="hdp-kpi-val">4,820</div>
+            <div class="hdp-kpi-chg">↑ 102% of plan</div>
+          </div>
+          <div class="hdp-kpi">
+            <div class="hdp-kpi-label">First Pass Yield</div>
+            <div class="hdp-kpi-val">96.4%</div>
+            <div style="font-size:9px;color:#C0392B;margin-top:2px">↓ 1.1 pts below target</div>
+          </div>
+        </div>
+        <div class="hdp-chart-area">
+          <div style="font-size:10px;font-weight:600;color:var(--navy);margin-bottom:10px">Facility Performance</div>
+          <div class="hdp-bar-row">
+            <span class="hdp-bar-label">Plant A</span>
+            <div class="hdp-bar-track"><div class="hdp-bar-fill" style="width:78%;background:#57CC99"></div></div>
+            <span class="hdp-bar-val">78%</span>
+          </div>
+          <div class="hdp-bar-row">
+            <span class="hdp-bar-label">Plant B</span>
+            <div class="hdp-bar-track"><div class="hdp-bar-fill" style="width:71%;background:#38A3A5"></div></div>
+            <span class="hdp-bar-val">71%</span>
+          </div>
+          <div class="hdp-bar-row">
+            <span class="hdp-bar-label">Plant C</span>
+            <div class="hdp-bar-track"><div class="hdp-bar-fill" style="width:76%;background:#80ED99"></div></div>
+            <span class="hdp-bar-val">76%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="trusted">
+    <div class="trusted-inner-wrap">
+      <span class="trusted-label-fixed">Built for</span>
+      <div class="ticker-outer">
+        <div class="ticker-track" id="ticker-track">
+          <span class="ticker-item">Utilities &amp; Energy</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Construction</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Healthcare</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Finance &amp; Insurance</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Operations &amp; Manufacturing</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Capital Project Management</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">HR &amp; Workforce</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Telecommunications</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Real Estate &amp; Property</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Government &amp; Public Sector</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Technology</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Retail &amp; Distribution</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Professional Services</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Logistics &amp; Supply Chain</span>
+          <span class="ticker-sep">·</span>
+          <!-- duplicate for seamless loop -->
+          <span class="ticker-item">Utilities &amp; Energy</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Construction</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Healthcare</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Finance &amp; Insurance</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Operations &amp; Manufacturing</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Capital Project Management</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">HR &amp; Workforce</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Telecommunications</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Real Estate &amp; Property</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Government &amp; Public Sector</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Technology</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Retail &amp; Distribution</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Professional Services</span>
+          <span class="ticker-sep">·</span>
+          <span class="ticker-item">Logistics &amp; Supply Chain</span>
+          <span class="ticker-sep">·</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="problem">
+    <div class="container">
+      <div>
+        <div class="section-tag">The Problem</div>
+        <h2>Most companies are<br>flying blind.</h2>
+        <p class="lead" style="margin-top:16px">The data that could transform your decisions exists right now — in spreadsheets, HR systems, project tools, and financial software. It's disconnected, stale, and invisible to the people who need it most.</p>
+      </div>
+      <div class="problem-cards">
+        <div class="problem-card">
+          <div class="problem-icon-block">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 17.5h7M17.5 14v7"/></svg>
+          </div>
+          <div>
+            <h4>Data Silos</h4>
+            <p>Critical metrics live in six different tools, none of which talk to each other. Reporting takes days instead of seconds.</p>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon-block">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          </div>
+          <div>
+            <h4>Stale Reporting</h4>
+            <p>By the time leadership sees the numbers, the moment to act has already passed. Decisions get made on last quarter's reality.</p>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon-block">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <div>
+            <h4>Legacy PMO Cost</h4>
+            <p>Traditional firms charge 3× more, take twice as long, and deliver a static PDF instead of a live, queryable system.</p>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon-block">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          </div>
+          <div>
+            <h4>Numbers Without Meaning</h4>
+            <p>Even when dashboards exist, they show data without explanation. Leadership needs to know what it means and what to do next.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how-works">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">How It Works</div>
+        <h2>From raw data to live insight<br>in days — not months.</h2>
+        <p class="lead" style="margin-top:16px">A structured four-step process that turns your existing data into a decision-making asset that updates automatically.</p>
+      </div>
+      <div class="steps reveal-stagger">
+        <div class="step"><div class="step-num">01</div><h4>Discovery</h4><p>We audit your data sources, understand your decisions, and map what's available to what leadership actually needs to see.</p></div>
+        <div class="step"><div class="step-num">02</div><h4>Connect &amp; Clean</h4><p>We connect to your systems, clean and structure the data, and establish reliable pipelines that refresh automatically.</p></div>
+        <div class="step"><div class="step-num">03</div><h4>Build &amp; Deploy</h4><p>Live dashboards go up in days. Every metric has a tooltip. Every view is filtered for the person using it.</p></div>
+        <div class="step"><div class="step-num">04</div><h4>Ongoing Analysis</h4><p>We stay on as your intelligence partner — explaining what changed, why, and what action the data recommends.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="services-preview">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:48px">
+        <div class="section-tag">Service Tiers</div>
+        <h2>Choose your level of data intelligence.</h2>
+      </div>
+      <div class="tier-cards reveal-stagger">
+        <div class="tier-card">
+          <div class="tier-label">Entry</div>
+          <h3>Insight</h3>
+          <div class="tier-price">From $2,500 / project · Retainers from $1,500/mo</div>
+          <p>For companies ready to see their data clearly for the first time. One domain, one dashboard, one analyst.</p>
+          <ul class="tier-features">
+            <li>One data domain connected</li>
+            <li>Live dashboard (up to 8 KPIs)</li>
+            <li>Monthly analysis memo</li>
+            <li>Quarterly strategy review</li>
+          </ul>
+          <button class="btn-secondary" onclick="showPage('contact')" style="width:100%;justify-content:center">Start a Project</button>
+        </div>
+        <div class="tier-card featured">
+          <div class="tier-label">Mid-Market</div>
+          <h3>Operate</h3>
+          <div class="tier-price" style="color:var(--lgreen)">$3,500–$12,000 / project · Retainers from $3,500/mo</div>
+          <p>For companies running projects and operations that need cross-functional visibility and ongoing support.</p>
+          <ul class="tier-features">
+            <li>Up to 4 data domains</li>
+            <li>Multi-dashboard suite</li>
+            <li>Weekly analysis reports</li>
+            <li>Dedicated data scientist</li>
+            <li>Slack / Teams integration</li>
+          </ul>
+          <button class="btn-green" onclick="showPage('contact')" style="width:100%;justify-content:center">Start a Project</button>
+        </div>
+        <div class="tier-card">
+          <div class="tier-label">Enterprise</div>
+          <h3>Command</h3>
+          <div class="tier-price">Custom engagements · Retainers from $10,000/mo</div>
+          <p>For organizations that need a full-scale intelligence infrastructure and a partner embedded in the operation.</p>
+          <ul class="tier-features">
+            <li>Unlimited data domains</li>
+            <li>Custom dashboard suite</li>
+            <li>Daily briefings to leadership</li>
+            <li>Dedicated data scientist</li>
+            <li>Executive reporting suite</li>
+          </ul>
+          <button class="btn-secondary" onclick="showPage('contact')" style="width:100%;justify-content:center">Start a Project</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="industries">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Industries</div>
+        <h2 style="text-align:center">We work where the data is messy.</h2>
+        <p class="lead" style="margin:16px auto 0;text-align:center">Any company running projects, managing teams, or making decisions without real-time visibility is our client.</p>
+      </div>
+      <div class="industry-grid reveal-stagger" style="margin-top:48px">
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+          <h4>Utilities</h4><p>Asset performance, outage tracking, crew productivity</p>
+        </div>
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="15" rx="1"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div>
+          <h4>Construction</h4><p>Project cost, schedule, subcontractor performance</p>
+        </div>
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+          <h4>Healthcare</h4><p>Staffing ratios, patient flow, compliance tracking</p>
+        </div>
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+          <h4>Finance</h4><p>Portfolio visibility, risk metrics, forecasting</p>
+        </div>
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+          <h4>Human Resources</h4><p>Headcount, attrition, hiring pipeline analytics</p>
+        </div>
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg></div>
+          <h4>Operations</h4><p>Throughput, quality, supply chain visibility</p>
+        </div>
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <h4>Capital Projects</h4><p>Multi-project cost, schedule, and risk dashboards</p>
+        </div>
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><path d="M2 20h.01M7 20v-4"/><path d="M12 20V10"/><path d="M17 20V4"/><path d="M22 20v-8"/></svg></div>
+          <h4>Telecommunications</h4><p>Network performance, outage response, SLA tracking</p>
+        </div>
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          <h4>Real Estate</h4><p>Portfolio analytics, occupancy, asset management</p>
+        </div>
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <h4>Government</h4><p>Program dashboards, compliance tracking, reporting</p>
+        </div>
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+          <h4>Technology</h4><p>Product metrics, engineering velocity, GTM analytics</p>
+        </div>
+        <div class="industry-tile">
+          <div class="industry-tile-icon"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div>
+          <h4>Retail &amp; Distribution</h4><p>Inventory analytics, margin tracking, demand forecasting</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-cta">
+    <div class="container">
+      <div class="section-tag" style="justify-content:center;color:var(--lgreen)">Get Started</div>
+      <h2 style="color:var(--white)">See what your data<br>is already telling you.</h2>
+      <p style="color:rgba(255,255,255,0.65);font-size:1.05rem;margin:20px auto 40px;max-width:500px">Every engagement starts with a discovery call and a custom proposal showing three options. No commitment required.</p>
+      <div class="home-cta-btns">
+        <button class="btn-green" onclick="showPage('start')">Start a Project →</button>
+        <button class="btn-secondary-dark" onclick="showPage('dashboards')">Explore Dashboard Demos</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ═══════════ SERVICES ═══════════ -->
+<div class="page" id="page-services">
+  <section class="services-hero">
+    <div class="container">
+      <div class="section-tag">Services</div>
+      <h1>Data intelligence,<br>delivered as a service.</h1>
+      <p>We are not a staffing firm. We are not a technology vendor. We are a data intelligence partner. The product is clarity — a dedicated analyst who understands your business deeply, moves fast, and delivers insight that drives real decisions. Not a report that sits in a folder.</p>
+    </div>
+  </section>
+  <section class="services-what">
+    <div class="container">
+      <div>
+        <div class="section-tag">What We Do</div>
+        <h2>From raw data to<br>live intelligence.</h2>
+        <p>Most companies already have the data that could transform their decisions. It sits in spreadsheets, project systems, HR tools, and financial software — disconnected, stale, and invisible to leadership.</p>
+        <p>numarket connects to those data sources, cleans and structures the data, builds live dashboards that update automatically, and delivers ongoing analysis that explains what the numbers mean and what to do about it.</p>
+        <div style="margin-top:32px"><button class="btn-primary" onclick="showPage('start')">Start with a Discovery Call →</button></div>
+      </div>
+      <div class="services-list">
+        <div class="service-item">
+          <div class="service-ico"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></div>
+          <div><h4>Data Connection &amp; Pipeline</h4><p>We connect to your existing tools — spreadsheets, databases, ERPs, project systems — and build clean, reliable data pipelines.</p></div>
+        </div>
+        <div class="service-item">
+          <div class="service-ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
+          <div><h4>Live Dashboard Development</h4><p>Custom dashboards that update automatically, built for the person using them — not as a one-size-fits-all tool.</p></div>
+        </div>
+        <div class="service-item">
+          <div class="service-ico"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+          <div><h4>Plain-Language Analysis</h4><p>Regular memos and briefings that explain what the numbers mean and what action they call for — written for decision-makers, not analysts.</p></div>
+        </div>
+        <div class="service-item">
+          <div class="service-ico"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+          <div><h4>Embedded Intelligence Partner</h4><p>For Command-tier clients, a dedicated data scientist embedded in your operation who functions as a strategic intelligence resource.</p></div>
+        </div>
+        <div class="service-item">
+          <div class="service-ico"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+          <div><h4>Ad-Hoc Analysis</h4><p>One-off analytical projects, model builds, or data audits — scoped and priced for fast turnaround. Ideal for specific questions that can't wait for the next planning cycle.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="tiers-full">
+    <div class="container">
+      <div class="tier-row">
+        <div>
+          <div class="tier-row-label">Entry Tier</div>
+          <h2>Insight</h2>
+          <div class="tier-row-price">From $2,500 / project · Retainers from $1,500/mo</div>
+          <p>For companies ready to see their data clearly for the first time. One domain, one dashboard, one analyst.</p>
+          <button class="btn-primary" onclick="showPage('start')">Start a Project</button>
+        </div>
+        <div class="tier-deliverables">
+          <div class="tier-del"><h5>Data Audit</h5><p>We identify what data you have, where it lives, and what it can answer.</p></div>
+          <div class="tier-del"><h5>One Domain Dashboard</h5><p>A single live dashboard covering up to 8 KPIs in your most critical area.</p></div>
+          <div class="tier-del"><h5>Monthly Analysis Memo</h5><p>Plain-language monthly summary of what the data shows and what to watch.</p></div>
+          <div class="tier-del"><h5>Quarterly Strategy Review</h5><p>A 60-minute review connecting data trends to business strategy.</p></div>
+        </div>
+      </div>
+      <div class="tier-row">
+        <div>
+          <div class="tier-row-label">Mid-Market Tier</div>
+          <h2>Operate</h2>
+          <div class="tier-row-price">$3,500–$12,000 / project · Retainers from $3,500/mo</div>
+          <p>For companies running projects, teams, and operations that need cross-functional visibility. A dedicated data scientist manages your intelligence infrastructure.</p>
+          <button class="btn-primary" onclick="showPage('start')">Start a Project</button>
+        </div>
+        <div class="tier-deliverables">
+          <div class="tier-del"><h5>Multi-Domain Coverage</h5><p>Up to 4 connected data domains — operations, finance, HR, and projects in a unified view.</p></div>
+          <div class="tier-del"><h5>Dashboard Suite</h5><p>Multiple dashboards built for different roles — executive, manager, and operations views.</p></div>
+          <div class="tier-del"><h5>Weekly Analysis Reports</h5><p>Weekly briefings on what changed, why, and what the data recommends.</p></div>
+          <div class="tier-del"><h5>Dedicated Data Scientist</h5><p>A single point of contact who knows your data and your business deeply.</p></div>
+          <div class="tier-del"><h5>Slack / Teams Integration</h5><p>Alerts and summaries delivered directly into your communication channels.</p></div>
+          <div class="tier-del"><h5>Ad-Hoc Requests Included</h5><p>Up to 8 hours per month of ad-hoc analytical work included.</p></div>
+        </div>
+      </div>
+      <div class="tier-row">
+        <div>
+          <div class="tier-row-label">Enterprise Tier</div>
+          <h2>Command</h2>
+          <div class="tier-row-price">Custom engagements · Retainers from $10,000/mo</div>
+          <p>For organizations that need a full-scale intelligence infrastructure. A dedicated data scientist, organization-wide data coverage, and a strategic intelligence operation built around exactly what leadership needs to make better decisions at scale.</p>
+          <button class="btn-primary" onclick="showPage('start')">Start a Project</button>
+        </div>
+        <div class="tier-deliverables">
+          <div class="tier-del"><h5>Unlimited Domains</h5><p>Full organizational data coverage with no domain limits.</p></div>
+          <div class="tier-del"><h5>Custom Dashboard Suite</h5><p>Fully custom-designed dashboards built to your brand and exact specifications.</p></div>
+          <div class="tier-del"><h5>Daily Leadership Briefings</h5><p>A daily intelligence digest delivered to the executive team every morning.</p></div>
+          <div class="tier-del"><h5>Dedicated Data Scientist</h5><p>A dedicated numarket data scientist who knows your data and your business as deeply as any internal hire.</p></div>
+          <div class="tier-del"><h5>Executive Reporting</h5><p>Board-ready reports and investor-grade analytics produced on demand.</p></div>
+          <div class="tier-del"><h5>Unlimited Ad-Hoc Requests</h5><p>No cap on analytical requests — your analyst is part of the team, not on a meter.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════ DASHBOARDS ═══════════ -->
+<div class="page" id="page-dashboards">
+  <div class="dashboards-hero">
+    <div class="container">
+      <div class="section-tag">Interactive Demos</div>
+      <h1>The dashboards<br>speak for themselves.</h1>
+      <p>Six fully interactive demos across different industries. Live filters that update the data, hover tooltips explaining every metric, animated charts, and the exact experience your team would use.</p>
+      <div class="dashboard-tabs">
+        <button class="dash-tab active" onclick="switchDash(0)">Utilities Operations</button>
+        <button class="dash-tab" onclick="switchDash(1)">Construction PM</button>
+        <button class="dash-tab" onclick="switchDash(2)">HR Analytics</button>
+        <button class="dash-tab" onclick="switchDash(3)">Financial Performance</button>
+        <button class="dash-tab" onclick="switchDash(4)">Operations Center</button>
+        <button class="dash-tab" onclick="switchDash(5)">Healthcare</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="dashboard-viewer">
+    <div class="container">
+
+      <!-- DASH 1: UTILITIES — teal/green accent -->
+      <div class="dashboard-panel active" id="dash-0">
+        <div class="db-frame">
+          <div class="db-header" style="background:#22577A">
+            <div class="db-header-left">
+              <div style="width:4px;height:40px;background:#57CC99;border-radius:4px;flex-shrink:0"></div>
+              <div><div class="db-title">Grid Operations Intelligence</div><div class="db-subtitle">Regional Utility — Transmission &amp; Distribution</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div class="db-badge" style="background:rgba(87,204,153,.2);color:#80ED99"><span style="width:6px;height:6px;border-radius:50%;background:#57CC99;display:inline-block;animation:pulse 2s infinite"></span>Live</div>
+              <span style="font-size:12px;color:rgba(255,255,255,0.35)">Updated 2 min ago</span>
+            </div>
+          </div>
+          <div class="db-filters">
+            <span class="db-filter-label">Region:</span>
+            <select class="db-filter-select" id="util-region" onchange="updateUtilities()">
+              <option value="all">All Regions</option>
+              <option value="north">North District</option>
+              <option value="south">South District</option>
+              <option value="east">East District</option>
+              <option value="west">West District</option>
+            </select>
+            <select class="db-filter-select" id="util-period" onchange="updateUtilities()">
+              <option value="30">Last 30 Days</option>
+              <option value="90">Last 90 Days</option>
+              <option value="ytd">Year to Date</option>
+            </select>
+          </div>
+          <div class="db-body">
+            <div class="db-insight-bar">
+              <div><div class="db-insight-label">numarket Analysis</div><span>South District SAIDI (91.8) is 9% above the regional average. Crew utilization in that district dropped to 71% — investigate scheduling inefficiencies before the summer peak load period.</span></div>
+            </div>
+            <div class="db-kpi-row">
+              <div class="kpi-card" style="--kc:#57CC99">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#57CC99;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">System Reliability (SAIDI)<span class="tooltip-icon">i</span><div class="tooltip-box">SAIDI measures average minutes of interruption per customer per year. Lower is better. Industry benchmark: under 90 min/year. Your current value is below benchmark.</div></div></div>
+                <div class="kpi-value" id="u-saidi">84.2</div>
+                <div class="kpi-change kpi-up" id="u-saidi-c">6.1% better than last year</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#38A3A5;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Outage Events (period)<span class="tooltip-icon">i</span><div class="tooltip-box">Total unplanned outage events in the selected period, across all grid levels. Includes momentary and sustained interruptions.</div></div></div>
+                <div class="kpi-value" id="u-outages">23</div>
+                <div class="kpi-change kpi-up" id="u-outages-c">4 fewer than prior period</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#80ED99;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Crew Utilization<span class="tooltip-icon">i</span><div class="tooltip-box">Percentage of scheduled crew hours productively deployed on work orders vs. idle, travel, or admin time. Target: 80%.</div></div></div>
+                <div class="kpi-value" id="u-crew">78%</div>
+                <div class="kpi-change kpi-down" id="u-crew-c">2% below 80% target</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#C7F9CC;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Asset Health Index<span class="tooltip-icon">i</span><div class="tooltip-box">Composite score (0–100) across monitored transmission assets. Combines age, inspection results, and maintenance history. Above 70 is acceptable.</div></div></div>
+                <div class="kpi-value" id="u-ahi">71.8</div>
+                <div class="kpi-change kpi-up" id="u-ahi-c">Stable — above 70 threshold</div>
+              </div>
+            </div>
+            <div class="db-charts">
+              <div class="chart-card">
+                <div class="chart-card-header">
+                  <div><div class="chart-card-title">Outage Duration by Month (minutes)</div><div class="chart-card-sub">Hover bars for exact values</div></div>
+                </div>
+                <div class="chart-wrap"><canvas id="util-bar" height="200"></canvas></div>
+                <div class="chart-card-legend">
+                  <div class="legend-item"><div class="legend-dot" style="background:#57CC99"></div>Duration (min)</div>
+                </div>
+              </div>
+              <div class="chart-card">
+                <div class="chart-card-header"><div class="chart-card-title">Outage Cause Breakdown</div></div>
+                <div class="chart-wrap"><canvas id="util-doughnut" height="200"></canvas></div>
+              </div>
+            </div>
+            <div class="db-table-wrap">
+              <div class="db-table-title" style="padding:14px 16px 10px">District Breakdown</div>
+              <table>
+                <thead><tr><th>District</th><th>SAIDI</th><th>Outages</th><th>Avg Restore (hrs)</th><th>Crew Efficiency</th><th>Status</th></tr></thead>
+                <tbody id="util-table">
+                  <tr><td>North</td><td>72.4</td><td>6</td><td>2.1</td><td>83%</td><td><span class="status-pill status-green">On Target</span></td></tr>
+                  <tr><td>South</td><td>91.8</td><td>9</td><td>3.8</td><td>71%</td><td><span class="status-pill status-yellow">Watch</span></td></tr>
+                  <tr><td>East</td><td>88.5</td><td>5</td><td>2.6</td><td>79%</td><td><span class="status-pill status-green">On Target</span></td></tr>
+                  <tr><td>West</td><td>84.2</td><td>3</td><td>1.9</td><td>80%</td><td><span class="status-pill status-green">On Target</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DASH 2: CONSTRUCTION — amber accent -->
+      <div class="dashboard-panel" id="dash-1">
+        <div class="db-frame">
+          <div class="db-header" style="background:#1C3A4A">
+            <div class="db-header-left">
+              <div style="width:4px;height:40px;background:#F0A500;border-radius:4px;flex-shrink:0"></div>
+              <div><div class="db-title">Capital Project Management Suite</div><div class="db-subtitle">Multi-Site Construction Portfolio — 2025–2026</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div class="db-badge" style="background:rgba(240,165,0,.15);color:#F0C040"><span style="width:6px;height:6px;border-radius:50%;background:#F0A500;display:inline-block;animation:pulse 2s infinite"></span>Live</div>
+              <span style="font-size:12px;color:rgba(255,255,255,0.35)">Updated 5 min ago</span>
+            </div>
+          </div>
+          <div class="db-filters">
+            <span class="db-filter-label">Project:</span>
+            <select class="db-filter-select" id="constr-project" onchange="updateConstruction()">
+              <option value="all">All Projects</option>
+              <option value="terminal">Terminal Expansion</option>
+              <option value="bridge">Bridge Rehab</option>
+              <option value="dc">Data Center Build</option>
+              <option value="sub">Substation Upgrade</option>
+            </select>
+            <select class="db-filter-select" id="constr-phase" onchange="updateConstruction()">
+              <option value="all">All Phases</option>
+              <option value="design">Design</option>
+              <option value="construction">Construction</option>
+              <option value="closeout">Closeout</option>
+            </select>
+          </div>
+          <div class="db-body">
+            <div class="db-insight-bar" style="background:#FFF8ED;border-left-color:#F0A500">
+              <div><div class="db-insight-label" style="color:#C8860A">numarket Analysis</div><span>Substation Upgrade is 4% over budget at 98% complete. Bridge Rehab RFI backlog (19 open) is the leading schedule risk — design team response time averaging 12 days vs. 5-day target.</span></div>
+            </div>
+            <div class="db-kpi-row">
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#F0A500;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Portfolio CPI<span class="tooltip-icon">i</span><div class="tooltip-box">Cost Performance Index: Earned Value ÷ Actual Cost. CPI above 1.0 means under budget. Below 1.0 means over. A CPI of 0.96 means you're spending $1 for every $0.96 of work completed.</div></div></div>
+                <div class="kpi-value" id="c-cpi">0.96</div>
+                <div class="kpi-change kpi-down" id="c-cpi-c">Slightly over plan</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#F0A500;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Schedule Index (SPI)<span class="tooltip-icon">i</span><div class="tooltip-box">Schedule Performance Index: Earned Value ÷ Planned Value. Above 1.0 = ahead of schedule. Below 1.0 = behind schedule.</div></div></div>
+                <div class="kpi-value" id="c-spi">1.03</div>
+                <div class="kpi-change kpi-up" id="c-spi-c">Slightly ahead of schedule</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#F0A500;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Committed Cost<span class="tooltip-icon">i</span><div class="tooltip-box">Total contracted costs across the portfolio, including approved change orders and contingency draws to date.</div></div></div>
+                <div class="kpi-value" id="c-cost">$148M</div>
+                <div class="kpi-change kpi-down" id="c-cost-c">$3.2M above baseline</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#F0A500;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Open RFIs<span class="tooltip-icon">i</span><div class="tooltip-box">Total open Requests for Information across all active projects. High RFI counts can signal design gaps or slow response from the design team. Target: under 40.</div></div></div>
+                <div class="kpi-value" id="c-rfi">47</div>
+                <div class="kpi-change kpi-down" id="c-rfi-c">8 above target threshold</div>
+              </div>
+            </div>
+            <div class="db-charts">
+              <div class="chart-card">
+                <div class="chart-card-header"><div class="chart-card-title">Planned vs Actual Spend by Month ($M)</div></div>
+                <div class="chart-wrap"><canvas id="constr-line" height="200"></canvas></div>
+                <div class="chart-card-legend">
+                  <div class="legend-item"><div class="legend-dot" style="background:#9BB3C4"></div>Planned</div>
+                  <div class="legend-item"><div class="legend-dot" style="background:#F0A500"></div>Actual</div>
+                </div>
+              </div>
+              <div class="chart-card">
+                <div class="chart-card-header"><div class="chart-card-title">Change Orders by Category</div></div>
+                <div class="chart-wrap"><canvas id="constr-pie" height="200"></canvas></div>
+              </div>
+            </div>
+            <div class="db-table-wrap">
+              <div class="db-table-title" style="padding:14px 16px 10px">Project Status</div>
+              <table>
+                <thead><tr><th>Project</th><th>Budget</th><th>Spent</th><th>% Complete</th><th>Forecast Finish</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>Terminal Expansion</td><td>$82M</td><td>$53M</td><td>64%</td><td>Oct 2025</td><td><span class="status-pill status-green">On Track</span></td></tr>
+                  <tr><td>Bridge Rehabilitation</td><td>$31M</td><td>$22M</td><td>71%</td><td>Aug 2025</td><td><span class="status-pill status-yellow">At Risk</span></td></tr>
+                  <tr><td>Data Center Build-Out</td><td>$24M</td><td>$9M</td><td>38%</td><td>Jan 2026</td><td><span class="status-pill status-green">On Track</span></td></tr>
+                  <tr><td>Substation Upgrade</td><td>$11M</td><td>$11.4M</td><td>98%</td><td>May 2025</td><td><span class="status-pill status-red">Over Budget</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DASH 3: HR — purple accent -->
+      <div class="dashboard-panel" id="dash-2">
+        <div class="db-frame">
+          <div class="db-header" style="background:#1E2D40">
+            <div class="db-header-left">
+              <div style="width:4px;height:40px;background:#9B72CF;border-radius:4px;flex-shrink:0"></div>
+              <div><div class="db-title">Workforce Intelligence Center</div><div class="db-subtitle">Human Resources Analytics — 1,240 Employees</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div class="db-badge" style="background:rgba(155,114,207,.2);color:#C4A8F0"><span style="width:6px;height:6px;border-radius:50%;background:#9B72CF;display:inline-block;animation:pulse 2s infinite"></span>Daily</div>
+              <span style="font-size:12px;color:rgba(255,255,255,0.35)">Updated daily at 6am</span>
+            </div>
+          </div>
+          <div class="db-filters">
+            <span class="db-filter-label">Department:</span>
+            <select class="db-filter-select" id="hr-dept" onchange="updateHR()">
+              <option value="all">All Departments</option>
+              <option value="eng">Engineering</option>
+              <option value="ops">Operations</option>
+              <option value="fin">Finance</option>
+              <option value="sales">Sales</option>
+            </select>
+            <select class="db-filter-select" id="hr-period" onchange="updateHR()">
+              <option value="12">Last 12 Months</option>
+              <option value="6">Last 6 Months</option>
+              <option value="3">Last 3 Months</option>
+            </select>
+          </div>
+          <div class="db-body">
+            <div class="db-insight-bar" style="background:#F4EEFF;border-left-color:#9B72CF">
+              <div><div class="db-insight-label" style="color:#7C4DB8">numarket Analysis</div><span>Sales attrition at 22.1% is nearly double the company average. Tenure data shows 68% of Sales exits happen in the first 18 months. Onboarding and manager effectiveness are the primary levers to investigate.</span></div>
+            </div>
+            <div class="db-kpi-row">
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#9B72CF;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Voluntary Attrition Rate<span class="tooltip-icon">i</span><div class="tooltip-box">Percentage of employees who voluntarily resigned in the trailing period. Industry benchmark for professional services: 12–15%. Above 18% is a warning signal.</div></div></div>
+                <div class="kpi-value" id="hr-att">14.2%</div>
+                <div class="kpi-change kpi-up" id="hr-att-c">Improved from 17.1% last year</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#9B72CF;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Time-to-Fill (days)<span class="tooltip-icon">i</span><div class="tooltip-box">Average days from job requisition opening to accepted offer. Target: under 35 days for professional roles.</div></div></div>
+                <div class="kpi-value" id="hr-ttf">38d</div>
+                <div class="kpi-change kpi-down" id="hr-ttf-c">3 days above target</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#9B72CF;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Headcount vs. Plan<span class="tooltip-icon">i</span><div class="tooltip-box">Actual filled headcount vs. approved plan. Gaps indicate open roles or hiring delays that may impact productivity and budget.</div></div></div>
+                <div class="kpi-value" id="hr-hc">97%</div>
+                <div class="kpi-change kpi-up" id="hr-hc-c">38 open roles (52 last quarter)</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#9B72CF;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">eNPS Score<span class="tooltip-icon">i</span><div class="tooltip-box">Employee Net Promoter Score. How likely are employees to recommend this company? Scale of -100 to 100. Above 20 is good; above 50 is excellent.</div></div></div>
+                <div class="kpi-value" id="hr-enps">+34</div>
+                <div class="kpi-change kpi-up" id="hr-enps-c">+6 points from last survey</div>
+              </div>
+            </div>
+            <div class="db-charts">
+              <div class="chart-card">
+                <div class="chart-card-header"><div class="chart-card-title">Headcount — Actual vs Plan (12 months)</div></div>
+                <div class="chart-wrap"><canvas id="hr-line" height="200"></canvas></div>
+                <div class="chart-card-legend">
+                  <div class="legend-item"><div class="legend-dot" style="background:#9BB3C4"></div>Plan</div>
+                  <div class="legend-item"><div class="legend-dot" style="background:#9B72CF"></div>Actual</div>
+                </div>
+              </div>
+              <div class="chart-card">
+                <div class="chart-card-header"><div class="chart-card-title">Attrition Rate by Department</div></div>
+                <div class="chart-wrap"><canvas id="hr-bar" height="200"></canvas></div>
+              </div>
+            </div>
+            <div class="db-table-wrap">
+              <div class="db-table-title" style="padding:14px 16px 10px">Department Scorecard</div>
+              <table>
+                <thead><tr><th>Department</th><th>Headcount</th><th>Open Roles</th><th>Attrition</th><th>Avg Tenure</th><th>Health</th></tr></thead>
+                <tbody>
+                  <tr><td>Engineering</td><td>312</td><td>14</td><td>11.4%</td><td>4.2 yrs</td><td><span class="status-pill status-green">Strong</span></td></tr>
+                  <tr><td>Operations</td><td>428</td><td>8</td><td>16.2%</td><td>3.1 yrs</td><td><span class="status-pill status-yellow">Watch</span></td></tr>
+                  <tr><td>Finance</td><td>94</td><td>3</td><td>9.8%</td><td>5.7 yrs</td><td><span class="status-pill status-green">Strong</span></td></tr>
+                  <tr><td>Sales</td><td>186</td><td>11</td><td>22.1%</td><td>2.4 yrs</td><td><span class="status-pill status-red">At Risk</span></td></tr>
+                  <tr><td>Corporate</td><td>220</td><td>2</td><td>12.3%</td><td>6.1 yrs</td><td><span class="status-pill status-green">Strong</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DASH 4: FINANCIAL — blue accent -->
+      <div class="dashboard-panel" id="dash-3">
+        <div class="db-frame">
+          <div class="db-header" style="background:#12283A">
+            <div class="db-header-left">
+              <div style="width:4px;height:40px;background:#38A3A5;border-radius:4px;flex-shrink:0"></div>
+              <div><div class="db-title">Financial Performance Dashboard</div><div class="db-subtitle">Executive View — Regional Mid-Market Firm</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div class="db-badge" style="background:rgba(56,163,165,.2);color:#80E8EA"><span style="width:6px;height:6px;border-radius:50%;background:#38A3A5;display:inline-block;animation:pulse 2s infinite"></span>EOD</div>
+              <span style="font-size:12px;color:rgba(255,255,255,0.35)">End-of-day refresh</span>
+            </div>
+          </div>
+          <div class="db-filters">
+            <span class="db-filter-label">View:</span>
+            <select class="db-filter-select" id="fin-unit" onchange="updateFinancial()">
+              <option value="all">Consolidated</option>
+              <option value="ea">Business Unit — East</option>
+              <option value="we">Business Unit — West</option>
+              <option value="pr">Products Division</option>
+            </select>
+            <select class="db-filter-select" id="fin-yr" onchange="updateFinancial()">
+              <option value="25">FY 2025</option>
+              <option value="q1">Q1 2025</option>
+              <option value="q2">Q2 2025</option>
+              <option value="24">FY 2024 (Actuals)</option>
+            </select>
+          </div>
+          <div class="db-body">
+            <div class="db-insight-bar" style="background:#EAF6F6;border-left-color:#38A3A5">
+              <div><div class="db-insight-label" style="color:#2A8587">numarket Analysis</div><span>Revenue is tracking 8.4% ahead of budget but EBITDA margin (19.8%) is 2.2 pts below target. The gap is in the Products Division — gross margin compression needs investigation before Q3 planning.</span></div>
+            </div>
+            <div class="db-kpi-row">
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#38A3A5;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Revenue YTD<span class="tooltip-icon">i</span><div class="tooltip-box">Total recognized revenue from the start of the fiscal year through the current period, compared against the annual budget on a prorated basis.</div></div></div>
+                <div class="kpi-value" id="f-rev">$24.7M</div>
+                <div class="kpi-change kpi-up" id="f-rev-c">8.4% ahead of budget pace</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#38A3A5;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">EBITDA Margin<span class="tooltip-icon">i</span><div class="tooltip-box">Earnings Before Interest, Taxes, Depreciation, and Amortization as a percentage of total revenue. A proxy for operational profitability. Target for this business: 22%.</div></div></div>
+                <div class="kpi-value" id="f-ebitda">19.8%</div>
+                <div class="kpi-change kpi-down" id="f-ebitda-c">2.2 pts below 22% target</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#38A3A5;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Cash on Hand<span class="tooltip-icon">i</span><div class="tooltip-box">Current liquid cash and equivalents across all operating accounts. Measured against the minimum operating reserve policy of 60 days of expenses.</div></div></div>
+                <div class="kpi-value" id="f-cash">$6.2M</div>
+                <div class="kpi-change kpi-up" id="f-cash-c">82 days of operating reserve</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#38A3A5;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Pipeline Coverage<span class="tooltip-icon">i</span><div class="tooltip-box">Total qualified pipeline divided by remaining annual revenue target. A 3.0× ratio or higher is considered healthy coverage for achieving year-end goals.</div></div></div>
+                <div class="kpi-value" id="f-pipe">3.4×</div>
+                <div class="kpi-change kpi-up" id="f-pipe-c">Healthy coverage ratio</div>
+              </div>
+            </div>
+            <div class="db-charts">
+              <div class="chart-card">
+                <div class="chart-card-header"><div class="chart-card-title">Revenue vs. Budget by Month ($M)</div></div>
+                <div class="chart-wrap"><canvas id="fin-bar" height="200"></canvas></div>
+                <div class="chart-card-legend">
+                  <div class="legend-item"><div class="legend-dot" style="background:#E2EAF0"></div>Budget</div>
+                  <div class="legend-item"><div class="legend-dot" style="background:#38A3A5"></div>Actual</div>
+                </div>
+              </div>
+              <div class="chart-card">
+                <div class="chart-card-header"><div class="chart-card-title">Revenue Mix by Segment</div></div>
+                <div class="chart-wrap"><canvas id="fin-doughnut" height="200"></canvas></div>
+              </div>
+            </div>
+            <div class="db-table-wrap">
+              <div class="db-table-title" style="padding:14px 16px 10px">Business Unit Performance</div>
+              <table>
+                <thead><tr><th>Business Unit</th><th>Revenue YTD</th><th>vs. Budget</th><th>EBITDA%</th><th>Forecast FY</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>Services — East</td><td>$9.1M</td><td>+6.2%</td><td>22.4%</td><td>$21.8M</td><td><span class="status-pill status-green">On Target</span></td></tr>
+                  <tr><td>Services — West</td><td>$8.4M</td><td>+11.3%</td><td>21.1%</td><td>$20.2M</td><td><span class="status-pill status-green">On Target</span></td></tr>
+                  <tr><td>Products Division</td><td>$4.8M</td><td>+2.8%</td><td>14.2%</td><td>$11.5M</td><td><span class="status-pill status-yellow">Watch</span></td></tr>
+                  <tr><td>Advisory</td><td>$2.4M</td><td>-4.1%</td><td>31.8%</td><td>$5.8M</td><td><span class="status-pill status-yellow">Watch</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DASH 5: OPERATIONS — orange/green accent -->
+      <div class="dashboard-panel" id="dash-4">
+        <div class="db-frame">
+          <div class="db-header" style="background:#1A2E20">
+            <div class="db-header-left">
+              <div style="width:4px;height:40px;background:#57CC99;border-radius:4px;flex-shrink:0"></div>
+              <div><div class="db-title">Operations Command Center</div><div class="db-subtitle">Manufacturing &amp; Fulfillment — 3 Facilities</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div class="db-badge" style="background:rgba(87,204,153,.2);color:#80ED99"><span style="width:6px;height:6px;border-radius:50%;background:#57CC99;display:inline-block;animation:pulse 2s infinite"></span>Real-time</div>
+              <span style="font-size:12px;color:rgba(255,255,255,0.35)">15-second refresh</span>
+            </div>
+          </div>
+          <div class="db-filters">
+            <span class="db-filter-label">Facility:</span>
+            <select class="db-filter-select" id="ops-fac" onchange="updateOps()">
+              <option value="all">All Facilities</option>
+              <option value="atl">Atlanta — Plant A</option>
+              <option value="hou">Houston — Plant B</option>
+              <option value="phx">Phoenix — Plant C</option>
+            </select>
+            <select class="db-filter-select" id="ops-period" onchange="updateOps()">
+              <option value="day">Today</option>
+              <option value="week">This Week</option>
+              <option value="month">This Month</option>
+            </select>
+          </div>
+          <div class="db-body">
+            <div class="db-insight-bar">
+              <div><div class="db-insight-label">numarket Analysis</div><span>Houston Plant B OEE at 71% is dragging the portfolio average. Root cause: 2.1 hrs downtime from equipment failure — highest of the three facilities. PM schedule should be reviewed before next production cycle.</span></div>
+            </div>
+            <div class="db-kpi-row">
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#57CC99;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">OEE — All Facilities<span class="tooltip-icon">i</span><div class="tooltip-box">Overall Equipment Effectiveness: the gold standard for manufacturing productivity. Combines Availability × Performance × Quality. World-class OEE is 85%+. Below 65% signals major opportunity.</div></div></div>
+                <div class="kpi-value" id="o-oee">74%</div>
+                <div class="kpi-change kpi-up" id="o-oee-c">+3 pts from last month</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#57CC99;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">First Pass Yield<span class="tooltip-icon">i</span><div class="tooltip-box">Percentage of units completing production and meeting all quality standards without rework. Target: 97.5%.</div></div></div>
+                <div class="kpi-value" id="o-fpy">96.4%</div>
+                <div class="kpi-change kpi-down" id="o-fpy-c">1.1 pts below target</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#57CC99;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">On-Time Delivery<span class="tooltip-icon">i</span><div class="tooltip-box">Percentage of customer orders shipped on or before the promised delivery date. Directly tied to customer satisfaction and contract compliance. Target: 98%.</div></div></div>
+                <div class="kpi-value" id="o-otd">97.1%</div>
+                <div class="kpi-change kpi-up" id="o-otd-c">Near target, stable</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#57CC99;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Units Produced<span class="tooltip-icon">i</span><div class="tooltip-box">Total completed units across all active production lines for the selected period, compared against the production plan.</div></div></div>
+                <div class="kpi-value" id="o-units">4,820</div>
+                <div class="kpi-change kpi-up" id="o-units-c">102% of daily plan</div>
+              </div>
+            </div>
+            <div class="db-charts">
+              <div class="chart-card">
+                <div class="chart-card-header"><div class="chart-card-title">Daily Production — Actual vs. Plan</div></div>
+                <div class="chart-wrap"><canvas id="ops-line" height="200"></canvas></div>
+                <div class="chart-card-legend">
+                  <div class="legend-item"><div class="legend-dot" style="background:#9BB3C4"></div>Plan</div>
+                  <div class="legend-item"><div class="legend-dot" style="background:#57CC99"></div>Actual</div>
+                </div>
+              </div>
+              <div class="chart-card">
+                <div class="chart-card-header"><div class="chart-card-title">Downtime by Root Cause (hrs)</div></div>
+                <div class="chart-wrap"><canvas id="ops-bar" height="200"></canvas></div>
+              </div>
+            </div>
+            <div class="db-table-wrap">
+              <div class="db-table-title" style="padding:14px 16px 10px">Facility Status</div>
+              <table>
+                <thead><tr><th>Facility</th><th>OEE</th><th>FPY</th><th>Units</th><th>Downtime (hrs)</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>Atlanta — Plant A</td><td>78%</td><td>97.8%</td><td>2,140</td><td>0.8</td><td><span class="status-pill status-green">Running</span></td></tr>
+                  <tr><td>Houston — Plant B</td><td>71%</td><td>95.1%</td><td>1,620</td><td>2.1</td><td><span class="status-pill status-yellow">Degraded</span></td></tr>
+                  <tr><td>Phoenix — Plant C</td><td>76%</td><td>96.8%</td><td>1,060</td><td>0.4</td><td><span class="status-pill status-green">Running</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DASH 6: HEALTHCARE — rose/red accent -->
+      <div class="dashboard-panel" id="dash-5">
+        <div class="db-frame">
+          <div class="db-header" style="background:#1F1A2E">
+            <div class="db-header-left">
+              <div style="width:4px;height:40px;background:#E05C8A;border-radius:4px;flex-shrink:0"></div>
+              <div><div class="db-title">Clinical Operations Dashboard</div><div class="db-subtitle">Regional Health Network — 3 Hospitals, 14 Clinics</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div class="db-badge" style="background:rgba(224,92,138,.15);color:#F4A0BF"><span style="width:6px;height:6px;border-radius:50%;background:#E05C8A;display:inline-block;animation:pulse 2s infinite"></span>Hourly</div>
+              <span style="font-size:12px;color:rgba(255,255,255,0.35)">Refreshed each hour</span>
+            </div>
+          </div>
+          <div class="db-filters">
+            <span class="db-filter-label">Facility:</span>
+            <select class="db-filter-select" id="hc-fac" onchange="updateHealthcare()">
+              <option value="all">All Facilities</option>
+              <option value="main">Main Campus Hospital</option>
+              <option value="north">North Campus Hospital</option>
+              <option value="clinics">Outpatient Clinics</option>
+            </select>
+            <select class="db-filter-select" id="hc-dept" onchange="updateHealthcare()">
+              <option value="all">All Departments</option>
+              <option value="ed">Emergency Dept.</option>
+              <option value="icu">ICU / Critical Care</option>
+              <option value="surg">Surgical</option>
+              <option value="med">Med / Surg</option>
+            </select>
+          </div>
+          <div class="db-body">
+            <div class="db-insight-bar" style="background:#FFF0F5;border-left-color:#E05C8A">
+              <div><div class="db-insight-label" style="color:#C0376A">numarket Analysis</div><span>ED door-to-provider time has increased 18% over 30 days, driven by patient volume surge and nursing vacancy rate hitting 14.2% — 4 pts above target. Travel nurse spend is up $340K MoM as a result.</span></div>
+            </div>
+            <div class="db-kpi-row">
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#E05C8A;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Avg ED Wait Time<span class="tooltip-icon">i</span><div class="tooltip-box">Average time from patient arrival to first contact with a licensed provider in the Emergency Department. CMS benchmark: under 24 minutes. Higher wait times are tied to patient satisfaction and outcomes.</div></div></div>
+                <div class="kpi-value" id="hc-wait">34 min</div>
+                <div class="kpi-change kpi-down" id="hc-wait-c">18% above 28-min target</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#E05C8A;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Nursing Vacancy Rate<span class="tooltip-icon">i</span><div class="tooltip-box">Percentage of budgeted nursing FTE positions that are currently unfilled. A vacancy rate above 10% typically requires travel staff. Target: under 10%.</div></div></div>
+                <div class="kpi-value" id="hc-vac">14.2%</div>
+                <div class="kpi-change kpi-down" id="hc-vac-c">4.2 pts above 10% target</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#E05C8A;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">Bed Occupancy Rate<span class="tooltip-icon">i</span><div class="tooltip-box">Percentage of licensed inpatient beds currently occupied. Optimal range for efficiency: 85–90%. Above 95% creates patient flow bottlenecks.</div></div></div>
+                <div class="kpi-value" id="hc-bed">88%</div>
+                <div class="kpi-change kpi-up" id="hc-bed-c">Within optimal 85–90% range</div>
+              </div>
+              <div class="kpi-card">
+                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#E05C8A;border-radius:2px 2px 0 0"></div>
+                <div class="kpi-label"><div class="tooltip-wrap">HCAHPS Score<span class="tooltip-icon">i</span><div class="tooltip-box">Hospital Consumer Assessment of Healthcare Providers and Systems — the standardized patient satisfaction survey. Scores are percentile-ranked nationally. Top quartile starts at 75th percentile.</div></div></div>
+                <div class="kpi-value" id="hc-hcahps">72nd</div>
+                <div class="kpi-change kpi-neutral" id="hc-hcahps-c">3 pts from top quartile</div>
+              </div>
+            </div>
+            <div class="db-charts">
+              <div class="chart-card">
+                <div class="chart-card-header"><div class="chart-card-title">ED Wait Time — 30-Day Trend (minutes)</div></div>
+                <div class="chart-wrap"><canvas id="hc-line" height="200"></canvas></div>
+                <div class="chart-card-legend">
+                  <div class="legend-item"><div class="legend-dot" style="background:#9BB3C4"></div>Target (28 min)</div>
+                  <div class="legend-item"><div class="legend-dot" style="background:#E05C8A"></div>Actual</div>
+                </div>
+              </div>
+              <div class="chart-card">
+                <div class="chart-card-header"><div class="chart-card-title">Staffing Vacancy by Unit</div></div>
+                <div class="chart-wrap"><canvas id="hc-bar" height="200"></canvas></div>
+              </div>
+            </div>
+            <div class="db-table-wrap">
+              <div class="db-table-title" style="padding:14px 16px 10px">Facility Summary</div>
+              <table>
+                <thead><tr><th>Facility</th><th>Occupancy</th><th>Nursing Vacancy</th><th>ED Wait</th><th>HCAHPS</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>Main Campus</td><td>91%</td><td>16.8%</td><td>38 min</td><td>68th</td><td><span class="status-pill status-red">At Risk</span></td></tr>
+                  <tr><td>North Campus</td><td>84%</td><td>11.2%</td><td>29 min</td><td>76th</td><td><span class="status-pill status-green">On Target</span></td></tr>
+                  <tr><td>Outpatient Clinics</td><td>78%</td><td>9.4%</td><td>18 min</td><td>81st</td><td><span class="status-pill status-green">On Target</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════ WORK ═══════════ -->
+<div class="page" id="page-work">
+  <section class="work-hero">
+    <div class="container">
+      <div class="section-tag">Our Work</div>
+      <h1>We show before<br>we sell.</h1>
+      <p>Every engagement starts with one question: what would it mean if leadership could see this clearly? These case studies represent the types of intelligence transformations we deliver — across industries, data environments, and organizational sizes.</p>
+    </div>
+  </section>
+  <section class="case-studies">
+    <div class="container">
+      <div class="case-grid reveal-stagger">
+        <div class="case-card">
+          <div class="case-card-visual" style="background:linear-gradient(135deg,#EBF8F7,#C7F9CC)">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#22577A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <div class="case-card-content">
+            <div class="case-industry">Regional Utility — Southeast</div>
+            <h3>From spreadsheet chaos to live grid intelligence in 3 weeks</h3>
+            <p>A regional utility was running outage reporting from 14 separate Excel files maintained by different district teams. Leadership had no unified view. Field crews had no shared priority queue. We connected their outage management system, work order database, and crew scheduling tool — and built a live command center that replaced 40 hours of weekly manual reporting.</p>
+            <div class="case-results">
+              <div><div class="case-result-num">40<span>hrs</span></div><div class="case-result-label">weekly reporting eliminated</div></div>
+              <div><div class="case-result-num">18<span>%</span></div><div class="case-result-label">improvement in crew deployment</div></div>
+              <div><div class="case-result-num">3<span>wk</span></div><div class="case-result-label">time to first live dashboard</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="case-card">
+          <div class="case-card-content">
+            <div class="case-industry">General Contractor — Multi-State</div>
+            <h3>$148M portfolio managed from one screen instead of twelve</h3>
+            <p>A regional GC managing 9 concurrent capital projects had budget data in one system, schedules in another, subcontractor performance in spreadsheets, and RFI logs in email threads. We built a unified portfolio dashboard that pulled from all four sources — giving the CFO and PM leadership real-time cost performance, schedule risk, and change order burn in a single view.</p>
+            <div class="case-results">
+              <div><div class="case-result-num">9</div><div class="case-result-label">projects in one view</div></div>
+              <div><div class="case-result-num">$2.4<span>M</span></div><div class="case-result-label">over-budget flags caught early</div></div>
+            </div>
+          </div>
+          <div class="case-card-visual" style="background:linear-gradient(135deg,#FFF9E8,#FFE8B2)">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#22577A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="1"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+          </div>
+        </div>
+        <div class="case-card">
+          <div class="case-card-visual" style="background:linear-gradient(135deg,#F4EEFF,#DDD0F8)">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#22577A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          <div class="case-card-content">
+            <div class="case-industry">Professional Services Firm — National</div>
+            <h3>HR leadership finally saw their attrition problem — and its source</h3>
+            <p>An 1,100-person firm knew attrition was high but had no visibility into where, why, or when people were leaving. We built a workforce intelligence dashboard that segmented attrition by department, tenure band, and manager — revealing that 68% of voluntary exits in the prior year came from employees in their first 18 months reporting to five specific managers.</p>
+            <div class="case-results">
+              <div><div class="case-result-num">68<span>%</span></div><div class="case-result-label">of exits traced to root cause</div></div>
+              <div><div class="case-result-num">$1.1<span>M</span></div><div class="case-result-label">estimated retention savings</div></div>
+              <div><div class="case-result-num">2<span>wk</span></div><div class="case-result-label">kickoff to live dashboard</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="approach">
+    <div class="container">
+      <div class="section-tag">Our Approach</div>
+      <h2>Why numarket works<br>when others don't.</h2>
+      <div class="approach-grid reveal-stagger">
+        <div class="approach-card"><div class="approach-num">01</div><h4>We use your existing data</h4><p>We don't require new software purchases, expensive migrations, or a 6-month implementation. We connect to what you already have.</p></div>
+        <div class="approach-card"><div class="approach-num">02</div><h4>Data scientists, not staffing</h4><p>A numarket analyst moves faster than a legacy PMO firm — because our methodology is built for speed and our team focuses on outcomes, not billable hours.</p></div>
+        <div class="approach-card"><div class="approach-num">03</div><h4>We explain what it means</h4><p>Dashboards show the numbers. We explain what they mean and what to do about them. Plain language, not analyst jargon.</p></div>
+        <div class="approach-card"><div class="approach-num">04</div><h4>We show before we sell</h4><p>Our back-pocket offer: one free dashboard built on your own data before you spend a dollar. We earn trust by delivering it first.</p></div>
+        <div class="approach-card"><div class="approach-num">05</div><h4>The product is insight</h4><p>We're not selling software subscriptions. We're selling better decisions — the technology is how we deliver it.</p></div>
+        <div class="approach-card"><div class="approach-num">06</div><h4>Three options, always</h4><p>Every proposal shows three engagement options. You choose the scope, timeline, and investment level that fits where your organization is right now.</p></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════ CONTACT ═══════════ -->
+<div class="page" id="page-contact">
+  <section class="contact-hero">
+    <div class="container">
+      <div class="section-tag">Contact</div>
+      <h1>Let's talk about<br>your data.</h1>
+      <p>Whether you have a specific project in mind or just want to understand what's possible — we're easy to reach and quick to respond.</p>
+    </div>
+  </section>
+
+  <!-- About + contact details -->
+  <div style="background:var(--navy);padding:72px 0">
+    <div class="container">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start">
+        <div>
+          <div class="section-tag" style="color:var(--lgreen)">About numarket</div>
+          <h2 style="color:var(--white);margin-bottom:20px;font-size:clamp(1.6rem,2.5vw,2.2rem)">Atlanta-built.<br>Nationally deployed.</h2>
+          <p style="color:rgba(255,255,255,0.65);font-size:0.975rem;line-height:1.85;margin-bottom:28px">numarket was founded in Atlanta, Georgia by data scientists who were tired of watching mid-size companies overpay for slow, consultant-heavy analytics that delivered a PDF and disappeared. We built numarket to be different — a data intelligence partner that moves at the speed of your business, speaks the language of your industry, and earns the right to stay by showing results before asking for a contract.</p>
+          <p style="color:rgba(255,255,255,0.65);font-size:0.975rem;line-height:1.85">Atlanta is our home. Every major industry is our market. If your data isn't working for your leadership team yet, that's exactly the problem we exist to solve.</p>
+          <div style="margin-top:32px">
+            <button class="btn-green" onclick="showPage('start')">Start a Project →</button>
+          </div>
+        </div>
+        <div style="display:grid;gap:16px">
+          <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:28px;display:flex;gap:18px;align-items:flex-start">
+            <div style="width:44px;height:44px;background:rgba(87,204,153,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#57CC99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:6px">Headquarters</div>
+              <div style="font-size:15px;color:var(--white);font-weight:500;margin-bottom:3px">Atlanta, Georgia</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.5)">Serving clients across the United States</div>
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:28px;display:flex;gap:18px;align-items:flex-start">
+            <div style="width:44px;height:44px;background:rgba(87,204,153,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#57CC99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.7A2 2 0 012 .98h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.58a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.9v2.02z"/></svg>
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:6px">Phone</div>
+              <div style="font-size:15px;color:var(--white);font-weight:500;margin-bottom:3px">(404) 555-0192</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.5)">Mon–Fri, 8am–6pm ET</div>
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:28px;display:flex;gap:18px;align-items:flex-start">
+            <div style="width:44px;height:44px;background:rgba(87,204,153,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#57CC99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:6px">Email</div>
+              <div style="font-size:15px;color:var(--white);font-weight:500;margin-bottom:3px">hello@numarket.io</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.5)">Response within 1 business day</div>
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:28px;display:flex;gap:18px;align-items:flex-start">
+            <div style="width:44px;height:44px;background:rgba(87,204,153,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#57CC99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:6px">Response Time</div>
+              <div style="font-size:15px;color:var(--white);font-weight:500;margin-bottom:3px">Within 1 Business Day</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.5)">No pitch deck before we listen</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Free dashboard offer strip -->
+  <div style="padding:64px 0;background:var(--off);border-bottom:1px solid var(--gray100)">
+    <div class="container">
+      <div style="display:grid;grid-template-columns:1fr auto;gap:48px;align-items:center">
+        <div>
+          <div class="section-tag">The Free Dashboard Offer</div>
+          <h2 style="font-size:clamp(1.4rem,2.2vw,1.9rem);color:var(--navy);margin-bottom:12px">We show what's possible before<br>you invest anything.</h2>
+          <p style="font-size:0.975rem;color:var(--gray500);line-height:1.7;max-width:560px">Ask us about building your first dashboard using your own data — at no cost, no commitment. We connect to your data, build it out, and show you what live intelligence looks like for your specific operation. This is how every great partnership starts.</p>
+        </div>
+        <div style="flex-shrink:0">
+          <button class="btn-primary" onclick="showPage('start')">Start a Project →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ START A PROJECT ═══════════ -->
+<div class="page" id="page-start">
+  <section class="contact-hero">
+    <div class="container">
+      <div class="section-tag">Start a Project</div>
+      <h1>Every engagement<br>starts with a conversation.</h1>
+      <p>Tell us what you're trying to see — we'll tell you what's possible. No commitment required. Every proposal includes three options at different scope and investment levels.</p>
+    </div>
+  </section>
+  <section class="contact-main">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h3>What happens after<br>you reach out</h3>
+          <p>We respond within one business day. If there's a fit, we schedule a 30-minute discovery call to understand your data environment and what decisions you're trying to make better.</p>
+          <ul class="contact-bullets">
+            <li>We audit what data you already have</li>
+            <li>We scope what's possible in your environment</li>
+            <li>We deliver a proposal with three engagement options</li>
+            <li>You choose the scope — or we offer one free dashboard first</li>
+          </ul>
+          <div style="margin-top:8px;padding:24px;background:var(--mint);border-radius:12px;">
+            <div style="font-weight:600;font-size:14px;color:var(--navy);margin-bottom:8px">The Free Dashboard Offer</div>
+            <p style="font-size:13px;color:var(--gray700);line-height:1.65;margin:0">Ask us about building your first dashboard using your own data — at no cost, no commitment. We show what's possible before you invest anything.</p>
+          </div>
+          <div style="margin-top:24px">
+            <div style="font-size:13px;color:var(--gray500);margin-bottom:6px">Or reach us directly:</div>
+            <div style="font-size:14px;font-weight:500;color:var(--navy)">hello@numarket.io</div>
+            <div style="font-size:14px;font-weight:500;color:var(--navy);margin-top:4px">(404) 555-0192</div>
+          </div>
+        </div>
+        <div class="contact-form">
+          <h3>Request a Proposal</h3>
+          <p>Tell us a bit about your organization and what you're looking to solve.</p>
+          <div id="contact-form-wrap">
+            <div class="form-row">
+              <div class="form-group"><label>First Name *</label><input type="text" placeholder="Jane"></div>
+              <div class="form-group"><label>Last Name *</label><input type="text" placeholder="Smith"></div>
+            </div>
+            <div class="form-group"><label>Work Email *</label><input type="email" placeholder="jane@company.com"></div>
+            <div class="form-row">
+              <div class="form-group"><label>Company *</label><input type="text" placeholder="Acme Corp"></div>
+              <div class="form-group"><label>Phone</label><input type="tel" placeholder="(404) 555-0100"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Company Size</label>
+                <select><option value="">Select...</option><option>50–200 employees</option><option>200–500 employees</option><option>500–2,000 employees</option><option>2,000+ employees</option></select>
+              </div>
+              <div class="form-group"><label>Industry</label>
+                <select><option value="">Select...</option><option>Utilities / Energy</option><option>Construction / Real Estate</option><option>Healthcare</option><option>Finance / Insurance</option><option>Manufacturing / Operations</option><option>Professional Services</option><option>Government / Public Sector</option><option>Other</option></select>
+              </div>
+            </div>
+            <div class="form-group"><label>What are you trying to see more clearly?</label>
+              <textarea placeholder="Describe the data problem, the decisions you're trying to make, or the systems you're working with…"></textarea>
+            </div>
+            <button class="btn-primary" onclick="submitForm()" style="width:100%;justify-content:center;margin-top:8px">Send Request →</button>
+            <p class="form-note">We respond within 1 business day. No pitch deck before we listen.</p>
+          </div>
+          <div class="form-success" id="form-success">
+            <div class="success-icon">✓</div>
+            <h4>We've received your request.</h4>
+            <p>Someone from numarket will be in touch within one business day. We'll come prepared — and curious.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="logo-mark">
+          <span class="logo-nu">nu</span>
+          <span class="logo-slash"><svg viewBox="0 0 14 20" fill="none"><line x1="2" y1="18" x2="12" y2="2" stroke="#57CC99" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="2" r="1.5" fill="#57CC99"/></svg></span>
+          <span class="logo-market">market</span>
+        </div>
+        <div class="footer-tagline-sub">Trust the Data.</div>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><button onclick="showPage('home')">Home</button></li>
+          <li><button onclick="showPage('work')">Our Work</button></li>
+          <li><button onclick="showPage('contact')">Contact</button></li>
+          <li><button onclick="showPage('start')">Start a Project</button></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Services</h5>
+        <ul>
+          <li><button onclick="showPage('services')">Insight</button></li>
+          <li><button onclick="showPage('services')">Operate</button></li>
+          <li><button onclick="showPage('services')">Command</button></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Demos</h5>
+        <ul>
+          <li><button onclick="showPage('dashboards');switchDash(0)">Utilities</button></li>
+          <li><button onclick="showPage('dashboards');switchDash(1)">Construction</button></li>
+          <li><button onclick="showPage('dashboards');switchDash(2)">HR Analytics</button></li>
+          <li><button onclick="showPage('dashboards');switchDash(3)">Financial</button></li>
+          <li><button onclick="showPage('dashboards');switchDash(4)">Operations</button></li>
+          <li><button onclick="showPage('dashboards');switchDash(5)">Healthcare</button></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 numarket LLC. All rights reserved.</p>
+      <span class="footer-bottom-tagline">Trust the Data.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── ROUTING ── */
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const pg = document.getElementById('page-' + name);
+  if (pg) pg.classList.add('active');
+  document.querySelectorAll('.nav-links button, .mobile-menu button').forEach(b => b.classList.remove('active'));
+  const navId = name === 'start' ? 'nav-start' : 'nav-' + name;
+  const nb = document.getElementById(navId);
+  if (nb) nb.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (name === 'dashboards') setTimeout(initAllCharts, 80);
+  setTimeout(initReveal, 60);
+  closeMobileMenu();
+}
+
+/* ── MOBILE MENU ── */
+function toggleMenu() {
+  const btn = document.getElementById('hamburger');
+  const menu = document.getElementById('mobile-menu');
+  const isOpen = menu.classList.contains('open');
+  btn.classList.toggle('open', !isOpen);
+  if (!isOpen) {
+    menu.style.display = 'flex';
+    requestAnimationFrame(() => menu.classList.add('open'));
+  } else {
+    closeMobileMenu();
+  }
+}
+function closeMobileMenu() {
+  const btn = document.getElementById('hamburger');
+  const menu = document.getElementById('mobile-menu');
+  if (btn) btn.classList.remove('open');
+  if (menu) {
+    menu.classList.remove('open');
+    setTimeout(() => { if (!menu.classList.contains('open')) menu.style.display = 'none'; }, 200);
+  }
+}
+function navTo(page) { showPage(page); }
+
+/* ── TOOLTIP POSITIONING ── */
+document.addEventListener('mouseover', function(e) {
+  const icon = e.target.closest('.tooltip-icon');
+  if (!icon) return;
+  const box = icon.parentElement.querySelector('.tooltip-box');
+  if (!box) return;
+  const rect = icon.getBoundingClientRect();
+  box.style.left = Math.min(rect.left + rect.width / 2, window.innerWidth - 130) + 'px';
+  box.style.top  = (rect.top - 10) + 'px';
+  box.style.transform = 'translate(-50%, -100%)';
+  box.classList.add('tt-visible');
+});
+document.addEventListener('mouseout', function(e) {
+  const icon = e.target.closest('.tooltip-icon');
+  if (!icon) return;
+  const box = icon.parentElement.querySelector('.tooltip-box');
+  if (box) box.classList.remove('tt-visible');
+});
+// Close mobile menu on outside click
+document.addEventListener('click', function(e) {
+  const menu = document.getElementById('mobile-menu');
+  const btn  = document.getElementById('hamburger');
+  if (menu && menu.classList.contains('open') && !menu.contains(e.target) && !btn.contains(e.target)) {
+    closeMobileMenu();
+  }
+});
+
+/* ── DASHBOARD TABS ── */
+function switchDash(idx) {
+  document.querySelectorAll('.dashboard-panel').forEach((p,i) => p.classList.toggle('active', i === idx));
+  document.querySelectorAll('.dash-tab').forEach((t,i) => t.classList.toggle('active', i === idx));
+  setTimeout(initAllCharts, 60);
+}
+
+/* ── CHART HELPERS ── */
+const P = {
+  navy:'#22577A', teal:'#38A3A5', green:'#57CC99', lgreen:'#80ED99', mint:'#C7F9CC',
+  gray:'#9BB3C4', lgray:'#E2EAF0', amber:'#F0A500', purple:'#9B72CF', rose:'#E05C8A',
+  font:"'DM Sans', sans-serif"
+};
+const ttOpts = { bodyFont:{family:P.font}, titleFont:{family:P.font,weight:'600'}, backgroundColor:'#0F1F2A', padding:12, cornerRadius:8, displayColors:true };
+const scaleOpts = {
+  x: { grid:{color:'rgba(34,87,122,0.05)',drawBorder:false}, ticks:{font:{family:P.font,size:11},color:P.gray} },
+  y: { grid:{color:'rgba(34,87,122,0.05)',drawBorder:false}, ticks:{font:{family:P.font,size:11},color:P.gray} }
+};
+const instances = {};
+function mk(id, cfg) {
+  if (instances[id]) { instances[id].destroy(); delete instances[id]; }
+  const el = document.getElementById(id);
+  if (!el) return;
+  instances[id] = new Chart(el, cfg);
+}
+
+/* ══════════════════════════════════════════
+   SOURCE-OF-TRUTH DATA
+   All "All" values are sums/averages of parts
+══════════════════════════════════════════ */
+
+/* ── UTILITIES ──
+   Per-region monthly outage duration (min).
+   All = sum of all 4 regions each month. */
+const UD = {
+  north: { dur:[180,140,160,130,100, 85,105,115,110, 85, 95,140], saidi:72.4, outages:6, crew:83, ahi:76.2, cause:[22,20,35,14, 9] },
+  south: { dur:[280,210,240,200,145,135,155,175,165,130,140,210], saidi:91.8, outages:9, crew:71, ahi:68.4, cause:[42,32,12, 8, 6] },
+  east:  { dur:[220,170,190,160,115,105,125,145,135,105,115,170], saidi:88.5, outages:5, crew:79, ahi:72.1, cause:[35,28,18,12, 7] },
+  west:  { dur:[140,120,120, 90, 70, 65, 75, 85, 80, 60, 70, 90], saidi:84.2, outages:3, crew:80, ahi:73.8, cause:[28,25,24,14, 9] }
+};
+// Compute "all" from parts
+UD.all = {
+  dur: UD.north.dur.map((_,i)=>UD.north.dur[i]+UD.south.dur[i]+UD.east.dur[i]+UD.west.dur[i]),
+  saidi: +((UD.north.saidi+UD.south.saidi+UD.east.saidi+UD.west.saidi)/4).toFixed(1),
+  outages: UD.north.outages+UD.south.outages+UD.east.outages+UD.west.outages,
+  crew: Math.round((UD.north.crew+UD.south.crew+UD.east.crew+UD.west.crew)/4),
+  ahi: +((UD.north.ahi+UD.south.ahi+UD.east.ahi+UD.west.ahi)/4).toFixed(1),
+  cause: [34,28,18,12,8]  // weighted portfolio cause mix
+};
+
+/* ── CONSTRUCTION ──
+   Per-project cumulative spend. All = sum of all 4. */
+const CD = {
+  terminal:{ plan:[4.8, 6.0, 6.8, 7.6, 8.0, 9.2,10.0,10.7,11.5,12.2,13.0,13.8], act:[4.7,5.9,7.0,8.0,8.4,9.4,10.3,11.1,11.9,12.8,13.6,null], cpi:1.01, spi:1.05, cost:'$53M', costC:'On track', rfi:12, co:[8,26,22,14,30] },
+  bridge:   { plan:[1.8, 2.3, 2.7, 3.0, 3.2, 3.6, 4.0, 4.2, 4.5, 4.8, 5.1, 5.4], act:[1.8,2.3,2.8,3.2,3.4,3.8,4.2,4.5,4.8,5.2,5.6,null], cpi:0.94, spi:0.97, cost:'$22M', costC:'$1.4M at risk', rfi:19, co:[41,18,20,14, 7] },
+  dc:       { plan:[0.8, 1.2, 1.5, 1.8, 2.1, 2.4, 2.7, 2.9, 3.2, 3.4, 3.7, 3.9], act:[0.7,1.1,1.4,1.7,1.9,2.2,2.5,null,null,null,null,null], cpi:1.03, spi:1.08, cost:'$9M',  costC:'On track', rfi:8,  co:[22,28,25,18, 7] },
+  sub:      { plan:[0.8, 0.9, 1.3, 1.8, 2.0, 2.2, 2.4,null,null,null,null,null], act:[0.8,0.9,1.4,2.0,2.2,2.4,2.6,2.7,null,null,null,null], cpi:0.96, spi:0.99, cost:'$11.4M',costC:'$400K over budget', rfi:8, co:[19,22,31,20, 8] }
+};
+// Compute "all" as sum (null-safe)
+CD.all = {
+  plan: Array.from({length:12},(_,i)=>{
+    const v=[CD.terminal.plan[i],CD.bridge.plan[i],CD.dc.plan[i],CD.sub.plan[i]].filter(x=>x!=null);
+    if(!v.length) return null;
+    return +v.reduce((a,b)=>a+b,0).toFixed(1);
+  }),
+  act: Array.from({length:12},(_,i)=>{
+    const v=[CD.terminal.act[i],CD.bridge.act[i],CD.dc.act[i],CD.sub.act[i]].filter(x=>x!=null);
+    if(!v.length) return null;
+    return +v.reduce((a,b)=>a+b,0).toFixed(1);
+  }),
+  cpi:0.96, spi:1.03, cost:'$148M', costC:'$3.2M above baseline', rfi:47,
+  co:[31,26,19,14,10]
+};
+
+/* ── HR ──
+   Per-department headcount and attrition. All = sum/avg. */
+const HR = {
+  eng:  { hcPlan:[296,298,300,302,304,306,308,309,310,311,312,312], hcAct:[290,293,295,297,299,302,304,306,308,309,311,312], att:11.4, ttf:42, hcN:312, open:14, enps:41, tenure:4.2 },
+  ops:  { hcPlan:[420,421,422,423,424,425,426,427,428,428,428,428], hcAct:[412,414,416,418,420,421,423,424,425,426,427,428], att:16.2, ttf:31, hcN:428, open:8,  enps:28, tenure:3.1 },
+  fin:  { hcPlan:[ 90, 90, 91, 91, 92, 92, 92, 93, 93, 93, 94, 94], hcAct:[ 88, 89, 90, 90, 91, 91, 92, 92, 93, 93, 94, 94], att: 9.8, ttf:36, hcN: 94, open:3,  enps:45, tenure:5.7 },
+  sales:{ hcPlan:[180,180,181,182,183,184,184,185,185,186,186,186], hcAct:[175,176,177,178,179,180,181,182,183,184,185,186], att:22.1, ttf:44, hcN:186, open:11, enps:12, tenure:2.4 },
+  corp: { hcPlan:[214,215,216,217,218,218,219,219,220,220,220,220], hcAct:[213,214,214,215,215,214,216,214,215,216,217,220], att:12.3, ttf:28, hcN:220, open:2,  enps:38, tenure:6.1 }
+};
+HR.all = {
+  hcPlan: HR.eng.hcPlan.map((_,i)=>HR.eng.hcPlan[i]+HR.ops.hcPlan[i]+HR.fin.hcPlan[i]+HR.sales.hcPlan[i]+HR.corp.hcPlan[i]),
+  hcAct:  HR.eng.hcAct.map((_,i)=>HR.eng.hcAct[i]+HR.ops.hcAct[i]+HR.fin.hcAct[i]+HR.sales.hcAct[i]+HR.corp.hcAct[i]),
+  att: +((HR.eng.att*HR.eng.hcN+HR.ops.att*HR.ops.hcN+HR.fin.att*HR.fin.hcN+HR.sales.att*HR.sales.hcN+HR.corp.att*HR.corp.hcN)/(HR.eng.hcN+HR.ops.hcN+HR.fin.hcN+HR.sales.hcN+HR.corp.hcN)).toFixed(1),
+  ttf: Math.round((HR.eng.ttf+HR.ops.ttf+HR.fin.ttf+HR.sales.ttf+HR.corp.ttf)/5),
+  hcN: HR.eng.hcN+HR.ops.hcN+HR.fin.hcN+HR.sales.hcN+HR.corp.hcN,
+  open:HR.eng.open+HR.ops.open+HR.fin.open+HR.sales.open+HR.corp.open,
+  enps:Math.round((HR.eng.enps+HR.ops.enps+HR.fin.enps+HR.sales.enps+HR.corp.enps)/5),
+  tenure:+((HR.eng.tenure+HR.ops.tenure+HR.fin.tenure+HR.sales.tenure+HR.corp.tenure)/5).toFixed(1)
+};
+
+/* ── FINANCIAL ──
+   Per-BU monthly revenue. All = sum. */
+const FD = {
+  ea: { budget:[1.40,1.44,1.52,1.48,1.56,1.60], actual:[1.48,1.55,1.50,1.58,1.62,1.68], ebitda:22.4, cash:'$2.1M', cashC:'On plan', pipe:'3.8×', pipeC:'Strong coverage',    donut:[58,22,12,8],  donutL:['Core Services','Managed Svcs','Advisory','Other'] },
+  we: { budget:[1.24,1.28,1.36,1.32,1.40,1.44], actual:[1.32,1.38,1.36,1.48,1.44,1.52], ebitda:21.1, cash:'$2.4M', cashC:'Strong',   pipe:'4.1×', pipeC:'Best in portfolio', donut:[62,18,14,6],  donutL:['Core Services','Managed Svcs','Projects','Other'] },
+  pr: { budget:[0.72,0.76,0.80,0.76,0.84,0.88], actual:[0.74,0.76,0.76,0.82,0.80,0.84], ebitda:14.2, cash:'$1.1M', cashC:'Tight — 48 days', pipe:'2.4×', pipeC:'Below 3.0× threshold', donut:[44,31,16,9], donutL:['Product A','Product B','Product C','Other'] },
+  adv:{ budget:[0.44,0.42,0.46,0.44,0.44,0.48], actual:[0.36,0.40,0.38,0.44,0.36,0.48], ebitda:31.8, cash:'$0.6M', cashC:'Conservative', pipe:'2.8×', pipeC:'Below 3.0× target', donut:[50,30,12,8], donutL:['Strategy','Transactions','Research','Other'] }
+};
+FD.all = {
+  budget: FD.ea.budget.map((_,i)=>+(FD.ea.budget[i]+FD.we.budget[i]+FD.pr.budget[i]+FD.adv.budget[i]).toFixed(2)),
+  actual: FD.ea.actual.map((_,i)=>+(FD.ea.actual[i]+FD.we.actual[i]+FD.pr.actual[i]+FD.adv.actual[i]).toFixed(2)),
+  ebitda:19.8, cash:'$6.2M', cashC:'82 days reserve', pipe:'3.4×', pipeC:'Healthy coverage ratio',
+  donut:[37,34,19,10], donutL:['Services East','Services West','Products','Advisory']
+};
+
+/* ── OPERATIONS ──
+   Per-facility daily plan and variance seed. */
+const OD = {
+  all: { planVal:4720, variance:420, oee:74, fpy:96.4, otd:97.1, units:'4,820', unitsC:'102% of daily plan', downLabels:['Equip. Failure','Changeover','Planned Maint.','Material','Quality Hold','Other'], downVals:[12.4,9.8,8.2,4.1,3.6,2.1] },
+  atl: { planVal:2100, variance:180, oee:78, fpy:97.8, otd:98.4, units:'2,140', unitsC:'104% of plan',        downLabels:['Equip. Failure','Changeover','Planned Maint.','Material','Quality Hold','Other'], downVals:[ 3.2,3.8,4.0,1.2,1.0,0.6] },
+  hou: { planVal:1680, variance:220, oee:71, fpy:95.1, otd:95.8, units:'1,620', unitsC:'96% of plan',         downLabels:['Equip. Failure','Changeover','Planned Maint.','Material','Quality Hold','Other'], downVals:[ 6.8,3.4,2.4,1.8,1.4,0.8] },
+  phx: { planVal:1040, variance:140, oee:76, fpy:96.8, otd:97.6, units:'1,060', unitsC:'100% of plan',        downLabels:['Equip. Failure','Changeover','Planned Maint.','Material','Quality Hold','Other'], downVals:[ 2.4,2.6,1.8,1.1,1.2,0.7] }
+};
+// Verify: atl+hou+phx downtime ≈ all (3.2+6.8+2.4=12.4 ✓, 3.8+3.4+2.6=9.8 ✓, 4.0+2.4+1.8=8.2 ✓, etc.)
+
+/* ── HEALTHCARE ── */
+const HC = {
+  all:     { wait:34, vacRate:14.2, vacC:'4.2 pts above 10% target', bed:88, hcahps:'72nd', hcahpsC:'3 pts from top quartile',  unitVac:[18.2,14.6,12.8,11.1,9.4,7.2] },
+  main:    { wait:38, vacRate:16.8, vacC:'High — travel spend rising', bed:91, hcahps:'68th', hcahpsC:'Below top quartile',      unitVac:[22.4,18.2,15.6,13.8,11.2,8.8] },
+  north:   { wait:29, vacRate:11.2, vacC:'1.2 pts above 10% target',  bed:84, hcahps:'76th', hcahpsC:'Top quartile achieved',   unitVac:[14.4,12.0,10.8, 9.4, 7.8,5.6] },
+  clinics: { wait:18, vacRate: 9.4, vacC:'Under 10% target',          bed:78, hcahps:'81st', hcahpsC:'Strong performance',      unitVac:[ 9.8, 8.6, 8.2, 7.4, 6.2,4.8] }
+};
+// ED trend seeds per facility (baseline + variance)
+HC.all.trendBase=28;    HC.all.trendVar=10;   HC.all.trendDrift=6;
+HC.main.trendBase=30;   HC.main.trendVar=10;  HC.main.trendDrift=10;
+HC.north.trendBase=26;  HC.north.trendVar=6;  HC.north.trendDrift=4;
+HC.clinics.trendBase=16;HC.clinics.trendVar=4;HC.clinics.trendDrift=2;
+
+/* ══════════════════════════════════════════
+   INIT ALL CHARTS (builds from scratch)
+══════════════════════════════════════════ */
+function initAllCharts() {
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  /* ─ UTILITIES ─ */
+  if (document.getElementById('util-bar')) {
+    const r = (document.getElementById('util-region')||{value:'all'}).value || 'all';
+    const d = UD[r];
+    mk('util-bar', { type:'bar', data:{ labels:months, datasets:[{
+      label:'Outage Duration (min)', data:d.dur,
+      backgroundColor:P.green+'BB', borderRadius:5, borderSkipped:false
+    }]}, options:{ responsive:true, maintainAspectRatio:true,
+      plugins:{legend:{display:false},tooltip:ttOpts}, scales:scaleOpts }
+    });
+    mk('util-doughnut', { type:'doughnut',
+      data:{ labels:['Weather','Equipment Failure','Planned Maint.','Third-Party','Other'],
+        datasets:[{data:d.cause, backgroundColor:[P.navy,P.teal,P.green,P.lgreen,P.gray], borderWidth:0, hoverOffset:8}] },
+      options:{ responsive:true, maintainAspectRatio:true, aspectRatio:1.6, cutout:'64%',
+        plugins:{legend:{position:'bottom',labels:{font:{family:P.font,size:11},color:'#5A7A8E',padding:8,boxWidth:10,boxHeight:8}},tooltip:ttOpts} }
+    });
+  }
+
+  /* ─ CONSTRUCTION ─ */
+  if (document.getElementById('constr-line')) {
+    const proj = (document.getElementById('constr-project')||{value:'all'}).value || 'all';
+    const d = CD[proj];
+    mk('constr-line', { type:'line', data:{ labels:months, datasets:[
+      { label:'Planned ($M)', data:d.plan, borderColor:P.lgray, borderDash:[5,5], tension:0.3, pointRadius:2, borderWidth:1.5, fill:false, spanGaps:false },
+      { label:'Actual ($M)',  data:d.act,  borderColor:P.amber, tension:0.4, pointRadius:3, pointBackgroundColor:P.amber, borderWidth:2, spanGaps:false,
+        fill:{target:'-1',above:'rgba(240,165,0,0.07)',below:'rgba(192,57,43,0.06)'} }
+    ]}, options:{responsive:true,plugins:{legend:{display:false},tooltip:ttOpts},scales:scaleOpts} });
+    mk('constr-pie', { type:'doughnut',
+      data:{ labels:['Design Errors','Owner Changes','Unforeseen Conditions','Weather','Scope Additions'],
+        datasets:[{data:d.co, backgroundColor:['#1C3A4A',P.amber,'#E8C060','#E2D0A0',P.gray], borderWidth:0}] },
+      options:{ responsive:true, maintainAspectRatio:true, aspectRatio:1.6, cutout:'60%',
+        plugins:{legend:{position:'bottom',labels:{font:{family:P.font,size:11},color:'#5A7A8E',padding:8,boxWidth:10,boxHeight:8}},tooltip:ttOpts} }
+    });
+  }
+
+  /* ─ HR ─ */
+  if (document.getElementById('hr-line')) {
+    const dept = (document.getElementById('hr-dept')||{value:'all'}).value || 'all';
+    const deptKey = dept==='all'?'all': dept==='eng'?'eng': dept==='ops'?'ops': dept==='fin'?'fin': dept==='sales'?'sales':'corp';
+    const d = deptKey==='all' ? HR.all : HR[deptKey];
+    const period = (document.getElementById('hr-period')||{value:'12'}).value || '12';
+    const n = period==='3'?3:period==='6'?6:12;
+    mk('hr-line', { type:'line', data:{ labels:months.slice(12-n), datasets:[
+      { label:'Plan',   data:d.hcPlan.slice(12-n), borderColor:P.lgray, borderDash:[5,5], tension:0.3, pointRadius:2, borderWidth:1.5, fill:false },
+      { label:'Actual', data:d.hcAct.slice(12-n),  borderColor:P.purple, tension:0.3, pointRadius:3, pointBackgroundColor:P.purple, borderWidth:2, fill:false }
+    ]}, options:{responsive:true,plugins:{legend:{display:false},tooltip:ttOpts},scales:scaleOpts} });
+    // Horizontal bar — all depts, highlight selected
+    const depts=['Engineering','Operations','Finance','Sales','Corporate'];
+    const attVals=[HR.eng.att,HR.ops.att,HR.fin.att,HR.sales.att,HR.corp.att];
+    const deptMap={eng:'Engineering',ops:'Operations',fin:'Finance',sales:'Sales',corp:'Corporate'};
+    const colors=depts.map(lbl=> deptKey==='all'?P.purple : lbl===deptMap[deptKey]?'#C0392B':P.purple+'44');
+    mk('hr-bar', { type:'bar',
+      data:{ labels:depts, datasets:[{label:'Attrition %', data:attVals, backgroundColor:colors, borderRadius:5}] },
+      options:{ responsive:true, maintainAspectRatio:true, aspectRatio:1.8, indexAxis:'y',
+        plugins:{legend:{display:false},tooltip:ttOpts},
+        scales:{
+          x:{grid:{color:'rgba(34,87,122,0.05)',drawBorder:false},ticks:{font:{family:P.font,size:11},color:P.gray}},
+          y:{grid:{display:false},ticks:{font:{family:P.font,size:11},color:P.gray}}
+        } }
+    });
+  }
+
+  /* ─ FINANCIAL ─ */
+  if (document.getElementById('fin-bar')) {
+    const unit = (document.getElementById('fin-unit')||{value:'all'}).value || 'all';
+    const yr   = (document.getElementById('fin-yr')||{value:'25'}).value || '25';
+    const fdKey = unit==='all'?'all':unit==='ea'?'ea':unit==='we'?'we':unit==='pr'?'pr':'adv';
+    const fd = FD[fdKey];
+    const scale = yr==='24'?0.91:yr==='q1'?1:yr==='q2'?1:1;
+    const labels = yr==='q1'?months.slice(0,3):yr==='q2'?months.slice(3,6):months.slice(0,6);
+    const sl = yr==='q1'?[0,3]:yr==='q2'?[3,6]:[0,6];
+    mk('fin-bar', { type:'bar', data:{ labels, datasets:[
+      { label:'Budget ($M)', data:fd.budget.slice(sl[0],sl[1]).map(v=>+(v*scale).toFixed(2)), backgroundColor:P.lgray, borderRadius:4 },
+      { label:'Actual ($M)', data:fd.actual.slice(sl[0],sl[1]).map(v=>+(v*scale).toFixed(2)), backgroundColor:P.teal+'CC', borderRadius:4 }
+    ]}, options:{responsive:true,plugins:{legend:{display:false},tooltip:ttOpts},scales:scaleOpts} });
+    mk('fin-doughnut', { type:'doughnut',
+      data:{ labels:fd.donutL, datasets:[{data:fd.donut, backgroundColor:[P.navy,P.teal,P.green,P.lgreen], borderWidth:0}] },
+      options:{ responsive:true, maintainAspectRatio:true, aspectRatio:1.6, cutout:'60%',
+        plugins:{legend:{position:'bottom',labels:{font:{family:P.font,size:11},color:'#5A7A8E',padding:8,boxWidth:10,boxHeight:8}},tooltip:ttOpts} }
+    });
+  }
+
+  /* ─ OPERATIONS ─ */
+  if (document.getElementById('ops-line')) {
+    const fac = (document.getElementById('ops-fac')||{value:'all'}).value || 'all';
+    const d = OD[fac];
+    // Use deterministic seed based on fac key so data doesn't jump on re-render
+    const seed = fac==='all'?7:fac==='atl'?3:fac==='hou'?5:2;
+    function seededRand(i){ let x=Math.sin(seed*100+i)*10000; return x-Math.floor(x); }
+    const days30 = Array.from({length:30},(_,i)=>`D${i+1}`);
+    const plan30 = Array(30).fill(d.planVal);
+    const act30  = days30.map((_,i)=>Math.round(d.planVal - d.variance/2 + seededRand(i)*d.variance));
+    mk('ops-line', { type:'line', data:{ labels:days30, datasets:[
+      { label:'Plan',   data:plan30, borderColor:P.lgray, borderDash:[4,4], borderWidth:1.5, pointRadius:0, fill:false },
+      { label:'Actual', data:act30,  borderColor:P.green, tension:0.4, borderWidth:2, pointRadius:0,
+        fill:{target:'-1',above:'rgba(87,204,153,0.08)',below:'rgba(192,57,43,0.07)'} }
+    ]}, options:{responsive:true,plugins:{legend:{display:false},tooltip:ttOpts},scales:scaleOpts} });
+    mk('ops-bar', { type:'bar',
+      data:{ labels:d.downLabels, datasets:[{label:'Downtime (hrs)', data:d.downVals,
+        backgroundColor:[P.navy+'CC',P.teal+'CC',P.green+'CC',P.lgreen+'CC',P.gray+'CC','#CCC'], borderRadius:5}] },
+      options:{responsive:true,plugins:{legend:{display:false},tooltip:ttOpts},scales:scaleOpts}
+    });
+  }
+
+  /* ─ HEALTHCARE ─ */
+  if (document.getElementById('hc-line')) {
+    const fac = (document.getElementById('hc-fac')||{value:'all'}).value || 'all';
+    const d = HC[fac];
+    function seededHC(i){ let x=Math.sin((fac==='all'?11:fac==='main'?17:fac==='north'?23:31)*100+i)*10000; return x-Math.floor(x); }
+    const days30 = Array.from({length:30},(_,i)=>`D${i+1}`);
+    const target = Array(30).fill(28);
+    const actual = days30.map((_,i)=>Math.round(d.trendBase + seededHC(i)*d.trendVar + (i>14?d.trendDrift*i/28:0)));
+    mk('hc-line', { type:'line', data:{ labels:days30, datasets:[
+      { label:'Target (28 min)', data:target, borderColor:P.lgray, borderDash:[5,5], borderWidth:1.5, pointRadius:0, fill:false },
+      { label:'Actual (min)',    data:actual,  borderColor:P.rose,  tension:0.4, borderWidth:2, pointRadius:0,
+        fill:{target:'-1',above:'rgba(224,92,138,0.08)',below:'rgba(56,163,165,0.06)'} }
+    ]}, options:{responsive:true,plugins:{legend:{display:false},tooltip:ttOpts},scales:scaleOpts} });
+    mk('hc-bar', { type:'bar',
+      data:{ labels:['ED','ICU','Med/Surg','Surgical','OB','Float'],
+        datasets:[{label:'Vacancy %', data:d.unitVac,
+          backgroundColor:d.unitVac.map(v=>v>=18?'#C0392B':v>=14?P.rose:v>=10?P.rose+'99':'#E8A0B8'), borderRadius:5}] },
+      options:{ responsive:true, maintainAspectRatio:true, aspectRatio:1.8, indexAxis:'y',
+        plugins:{legend:{display:false},tooltip:ttOpts},
+        scales:{
+          x:{grid:{color:'rgba(34,87,122,0.05)',drawBorder:false},ticks:{font:{family:P.font,size:11},color:P.gray}},
+          y:{grid:{display:false},ticks:{font:{family:P.font,size:11},color:P.gray}}
+        } }
+    });
+  }
+}
+
+/* ══════════════════════════════════════════
+   FILTER HANDLERS — all update KPIs + charts
+══════════════════════════════════════════ */
+
+function updateUtilities() {
+  const r = document.getElementById('util-region').value;
+  const d = UD[r];
+  const crewTarget = 80;
+  const prevSaidi = {all:89.6, north:78.2, south:96.4, east:92.1, west:88.0}[r];
+  document.getElementById('u-saidi').textContent = d.saidi;
+  document.getElementById('u-saidi-c').textContent = `${Math.abs(((d.saidi-prevSaidi)/prevSaidi*100)).toFixed(1)}% ${d.saidi<prevSaidi?'better':'worse'} than last year`;
+  document.getElementById('u-saidi-c').className = 'kpi-change '+(d.saidi<prevSaidi?'kpi-up':'kpi-down');
+  document.getElementById('u-outages').textContent = d.outages;
+  document.getElementById('u-outages-c').textContent = r==='all'?'4 fewer than prior period':r==='south'?'Highest in region — watch':r==='north'?'Lowest in region':'Near average';
+  document.getElementById('u-outages-c').className = 'kpi-change '+(r==='south'?'kpi-down':'kpi-up');
+  document.getElementById('u-crew').textContent = d.crew+'%';
+  document.getElementById('u-crew-c').textContent = d.crew>=crewTarget?`${d.crew-crewTarget}% above target`:`${crewTarget-d.crew}% below ${crewTarget}% target`;
+  document.getElementById('u-crew-c').className = 'kpi-change '+(d.crew>=crewTarget?'kpi-up':'kpi-down');
+  document.getElementById('u-ahi').textContent = d.ahi;
+  document.getElementById('u-ahi-c').textContent = d.ahi>=70?'Stable — above 70 threshold':'Below 70 — review required';
+  document.getElementById('u-ahi-c').className = 'kpi-change '+(d.ahi>=70?'kpi-up':'kpi-down');
+  initAllCharts();
+}
+
+function updateConstruction() {
+  const proj = document.getElementById('constr-project').value;
+  const d = CD[proj];
+  document.getElementById('c-cpi').textContent  = d.cpi;
+  document.getElementById('c-cpi-c').textContent = d.cpi>=1?'Under budget':'Over plan — watch';
+  document.getElementById('c-cpi-c').className = 'kpi-change '+(d.cpi>=1?'kpi-up':'kpi-down');
+  document.getElementById('c-spi').textContent  = d.spi;
+  document.getElementById('c-spi-c').textContent = d.spi>=1?'Ahead of schedule':'Behind schedule';
+  document.getElementById('c-spi-c').className = 'kpi-change '+(d.spi>=1?'kpi-up':'kpi-down');
+  document.getElementById('c-cost').textContent = d.cost;
+  document.getElementById('c-cost-c').textContent = d.costC;
+  document.getElementById('c-rfi').textContent  = d.rfi;
+  document.getElementById('c-rfi-c').textContent = d.rfi<=40?'Within target threshold':`${d.rfi-40} above 40-RFI threshold`;
+  document.getElementById('c-rfi-c').className = 'kpi-change '+(d.rfi<=40?'kpi-up':'kpi-down');
+  initAllCharts();
+}
+
+function updateHR() {
+  const dept = document.getElementById('hr-dept').value;
+  const deptKey = dept==='all'?'all':dept==='eng'?'eng':dept==='ops'?'ops':dept==='fin'?'fin':dept==='sales'?'sales':'all';
+  const d = deptKey==='all' ? HR.all : HR[deptKey];
+  const ttfTarget=35, attTarget=13;
+  document.getElementById('hr-att').textContent   = d.att+'%';
+  document.getElementById('hr-att-c').textContent = d.att<=attTarget?`Below ${attTarget}% target — strong`:`${(d.att-attTarget).toFixed(1)} pts above ${attTarget}% target`;
+  document.getElementById('hr-att-c').className   = 'kpi-change '+(d.att<=attTarget?'kpi-up':'kpi-down');
+  document.getElementById('hr-ttf').textContent   = d.ttf+'d';
+  document.getElementById('hr-ttf-c').textContent = d.ttf<=ttfTarget?`Under ${ttfTarget}-day target`:`${d.ttf-ttfTarget} days above target`;
+  document.getElementById('hr-ttf-c').className   = 'kpi-change '+(d.ttf<=ttfTarget?'kpi-up':'kpi-down');
+  const hcPct = Math.round((d.hcN-d.open)/d.hcN*100);
+  document.getElementById('hr-hc').textContent    = hcPct+'%';
+  document.getElementById('hr-hc-c').textContent  = `${d.open} open roles`;
+  document.getElementById('hr-hc-c').className    = 'kpi-change '+(d.open<=10?'kpi-up':'kpi-down');
+  document.getElementById('hr-enps').textContent  = (d.enps>0?'+':'')+d.enps;
+  document.getElementById('hr-enps-c').textContent= d.enps>=30?'Healthy engagement':d.enps>=20?'Stable':'At risk — intervention needed';
+  document.getElementById('hr-enps-c').className  = 'kpi-change '+(d.enps>=20?'kpi-up':'kpi-down');
+  initAllCharts();
+}
+
+function updateFinancial() {
+  const unit = document.getElementById('fin-unit').value;
+  const yr   = document.getElementById('fin-yr').value;
+  const fdKey = unit==='all'?'all':unit==='ea'?'ea':unit==='we'?'we':unit==='pr'?'pr':'adv';
+  const fd = FD[fdKey];
+  const scale = yr==='24'?0.91:1;
+  const totalRev = fd.actual.reduce((a,b)=>a+b,0)*scale;
+  const totalBud = fd.budget.reduce((a,b)=>a+b,0)*scale;
+  const vs = ((totalRev-totalBud)/totalBud*100).toFixed(1);
+  document.getElementById('f-rev').textContent = '$'+totalRev.toFixed(1)+'M';
+  document.getElementById('f-rev-c').textContent = `${Math.abs(vs)}% ${vs>=0?'ahead of':'behind'} budget`;
+  document.getElementById('f-rev-c').className = 'kpi-change '+(vs>=0?'kpi-up':'kpi-down');
+  document.getElementById('f-ebitda').textContent = fd.ebitda+'%';
+  document.getElementById('f-ebitda-c').textContent = fd.ebitda>=22?'At or above 22% target':`${(22-fd.ebitda).toFixed(1)} pts below 22% target`;
+  document.getElementById('f-ebitda-c').className = 'kpi-change '+(fd.ebitda>=22?'kpi-up':'kpi-down');
+  document.getElementById('f-cash').textContent = fd.cash;
+  document.getElementById('f-cash-c').textContent = fd.cashC;
+  document.getElementById('f-pipe').textContent = fd.pipe;
+  document.getElementById('f-pipe-c').textContent = fd.pipeC;
+  initAllCharts();
+}
+
+function updateOps() {
+  const fac = document.getElementById('ops-fac').value;
+  const d = OD[fac];
+  document.getElementById('o-oee').textContent    = d.oee+'%';
+  document.getElementById('o-oee-c').textContent  = d.oee>=77?'Above 75% baseline':d.oee>=70?'Near baseline':'Below baseline — review';
+  document.getElementById('o-oee-c').className    = 'kpi-change '+(d.oee>=74?'kpi-up':'kpi-down');
+  document.getElementById('o-fpy').textContent    = d.fpy+'%';
+  document.getElementById('o-fpy-c').textContent  = d.fpy>=97.5?'At or above 97.5% target':`${(97.5-d.fpy).toFixed(1)} pts below target`;
+  document.getElementById('o-fpy-c').className    = 'kpi-change '+(d.fpy>=97.5?'kpi-up':'kpi-down');
+  document.getElementById('o-otd').textContent    = d.otd+'%';
+  document.getElementById('o-otd-c').textContent  = d.otd>=98?'At or above 98% target':`${(98-d.otd).toFixed(1)} pts below target`;
+  document.getElementById('o-otd-c').className    = 'kpi-change '+(d.otd>=98?'kpi-up':'kpi-down');
+  document.getElementById('o-units').textContent  = d.units;
+  document.getElementById('o-units-c').textContent= d.unitsC;
+  document.getElementById('o-units-c').className  = 'kpi-change '+(d.unitsC.includes('100')||d.unitsC.includes('102')||d.unitsC.includes('104')?'kpi-up':'kpi-down');
+  initAllCharts();
+}
+
+function updateHealthcare() {
+  const fac = document.getElementById('hc-fac').value;
+  const d = HC[fac];
+  const waitTarget=28, vacTarget=10, bedLow=85, bedHigh=90;
+  document.getElementById('hc-wait').textContent    = d.wait+' min';
+  document.getElementById('hc-wait-c').textContent  = d.wait<=waitTarget?`At or below ${waitTarget}-min target`:`${Math.round((d.wait-waitTarget)/waitTarget*100)}% above ${waitTarget}-min target`;
+  document.getElementById('hc-wait-c').className    = 'kpi-change '+(d.wait<=waitTarget?'kpi-up':'kpi-down');
+  document.getElementById('hc-vac').textContent     = d.vacRate+'%';
+  document.getElementById('hc-vac-c').textContent   = d.vacC;
+  document.getElementById('hc-vac-c').className     = 'kpi-change '+(d.vacRate<=vacTarget?'kpi-up':'kpi-down');
+  document.getElementById('hc-bed').textContent     = d.bed+'%';
+  document.getElementById('hc-bed-c').textContent   = d.bed>=bedLow&&d.bed<=bedHigh?'Within optimal 85–90% range':d.bed>bedHigh?'Above optimal — patient flow risk':'Below optimal range';
+  document.getElementById('hc-bed-c').className     = 'kpi-change '+(d.bed>=bedLow&&d.bed<=bedHigh?'kpi-up':'kpi-down');
+  document.getElementById('hc-hcahps').textContent  = d.hcahps;
+  document.getElementById('hc-hcahps-c').textContent= d.hcahpsC;
+  document.getElementById('hc-hcahps-c').className  = 'kpi-change '+(d.hcahps>='75th'||d.hcahps==='76th'||d.hcahps==='81st'?'kpi-up':'kpi-neutral');
+  initAllCharts();
+}
+
+function updateHCDept() { updateHealthcare(); }
+
+function submitForm() {
+  document.getElementById('contact-form-wrap').style.display = 'none';
+  document.getElementById('form-success').style.display = 'block';
+}
+
+/* ── SCROLL REVEAL ── */
+function initReveal() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => obs.observe(el));
+}
+
+/* ── ANIMATED STAT COUNTERS ── */
+function animateCounter(el) {
+  const target = parseFloat(el.dataset.target);
+  const isInt = Number.isInteger(target);
+  const prefix = el.dataset.prefix || '';
+  const suffix = el.dataset.suffix || '';
+  const duration = 1400;
+  const start = performance.now();
+  function step(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    const val = target * ease;
+    el.textContent = prefix + (isInt ? Math.round(val) : val.toFixed(1)) + suffix;
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function initCounters() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !e.target.dataset.counted) {
+        e.target.dataset.counted = 'true';
+        animateCounter(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.count-up').forEach(el => obs.observe(el));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initReveal();
+  initCounters();
+});
+</script>
+</body>
+</html>
