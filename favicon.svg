@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 176 52">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&display=swap');
+    </style>
+  </defs>
+  <rect width="176" height="52" rx="8" fill="#0D1B2A"/>
+  <text
+    x="10" y="26"
+    font-family="'Space Grotesk', Arial, sans-serif"
+    font-size="34"
+    font-weight="700"
+    fill="white"
+    stroke="#111"
+    stroke-width="1"
+    paint-order="stroke fill"
+    dominant-baseline="middle">nu</text>
+  <text
+    x="54" y="26"
+    font-family="'Space Grotesk', Arial, sans-serif"
+    font-size="34"
+    font-weight="700"
+    fill="#00C675"
+    dominant-baseline="middle">market</text>
+</svg>
