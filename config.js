@@ -1,4 +1,4 @@
-const NUMARKET_CONFIG = {
+var NUMARKET_CONFIG = {
   email: "hello@numarket.us",
   phone: "(404) 555-0192",
   showLocation: false,
