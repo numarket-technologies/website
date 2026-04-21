@@ -24,10 +24,9 @@ const NUMARKET_CONFIG = {
   /* ── SOCIAL LINKS (set to "" to hide) ───────────────────*/
   linkedin: "",
   twitter:  "",
-  /* ── FORM SUBMISSION ─────────────────────────────────── 
-     Set formspreeId to your Formspree form ID (e.g. "xpzgkrwb")
-     Get a free account at formspree.io — no backend needed.
-     Leave blank to keep the fake success message.          */
+  /* ── FORM SUBMISSION ───────────────────────────────────
+     Google Apps Script URL — form data is sent here on submit. */
+  googleScriptUrl: "https://script.google.com/macros/s/AKfycbxG2dRg1FTBqH5Kc74uCW_ayrDqxm5NyZGHDtCRVeVmYLdIxqJQ7_hIZXiomnhlU3zr/exec",
   formspreeId: "",
   /* ── ANALYTICS ───────────────────────────────────────── 
      Paste your Google Analytics GA4 Measurement ID here
