@@ -27,7 +27,6 @@ const NUMARKET_CONFIG = {
   /* ── FORM SUBMISSION ───────────────────────────────────
      Google Apps Script URL — form data is sent here on submit. */
   googleScriptUrl: "https://script.google.com/macros/s/AKfycbxG2dRg1FTBqH5Kc74uCW_ayrDqxm5NyZGHDtCRVeVmYLdIxqJQ7_hIZXiomnhlU3zr/exec",
-  formspreeId: "",
   /* ── ANALYTICS ───────────────────────────────────────── 
      Paste your Google Analytics GA4 Measurement ID here
      (e.g. "G-XXXXXXXXXX"). Leave blank to skip analytics. */
