@@ -586,8 +586,7 @@ function submitForm() {
   btn.textContent = 'Sending…'; btn.disabled = true;
   const scriptUrl = C.googleScriptUrl;
   if (scriptUrl) {
-    const body = new URLSearchParams(fields);
-    fetch(scriptUrl, { method: 'POST', mode: 'no-cors', body })
+    fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(fields) })
       .then(() => { wrap.style.display='none'; success.style.display='flex'; document.getElementById('form-header').style.display='none'; })
       .catch(() => { btn.textContent='Send Request →'; btn.disabled=false; errDiv.textContent='Network error — please email us directly.'; errDiv.style.display='block'; });
   } else {
