@@ -40,8 +40,6 @@ nav {
 .nav-inner { max-width: 1200px; margin: 0 auto; width: 100%; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; }
 .logo-mark { display: flex; align-items: center; gap: 0; cursor: pointer; user-select: none; }
 .logo-nu { font-family: var(--font-logo); font-size: 22px; font-weight: 700; color: #000; letter-spacing: -0.5px; line-height: 1; }
-.logo-slash { display: inline-block; width: 14px; height: 20px; margin: 0 1px; position: relative; top: 1px; }
-.logo-slash svg { width: 14px; height: 20px; }
 .logo-market { font-family: var(--font-logo); font-size: 18px; font-weight: 300; color: #00c675; letter-spacing: -0.2px; line-height: 1; }
 .nav-links { display: flex; align-items: center; gap: 8px; list-style: none; }
 .nav-links li button { font-size: 14px; font-weight: 400; color: var(--gray500); padding: 6px 14px; border-radius: 6px; transition: color var(--transition); background: none !important; }
