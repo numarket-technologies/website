@@ -28,7 +28,7 @@ var NUMARKET_CONFIG = {
   twitter:  "",
 
   /* FORM - Google Apps Script endpoint */
-  googleScriptUrl: "https://script.google.com/macros/s/AKfycbxG2dRg1FTBqH5Kc74uCW_ayrDqxm5NyZGHDtCRVeVmYLdIxqJQ7_hIZXiomnhlU3zr/exec",
+  googleScriptUrl: "https://script.google.com/macros/s/AKfycby85JWj1vQ5aYq1w0WCq1MLUSmIaPES8C-Vcv4yweZAm4zS2ov79Zm0C_OZOa_okEYLGw/exec",
 
   /* CALENDLY - paste your booking link here when ready */
   calendarLink: "",
