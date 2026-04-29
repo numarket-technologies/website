@@ -7,21 +7,21 @@ var NUMARKET_CONFIG = {
 
   /* CONTACT INFO */
   email:    "hello@numarket.us",
-  phone:    "(404) 555-0192",
+  phone:    "(863) 777-9264",
 
   /* LOCATION - set showLocation: true to display on site */
   showLocation: false,
   location: {
-    street:  "123 Peachtree St NE, Suite 400",
+    street:  "",
     city:    "Atlanta, GA 30303"
   },
 
   /* BUSINESS */
-  responseTime: "1 business day",
+  responseTime: "1-3 business day",
   companyName:   "numarket",
   tagline:       "Trust the Data.",
   legalName:     "numarket LLC",
-  copyrightYear: "2025",
+  copyrightYear: "2026",
 
   /* SOCIAL - leave blank to hide */
   linkedin: "",
